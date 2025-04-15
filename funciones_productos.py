@@ -3,7 +3,7 @@
 lista_productos = []
 
 "Alta nuevos productos"
-def alta_producto():
+def alta_productos():
     """Funcion para dar de alta un nuevo producto"""
     print("Alta de nuevo producto")
     marca_producto = input("Marca del producto: ")
@@ -23,7 +23,7 @@ def alta_producto():
 def cargar_produtos():
     continuar = 's'
     while continuar == 's':
-        alta_producto()
+        alta_productos()
         continuar = input(("Desea dar de alta otro producto? (s/n): ")).lower()
         while continuar != 's' and continuar != 'n':
             continuar = input("Respuesta no valida. Desea dar de alta otro producto? (s/n): ")
@@ -52,9 +52,10 @@ def eliminar_productos():
         print('No se encontraron productos con ese valor.')
         eliminar_productos()
     
-    print('Productos encontrados:')
-    for i, producto in enumerate(encontrados):
-        print(f"{i + 1}. {producto}")
+    print("Productos encontrados:")
+    for i in range(len(encontrados)):
+        print(str(i+1) + ". " + str(encontrados[i]))
+
     
     confirmar = input('¿Desea eliminar alguno de estos productos? (s/n): ').lower()
     while confirmar != 's' and confirmar != 'n':
