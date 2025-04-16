@@ -1,5 +1,17 @@
-"""Funcion donde irian todas las funciones de productos"""
+import random
 
+def asignar_pid(productos): # Recibe como argumento la lista de productos y otorga un PID dispobile para no haber duplicados.
+    pid_random = random.randint(1000, 9999)
+    pids_existentes = [prod[0] for prod in productos] # Guardo los PID que existen en una lista
+    
+    while pid_random in pids_existentes: # Si no existe lo agrego, sino vuelve a probar otro numero
+        pid_random = random.randint(1000, 9999)
+    
+    return pid_random
+
+# Niquito estuvo aqui 😊👍❤️😍👌👆
+
+"""Funcion donde irian todas las funciones de productos"""
 lista_productos = []
 
 "Alta nuevos productos"
