@@ -55,7 +55,6 @@ def eliminar_productos():
     print("Productos encontrados:")
     for i in range(len(encontrados)):
         print(str(i+1) + ". " + str(encontrados[i]))
-
     
     confirmar = input('¿Desea eliminar alguno de estos productos? (s/n): ').lower()
     while confirmar != 's' and confirmar != 'n':
