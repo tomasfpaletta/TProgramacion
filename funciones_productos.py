@@ -32,7 +32,7 @@ def alta_productos():
     lista_auxiliar = [marca_producto,modelo_producto, precio_producto_con_signo, stock_producto, categoria_producto]
     return lista_productos.append(lista_auxiliar)
 
-def cargar_produtos():
+def alta_produto():
     continuar = 's'
     while continuar == 's':
         alta_productos()
@@ -79,8 +79,73 @@ def eliminar_productos():
     else:
         print('No se eliminaron productos.')
 
+def modificar_producto():
+    """Función para modificar productos existentes sin usar enumerate()"""
+    print("Modificar producto de mi lista")
+    print('¿Por qué campo querés buscar?')
+    print('1. Marca del producto')
+    print('2. Modelo del producto')
+    opcion = input('Ingrese una opción (1 o 2): ')
 
-cargar_produtos()
-eliminar_productos()
+    while opcion != '1' and opcion != '2':
+        opcion = input('Opción no válida. Ingrese una opción (1 o 2): ')
+    
+    campo = 0 if opcion == '1' else 1
+    valor_busqueda = input('Ingrese el valor a buscar: ')
+
+    encontrados = []
+    i = 0
+    while i < len(lista_productos):
+        producto = lista_productos[i]
+        if valor_busqueda.lower() in producto[campo].lower():
+            encontrados.append([i, producto])  # Guardamos el índice y el producto
+        i = i + 1
+
+    if len(encontrados) == 0:
+        print('No se encontraron productos con ese valor.')
+        return  # Salimos de la función
+
+    print("\nProductos encontrados:")
+    j = 0
+    while j < len(encontrados):
+        print(str(j + 1) + ". " + str(encontrados[j][1]))
+        j = j + 1
+
+    eleccion = input('¿Cuál producto desea modificar? Ingrese el número (o "n" para cancelar): ')
+    if eleccion.lower() == 'n':
+        print('No se modificaron productos.')
+        return
+    
+    while not eleccion.isdigit() or int(eleccion) < 1 or int(eleccion) > len(encontrados):
+        eleccion = input('Opción no válida. Ingrese un número válido: ')
+
+    elegido_idx = int(eleccion) - 1
+    indice_original = encontrados[elegido_idx][0]
+    producto_actual = lista_productos[indice_original]
+
+    print("\nIngrese los nuevos datos del producto (deje en blanco para no modificar):")
+    marca = input("Marca (actual: {}): ".format(producto_actual[0]))
+    modelo = input("Modelo (actual: {}): ".format(producto_actual[1]))
+    precio = input("Precio (actual: {}): ".format(producto_actual[2]))
+    stock = input("Stock (actual: {}): ".format(producto_actual[3]))
+    categoria = input("Categoría (actual: {}): ".format(producto_actual[4]))
+
+    if marca != "":
+        producto_actual[0] = marca
+    if modelo != "":
+        producto_actual[1] = modelo
+    if precio != "":
+        producto_actual[2] = float(precio)
+    if stock != "":
+        producto_actual[3] = int(stock)
+    if categoria != "":
+        producto_actual[4] = categoria
+
+    lista_productos[indice_original] = producto_actual
+    print("\nProducto modificado con éxito.")
+
+
+alta_produto()
+modificar_producto()
 print(lista_productos)
     
