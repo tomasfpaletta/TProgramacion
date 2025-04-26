@@ -83,7 +83,7 @@ def eliminar_productos():
         print('No se eliminaron productos.')
 
 def modificar_producto():
-    '''Función para modificar productos existentes sin usar enumerate()'''
+    '''Función para modificar productos existentes'''
     print('Modificar producto de mi lista')
     print('¿Por qué campo querés buscar?')
     print('1. Marca del producto')
@@ -146,7 +146,6 @@ def modificar_producto():
 
     lista_productos[indice_original] = producto_actual
     print('\nProducto modificado con éxito.')
-
 
 alta_produto()
 modificar_producto()

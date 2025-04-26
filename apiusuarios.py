@@ -90,7 +90,7 @@ if respuesta_login == 1:
 elif respuesta_login == 2:
     print('Crear cuenta')
     input_dni = int(input('Ingrese su DNI:\n'))
-    while not existe_dni(input_dni, usuarios) and input_dni != 8:
+    while not existe_dni(input_dni, usuarios) and len(str(input_dni)) != 8:
         input_dni = int(input('El DNI ingresado ya existe o no cumple los requisitos(8 numeros), pruebe con otro:\n'))
     
     input_nombre = input('Ingrese su nombre:\n')
