@@ -1,5 +1,13 @@
-# Nico estuvo aqui
 def mostrar_productos(productos):
+    '''
+    Iteracion para mostrar todos los productos que se encuentran dentro de la lista 'Productos'.
+
+    Input:
+    - Lista de productos (Lista de tuplas)
+    Output:
+    - Print de productos
+
+    '''
     for ID, marca, modelo, color, stock, precio in productos:
         print(f'ID: {ID} | Marca: {marca.upper()} | Modelo: {modelo.upper()} | Color: {color.upper()} | Stock: {stock} unidades | Precio: {precio} U$D |')
 
