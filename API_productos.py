@@ -125,10 +125,10 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
     opcion = -1 # Lo dejamos ya seteado para que de entrada entre en el while. Lo mismo arriba.
 
     while seguir_editando:
-        while opcion < 1 or opcion > 7:
+        while opcion < 1 or opcion > 8:
             print('Que deseas editar?')
             print('Indicar con numero de indice')
-            opcion = int(input('1. Marca\n2. Modelo\n3. Categoria\n4. Color\n5. Stock \n6. Precio\n7. ---> CANCELAR <---\n'))
+            opcion = int(input('1. Marca\n2. Modelo\n3. Categoria\n4. Color\n5. Stock \n6. Precio\n7. ---> CANCELAR <---'))
 
             if opcion == 1:
                 cambio = input('Ingrese la marca:\n')
@@ -153,15 +153,14 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
                 opcion = -1
                 print('Edicion cancelada!')
         
-        if opcion != 7:
-            print(f'Asi va quedando tu producto:\n {producto_final}')
-            respuesta = int(input('Desea seguir editando ?\nIndicar con indice 1 o 2:\n1. SI\n2. NO\n'))
+        print(f'Asi va quedando tu producto:\n {producto_final}')
+        respuesta = int(input('Desea seguir editando ?\nIndicar con indice 1 o 2:\n1. SI\n2. NO\n'))
 
-            if respuesta == 2:
-                seguir_editando = False
-                print('Edicion Terminada')
-            else:
-                opcion = -1 # Reseteo esto porque sino no vuelve a preguntar los campos
+        if respuesta == 2:
+            seguir_editando = False
+            print('Edicion Terminada')
+        else:
+            opcion = -1 # Reseteo esto porque sino no vuelve a preguntar los campos
 
     cargar = input('Cargar cambios ? S/N').lower()
     if cargar == 's':
