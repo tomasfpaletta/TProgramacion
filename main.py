@@ -1,4 +1,5 @@
 from API_productos import mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto
+
 """Estructura principal del programa"""
 listado_productos = [(1111, 'Samsung', 'S25 Ultra', 'Celular','Negro', 10, 1200),
                      (1112, 'Samsung', 'S25FE', 'Celular','Plata', 20, 500),
@@ -13,7 +14,7 @@ usuarios = [{"DNI": 40946880,
              "password": 12345,
              "admin": True,
              "historial_compras": []},
-             {"DNI": 11111111, 
+             {"DNI": 44362800, 
              "nombre": "Tomas", 
              "apellido": "Paletta",
              "password": 12345,

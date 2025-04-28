@@ -29,8 +29,8 @@ def mostrar_productos(productos):
     - Print de productos
 
     '''
-    for ID, marca, modelo, color, stock, precio in productos:
-        print(f'ID: {ID} | Marca: {marca.upper()} | Modelo: {modelo.upper()} | Color: {color.upper()} | Stock: {stock} unidades | Precio: {precio} U$D |')
+    for ID, marca, modelo, categoria, color, stock, precio in productos:
+        print(f'ID: {ID} | Marca: {marca.upper()} | Modelo: {modelo.upper()} | Categoria: {categoria.upper()} | Color: {color.upper()} | Stock: {stock} unidades | Precio: {precio} U$D |')
 
 def retornar_prod(pid, productos):
     '''
