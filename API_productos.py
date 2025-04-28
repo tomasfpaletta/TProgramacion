@@ -98,7 +98,7 @@ def obtener_indice(id, lista):
     
     return -1
 
-# Modelo de datos [(1111, 'Samsung', 'S25 Ultra', 'Celular','Negro', 10, 1000)]   
+# Modelo de datos [(1111, 'Samsung', 'S25 Ultra', 'Celular','Negro', 10, 1000), (1112, 'Samsung', 'S25', 'Celular','Negro', 10, 1000)]   
 def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El producto viene como [()] asi que previamente en una variable hay que sacar el prod. Ej: prod_selecciondo = producto[0]
     '''
     Permite editar los campos que se deseen hasta que el usuario rompa el bucle.
@@ -114,7 +114,7 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
     '''
     producto_final = list(prod_seleccionado) # Las tuplas no son editables por eso la convierto a lista.
     seguir_editando = True # Basicamente un flag
-    opcion = -1 # Lo dejamos ya seteado para que de entrada este en el while. Lo mismo arriba.
+    opcion = -1 # Lo dejamos ya seteado para que de entrada entre en el while. Lo mismo arriba.
 
     while seguir_editando:
         while opcion < 1 or opcion > 8:
@@ -153,7 +153,7 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
             print('Edicion Terminada')
         else:
             opcion = -1 # Reseteo esto porque sino no vuelve a preguntar los campos
-    
+
     cargar = input('Cargar cambios ? S/N').lower()
     if cargar == 's':
         lista_productos[indice_producto] = tuple(producto_final)
