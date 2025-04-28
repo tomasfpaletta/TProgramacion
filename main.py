@@ -40,11 +40,14 @@ if eleccion_home == 1:
         elif eleccion_productos == 2:
             pid_random = asignar_pid(listado_productos)
             alta_producto(listado_productos, pid_random)
+            print(listado_productos[-1])
+            
             fin = input('Enter para terminar')
         elif eleccion_productos == 3:
 
             resp_editar = 1
             while resp_editar == 1:
+                mostrar_productos(listado_productos)
                 input_pid = int(input('Indique el ID del producto a buscar: '))
                 producto_empaquetado = retornar_prod(input_pid, listado_productos)
 
