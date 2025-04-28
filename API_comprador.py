@@ -1,5 +1,3 @@
-productos = [(1, 'Samsung', 'S25 Ultra', 'Negro', 10, 1000), (2, 'Samsung', 'S25', 'Plata', 20, 700), (3, 'Samsung', 'S25FE', 'Light blue', 5, 500)]
-
 def agregar_producto_carrito(lista_productos): # Lista de productos para mostrar en la API
     '''
     Agrega productos al carrito del cliente hasta que el cliente decida detener el proceso.

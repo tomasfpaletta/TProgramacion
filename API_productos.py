@@ -34,11 +34,19 @@ def mostrar_productos(productos):
 
 def retornar_prod(pid, productos):
     '''
-    Devulve la mostrando la lista [()] y no solo la tupla. Si no encuentra nada devuelve []
+    Devuelve el producto basandose en el PID que le pasemos de la lista de productos.
+    Importante: Devuelve una lista y dentro el producto entero como una tupla debido a que la comprension de listas te hace eso
+    
+    Input:
+    - PID del producto
+    - Listado de productos
+
+    Output:
+    - Producto 'empaquetado' = [(producto)]
     '''
     return [prod for prod in productos if prod[0] == pid]
 
-'Alta nuevos productos'
+
 def alta_producto(lista_productos, pid):
     '''
     Genera un producto (Tupla) y lo agrega a la lista 'Productos.' 
