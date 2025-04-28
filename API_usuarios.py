@@ -35,7 +35,7 @@ def login_correcto(input_dni, input_password, usuarios):
     return False
 
 
-def crear_user(dni, nombre, apellido, password, usuarios):
+def crear_user(dni, nombre, apellido, email, password, usuarios):
     '''
     Crea un nuevo usuario. Se genera el diccionario y se inserta en la lista 'usuarios'
     
@@ -53,6 +53,7 @@ def crear_user(dni, nombre, apellido, password, usuarios):
         'DNI': dni,
         'nombre': nombre,
         'apellido': apellido,
+        'email': email,
         'password': password,
         'admin': False,
         'historial_compras': []
@@ -62,29 +63,10 @@ def crear_user(dni, nombre, apellido, password, usuarios):
     return usuarios
 
 
-# Menu Login
-# print('Bienvenido')
-# respuesta_login = int(input('Ingrese una opcion con su numero:\n 1. Loguearse\n 2. Crear cuenta\n'))
-# if respuesta_login == 1:
-#     flag = True
-#     while flag:
-#         input_dni = int(input('Ingrese su DNI:\n'))
-#         input_password = int(input('Ingrese su contraseña:\n'))
-#         if login_correcto(input_dni, input_password, usuarios):
-#             flag = False
-#         else:
-#             print('Contraseña y/o DNI incorrecto/s. Vuelva a intentarlo.')
-#     print('Login Exitoso')
-# elif respuesta_login == 2:
-#     print('Crear cuenta')
-#     input_dni = int(input('Ingrese su DNI:\n'))
-#     while not existe_dni(input_dni, usuarios) and len(str(input_dni)) != 8:
-#         input_dni = int(input('El DNI ingresado ya existe o no cumple los requisitos(8 numeros), pruebe con otro:\n'))
-    
-#     input_nombre = input('Ingrese su nombre:\n')
-#     input_apellido = input('ingrese su apellido:\n')
-#     input_password = int(input('Ingrese una password (Solo numeros):\n'))
-#     crear_user(input_dni, input_nombre, input_apellido, input_password, usuarios)
-#     print('Usuario creado exitosamente')
-# else: 
-#     respuesta_login = int(input('Ingrese una opcion con su numero:\n 1. Loguearse\n 2. Crear cuenta\n'))
+def mostrar_usuarios(usuarios):
+    i = 1
+    for usuario in usuarios:
+        print(f'---> {i}')
+        print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
+        print()
+        i += 1
