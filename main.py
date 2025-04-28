@@ -9,6 +9,7 @@ listado_productos = [(1111, 'Samsung', 'S25 Ultra', 'Celular','Negro', 10, 1200)
                      (1115, 'Samsung', '65" 4K', 'TV','Negro', 100, 400)
                     ]
 
+#Diccionario
 usuarios = [{"DNI": 40946880, 
              "nombre": "Nicolas", 
              "apellido": "Lazaro",
