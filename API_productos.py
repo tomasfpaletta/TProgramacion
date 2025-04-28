@@ -130,28 +130,27 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
             print('Indicar con numero de indice')
             opcion = int(input('1. Marca\n2. Modelo\n3. Categoria\n4. Color\n5. Stock \n6. Precio\n7. ---> CANCELAR <---\n'))
 
-            if opcion == 1:
-                cambio = input('Ingrese la marca:\n')
-                producto_final[1] = cambio
-            elif opcion == 2:
-                cambio = input('Ingrese el modelo:\n')
-                producto_final[2] = cambio
-            elif opcion == 3:
-                cambio = input('Ingrese la categoria:\n')
-                producto_final[3] = cambio
-            elif opcion == 4:
-                cambio = input('Ingrese el color:\n')
-                producto_final[4] = cambio
-            elif opcion == 5:
-                cambio = int(input('Ingrese el stock:\n'))
-                producto_final[5] = cambio
-            elif opcion == 6:
-                cambio = int(input('Ingrese el precio:\n'))
-                producto_final[6] = cambio
-            else:
-                seguir_editando = False
-                opcion = -1
-                print('Edicion cancelada!')
+        if opcion == 1:
+            cambio = input('Ingrese la marca:\n')
+            producto_final[1] = cambio
+        elif opcion == 2:
+            cambio = input('Ingrese el modelo:\n')
+            producto_final[2] = cambio
+        elif opcion == 3:
+            cambio = input('Ingrese la categoria:\n')
+            producto_final[3] = cambio
+        elif opcion == 4:
+            cambio = input('Ingrese el color:\n')
+            producto_final[4] = cambio
+        elif opcion == 5:
+            cambio = int(input('Ingrese el stock:\n'))
+            producto_final[5] = cambio
+        elif opcion == 6:
+            cambio = int(input('Ingrese el precio:\n'))
+            producto_final[6] = cambio
+        else:
+            seguir_editando = False
+            print('Edicion cancelada!')
         
         if opcion != 7:
             print(f'Asi va quedando tu producto:\n {producto_final}')
