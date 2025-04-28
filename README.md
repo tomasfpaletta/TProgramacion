@@ -28,3 +28,10 @@
 - Agregado de productos al carrito de compras.
 - Visualización detallada del carrito (nombre, modelo, precio, etc.).
 - Cálculo del precio total del carrito.
+
+### Integrantes:
+
+- Tomas Paletta
+- Candela Pavan
+- Camila Hermida
+- Nicolas Lazaro
