@@ -1,4 +1,4 @@
-from API_productos import mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod
+from API_productos import mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto
 """Estructura principal del programa"""
 listado_productos = [(1111, 'Samsung', 'S25 Ultra', 'Celular','Negro', 10, 1200),
                      (1112, 'Samsung', 'S25FE', 'Celular','Plata', 20, 500),
@@ -23,24 +23,61 @@ usuarios = [{"DNI": 40946880,
 print('Bienvenido al E-Commerce')
 eleccion_home = int(input('Elija la seccion a la que quiere ingresar:\n1. Productos\n2. Usuarios\n'))
 
-while eleccion_home < 1 or eleccion_home > 3:
+while eleccion_home < 1 or eleccion_home > 2:
     eleccion_home = int(input('La opcion ingresada no es valida. Porfavor indique con numero:\n1. Usuarios\n2. Productos\n'))
 
 if eleccion_home == 1:
-    eleccion_productos = int(input('Indique que desea hacer:\n1. Visualizar productos\n2. Cargar nuevo producto\n3. Modificar producto\n4. Eliminar producto\n'))
-    if eleccion_productos == 1:
-        mostrar_productos(listado_productos)
-    elif eleccion_productos == 2:
-        pid = asignar_pid(listado_productos)
-        alta_producto(listado_productos, pid)
-    elif eleccion_productos == 3:
-            # TODO Seguir 
-        pid_encontrado = int(input('Indique el ID del producto a buscar: '))
-        producto_empaquetado = retornar_prod(pid_encontrado, listado_productos)
-        producto = producto_empaquetado[0]
-        indice = obtener_indice(pid_encontrado, listado_productos)
+    seguir_menu_productos = True
+    while seguir_menu_productos:
+        eleccion_productos = int(input('Indique que desea hacer:\n1. Visualizar productos\n2. Cargar nuevo producto\n3. Modificar producto\n4. Eliminar producto\n'))
+        if eleccion_productos == 1:
+            mostrar_productos(listado_productos)
+            fin = input('Enter para terminar')
+        elif eleccion_productos == 2:
+            pid_random = asignar_pid(listado_productos)
+            alta_producto(listado_productos, pid_random)
+            fin = input('Enter para terminar')
+        elif eleccion_productos == 3:
 
-        editar_producto(producto, indice, listado_productos)
-    # elif eleccion_productos == 4:
+            resp_editar = 1
+            while resp_editar == 1:
+                input_pid = int(input('Indique el ID del producto a buscar: '))
+                producto_empaquetado = retornar_prod(input_pid, listado_productos)
+
+                while not producto_empaquetado:
+                    input_pid = int(input('No se encontro el PID. Ingrese otro. (-1 para salir): '))
+                    if input_pid == -1:
+                        resp_editar = -1
+                        break
+
+                if producto_empaquetado and resp_editar == 1:
+                    producto = producto_empaquetado[0]
+                    indice = obtener_indice(input_pid, listado_productos)
+                    lista_actualizada = editar_producto(producto, indice, listado_productos)
+
+                    print(f'Lista original:\n{listado_productos}')
+                    print(f'Asi quedo su nueva lista de productos:\n{lista_actualizada}')
+
+                    resp_editar = int(input('Desea editar otro producto?\n1. SI\n2. NO\n'))
+            
+            print('Salio de la edicion.')
+            fin = input('Enter para terminar')
+        elif eleccion_productos == 4:
+            resp_eliminar = 1
+            while resp_eliminar == 1:
+                indice = int(input(f'Indique indice del producto a eliminar -> 0 a {len(listado_productos) - 1}(-1 para salir): '))
+                if indice >= 0 and indice < len(listado_productos):
+                    lista_actualizada = eliminar_producto(indice, listado_productos)
+                    print(f'Asi quedo la lista de productos:\n{lista_actualizada}')
+                    resp_eliminar = int(input('Desea eliminar otro producto?\n1. SI\n2. NO\n'))
+
+                    if resp_eliminar != 1:
+                        resp_eliminar = -1   
+                elif indice == -1:
+                    resp_eliminar = -1    
+                else:
+                    print('Indice invalido. Vuelva a intentar.')
+            print('Proceso para eliminar producto finalizado.')
+            fin = input('Enter para terminar')
 # elif eleccion_home == 2:
 #     eleccion_usuarios = int(input('Indique que desea hacer:\n1. Login\n2. Crear cuenta\n3. Ver usuarios\n'))
