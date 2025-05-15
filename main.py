@@ -1,4 +1,4 @@
-from API_productos import mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto
+from API_productos import mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
 from API_usuarios import existe_dni, login_correcto, crear_user, mostrar_usuarios
 
 """Estructura principal del programa"""
@@ -25,7 +25,7 @@ usuarios = [{"DNI": 40946880,
              "admin": True,
              "historial_compras": []}]
 
-print('Bienvenido al E-Commerce')
+mostrar_logo()
 eleccion_home = int(input('Elija la seccion a la que quiere ingresar:\n1. Productos\n2. Usuarios\n'))
 
 while eleccion_home < 1 or eleccion_home > 2:
