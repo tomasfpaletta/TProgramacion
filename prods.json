@@ -1,0 +1,92 @@
+[
+  {
+    "pid": 1000,
+    "marca": "samsung",
+    "modelo": "s25 ultra",
+    "categoria": "celular",
+    "color": "negro",
+    "stock": 10,
+    "precio": 1200,
+    "disponible": true
+  },
+  {
+    "pid": 1001,
+    "marca": "samsung",
+    "modelo": "s25 fe",
+    "categoria": "celular",
+    "color": "gris",
+    "stock": 22,
+    "precio": 500,
+    "disponible": true
+  },
+  {
+    "pid": 1002,
+    "marca": "samsung",
+    "modelo": "s24 plus",
+    "categoria": "celular",
+    "color": "gris",
+    "stock": 22,
+    "precio": 700,
+    "disponible": true
+  },
+  {
+    "pid": 1003,
+    "marca": "apple",
+    "modelo": "iphone 16",
+    "categoria": "celular",
+    "color": "gris",
+    "stock": 5,
+    "precio": 800,
+    "disponible": true
+  },
+  {
+    "pid": 1004,
+    "marca": "lenovo",
+    "modelo": "thinkpad e14",
+    "categoria": "notebook",
+    "color": "negro",
+    "stock": 3,
+    "precio": 800,
+    "disponible": true
+  },
+  {
+    "pid": 1005,
+    "marca": "lenovo",
+    "modelo": "thinkpad l15",
+    "categoria": "notebook",
+    "color": "negro",
+    "stock": 4,
+    "precio": 900,
+    "disponible": true
+  },
+  {
+    "pid": 1006,
+    "marca": "lenovo",
+    "modelo": "thinkpad l15",
+    "categoria": "notebook",
+    "color": "negro",
+    "stock": 4,
+    "precio": 900,
+    "disponible": true
+  },
+  {
+    "pid": 1007,
+    "marca": "dell",
+    "modelo": "latitude 5410",
+    "categoria": "notebook",
+    "color": "negro",
+    "stock": 9,
+    "precio": 650,
+    "disponible": true
+  },
+  {
+    "pid": 1008,
+    "marca": "sony",
+    "modelo": "linkbuds open",
+    "categoria": "auriculares",
+    "color": "negro",
+    "stock": 1,
+    "precio": 330,
+    "disponible": true
+  }
+]

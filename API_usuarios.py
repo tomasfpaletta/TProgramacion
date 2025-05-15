@@ -35,7 +35,7 @@ def login_correcto(input_dni, input_password, usuarios):
     return False
 
 
-def crear_user(dni, nombre, apellido, email, password, usuarios):
+def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad, usuarios):
     '''
     Crea un nuevo usuario. Se genera el diccionario y se inserta en la lista 'usuarios'
     
@@ -56,7 +56,8 @@ def crear_user(dni, nombre, apellido, email, password, usuarios):
         'email': email,
         'password': password,
         'admin': False,
-        'historial_compras': []
+        'historial_compras': [],
+        'preguntas_seguridad': preguntas_seguridad
     }
 
     usuarios.append(nuevo_usuario)
