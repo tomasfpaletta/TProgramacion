@@ -1,4 +1,4 @@
-def agregar_producto_carrito(lista_productos): # Lista de productos para mostrar en la API
+def agregar_producto_carrito(lista_productos, usuario): # Lista de productos para mostrar en la API
     '''
     Agrega productos al carrito del cliente hasta que el cliente decida detener el proceso.
 
@@ -9,17 +9,43 @@ def agregar_producto_carrito(lista_productos): # Lista de productos para mostrar
 
     '''
     carrito_cliente = []
+    total_final = 0
 
-    print('desea agregar algun producto a tu carrito? (s/n)')
     respuesta = input()
     while respuesta.lower() == 's':
-        seleccion = input('Ingrese el indice del producto a agregar al carrito: ')
-        carrito_cliente.append(list(lista_productos[int(seleccion)])) # Convertimos la tupla en lista y la agregamos al carrito
+        id_producto = int(input('Ingrese el indice del producto a agregar al carrito: '))
+        producto = lista_productos[id_producto]
+        input_cantidad = int(input(f'Cantidad ? Existen {producto['stock']} unidades disponibles\n'))
+
+        while input_cantidad > producto['stock'] or input_cantidad < 1:
+            print('Cantidad indicada fuera de rango. Indique nuevamente')
+            input_cantidad = int(input(f'Cantidad ? Existen {producto["stock"]} unidades disponibles\n'))
+        
+        producto['stock'] -= input_cantidad
+        if producto['stock'] == 0:
+            producto['disponible'] = False
+
+        compra = {
+            'marca': producto['marca'],
+            'modelo': producto['modelo'],
+            'color': producto['color'],    
+            'cantidad': input_cantidad,
+            'total': producto['precio'] * input_cantidad
+        }
+
+        carrito_cliente.append(compra)
+
         print(f'Producto agregado al carrito: {carrito_cliente}')
         print('desea agregar otro producto? (s/n)')
         respuesta = input()
-
-    print(f'Agregaste los siguientes productos: {carrito_cliente}')
+    
+    if len(carrito_cliente) > 0:
+        print(f'Agregaste los siguientes productos: {carrito_cliente}')
+    else:
+        print('No se agrego ningun producto al carrito')
+    
+    for compra in carrito_cliente:
+        total_final += compra['total']
+        carrito_cliente.append()
 
     return carrito_cliente # Retornamos el carrito con el producto agregado
-

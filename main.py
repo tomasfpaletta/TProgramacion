@@ -1,13 +1,9 @@
 from API_productos import mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
 from API_usuarios import existe_dni, login_correcto, crear_user, mostrar_usuarios
+from json_handler import importar_datos_json
 
 """Estructura principal del programa"""
-listado_productos = [(1111, 'Samsung', 'S25 Ultra', 'Celular','Negro', 10, 1200),
-                     (1112, 'Samsung', 'S25FE', 'Celular','Plata', 20, 500),
-                     (1113, 'Apple', 'Iphone 16 Pro', 'Celular','Plata', 5, 1300),
-                     (1114, 'Motorola', 'Edge 50', 'Celular','Gris', 40, 600),
-                     (1115, 'Samsung', '65" 4K', 'TV','Negro', 100, 400)
-                    ]
+listado_productos = importar_datos_json('prods.json')
 
 #Diccionario
 usuarios = [{"DNI": 40946880, 

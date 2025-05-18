@@ -87,19 +87,26 @@ def mostrar_productos(productos):
     # Filas
     indice = 1
     for producto in productos:
-        _, marca, modelo, categoria, color, stock, precio = producto
+        if producto['disponible'] != False:
+            marca = producto['marca']
+            modelo = producto['modelo']
+            categoria = producto['categoria']
+            color = producto['color']
+            stock = producto['stock']
+            precio = producto['precio']
 
-        fila = (
-            " " + rellenar_izq(str(indice), ancho_nro - 1) + "|" +
-            " " + rellenar_izq(marca, ancho_marca - 1) + "|" +
-            " " + rellenar_izq(modelo, ancho_modelo - 1) + "|" +
-            " " + rellenar_izq(categoria, ancho_categoria - 1) + "|" +
-            " " + rellenar_izq(color, ancho_color - 1) + "|" +
-            rellenar_der(str(stock), ancho_stock) + "|" +
-            rellenar_der(str(round(precio, 2)), ancho_precio)
-        )
-        print(fila)
-        indice = indice + 1
+
+            fila = (
+                " " + rellenar_izq(str(indice), ancho_nro - 1) + "|" +
+                " " + rellenar_izq(marca, ancho_marca - 1) + "|" +
+                " " + rellenar_izq(modelo, ancho_modelo - 1) + "|" +
+                " " + rellenar_izq(categoria, ancho_categoria - 1) + "|" +
+                " " + rellenar_izq(color, ancho_color - 1) + "|" +
+                rellenar_der(str(stock), ancho_stock) + "|" +
+                rellenar_der(str(round(precio, 2)), ancho_precio)
+            )
+            print(fila)
+            indice = indice + 1
 
     print("=" * ancho_total)
 
@@ -113,7 +120,7 @@ def retornar_prod(pid, productos):
     - Listado de productos
 
     Output:
-    - Producto 'empaquetado' = [(producto)]
+    - Producto 'empaquetado' = [{producto}]
     '''
     return [prod for prod in productos if prod[0] == pid]
 
@@ -136,10 +143,11 @@ def alta_producto(lista_productos, pid):
     color= input('Color del producto:\n')
     precio = int(input('Precio del producto:\n'))
     stock = int(input('Stock del producto:\n'))
+    disponible = True
 
     print(f'Producto {marca} dado de alta con exito!')
 
-    nuevo_producto = (pid , marca, modelo, categoria, color, stock, precio)
+    nuevo_producto = (pid , marca, modelo, categoria, color, stock, precio, disponible)
     lista_productos.append(nuevo_producto)
     return lista_productos
 
@@ -240,3 +248,6 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
     else:
         print('No se guardaron los cambios')
         return lista_productos
+    
+def deshabilitar_prod(prod):
+    prod['disponible'] = False
