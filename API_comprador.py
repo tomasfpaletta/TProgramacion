@@ -1,15 +1,34 @@
-def agregar_producto_carrito(lista_productos, usuario): # Lista de productos para mostrar en la API
+from datetime import datetime
+from funciones_generales import registrar_error, generar_id
+from json_handler import importar_datos_json, cargar_datos_json
+
+def actualizar_stock(cantidad, producto):
+    '''
+    Reduce la cantidad de stock, si llega a 0 el producto pasa a estar deshabilitado.
+
+    Input:
+    - Cantidad de stock a restar
+
+    Output:
+    - Producto actualizado
+    '''
+    producto['stock'] -= cantidad
+    if producto['stock'] == 0:
+        producto['disponible'] = False
+    
+    return producto
+
+def generar_carrito(lista_productos):
     '''
     Agrega productos al carrito del cliente hasta que el cliente decida detener el proceso.
 
     Input:
-    - Lista de productos (Lista de tuplas)
-    Output:
-    - Carrito del comprador (Matriz de productos)
+    - Lista de productos
 
+    Output:
+    - Lista de diccionarios (Cada diccionario es un producto con sus propiedades)
     '''
-    carrito_cliente = []
-    total_final = 0
+    carrito = []
 
     respuesta = input()
     while respuesta.lower() == 's':
@@ -21,31 +40,81 @@ def agregar_producto_carrito(lista_productos, usuario): # Lista de productos par
             print('Cantidad indicada fuera de rango. Indique nuevamente')
             input_cantidad = int(input(f'Cantidad ? Existen {producto["stock"]} unidades disponibles\n'))
         
-        producto['stock'] -= input_cantidad
-        if producto['stock'] == 0:
-            producto['disponible'] = False
+        actualizar_stock(input_cantidad, producto)
 
         compra = {
             'marca': producto['marca'],
             'modelo': producto['modelo'],
-            'color': producto['color'],    
+            'color': producto['color'],
             'cantidad': input_cantidad,
-            'total': producto['precio'] * input_cantidad
+            'total_prod': producto['precio'] * input_cantidad
         }
 
-        carrito_cliente.append(compra)
+        carrito.append(compra)
 
-        print(f'Producto agregado al carrito: {carrito_cliente}')
-        print('desea agregar otro producto? (s/n)')
+        print(f'Producto agregado al carrito: {carrito}')
+        print('Desea agregar otro producto? S/N')
         respuesta = input()
     
-    if len(carrito_cliente) > 0:
-        print(f'Agregaste los siguientes productos: {carrito_cliente}')
+    if len(carrito) > 0:
+        print(f'Agregaste los siguientes productos: {carrito}')
     else:
         print('No se agrego ningun producto al carrito')
-    
-    for compra in carrito_cliente:
-        total_final += compra['total']
-        carrito_cliente.append()
 
-    return carrito_cliente # Retornamos el carrito con el producto agregado
+    return carrito
+
+def calcular_total(carrito):
+    '''
+    Calcula el costo total/final del carrito.
+
+    Input:
+    - Carrito (Lista de diccionarios)
+
+    Output:
+    - Costo total
+    '''
+    total = 0
+
+    for prod in carrito:
+        total += prod['total_prod']
+
+    return total
+
+def generar_compra(carrito, usuario, cid):
+    '''
+    Simula la finalizacion de la compra guardando el carrito en el json 'carts.json' y devolviendo el comprobante (Numero CID)
+
+    Input:
+    - Carrito (Lista de diccionarios)
+    - Usuario
+    - Cart ID (N°random)
+
+    Output:
+    - Valor total
+    '''
+    timestamp = datetime.now().strftime('%d/%m/%Y')
+    productos = []
+    total = 0
+
+    for prod in carrito:
+        total += prod['total_prod']
+        productos.append(prod)
+
+    compra = {
+        'cid': cid,
+        'user': usuario,
+        'fecha': timestamp,
+        'total': total,
+        'productos': productos
+    }
+
+    try:
+        lista_carrito = importar_datos_json('DB/carts.json')
+        lista_carrito.append(compra)
+        cargar_datos_json('DB/carts.json', lista_carrito)
+
+        return compra
+    except Exception as err:
+        print('No se pudo realizar la compra debido al siguiente error:\n{err}')
+        registrar_error(err)
+

@@ -249,5 +249,4 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
         print('No se guardaron los cambios')
         return lista_productos
     
-def deshabilitar_prod(prod):
-    prod['disponible'] = False
+# def actulizar_productos(productos)
