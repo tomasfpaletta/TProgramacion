@@ -3,23 +3,8 @@ from API_usuarios import existe_dni, login_correcto, crear_user, mostrar_usuario
 from json_handler import importar_datos_json
 
 """Estructura principal del programa"""
-listado_productos = importar_datos_json('prods.json')
-
-#Diccionario
-usuarios = [{"DNI": 40946880, 
-             "nombre": "Nicolas", 
-             "apellido": "Lazaro",
-             "email": ['nlazaro', 'uade.edu.ar'], # Usuario y Dominio de mail por si quisieramos sacar estadisticas de cantidad mails etc.
-             "password": 12345,
-             "admin": True,
-             "historial_compras": []},
-             {"DNI": 44362800, 
-             "nombre": "Tomas", 
-             "apellido": "Paletta",
-             "email": ['tpaletta', 'uade.edu.ar'],
-             "password": 12345,
-             "admin": True,
-             "historial_compras": []}]
+listado_productos = importar_datos_json('DB/prods.json')
+listado_usuarios = importar_datos_json('DB/users.json')
 
 mostrar_logo()
 eleccion_home = int(input('Elija la seccion a la que quiere ingresar:\n1. Productos\n2. Usuarios\n'))
@@ -92,7 +77,7 @@ elif eleccion_home == 2:
             while flag:
                 input_dni = int(input('Ingrese su DNI:\n'))
                 input_password = int(input('Ingrese su contraseña:\n'))
-                if login_correcto(input_dni, input_password, usuarios):
+                if login_correcto(input_dni, input_password, listado_usuarios):
                     flag = False
                 else:
                     print('Contraseña y/o DNI incorrecto/s. Vuelva a intentarlo.')
@@ -102,7 +87,7 @@ elif eleccion_home == 2:
         elif eleccion_usuarios == 2:
             print('Crear cuenta')
             input_dni = int(input('Ingrese su DNI:\n'))
-            while not existe_dni(input_dni, usuarios) and len(str(input_dni)) != 8:
+            while not existe_dni(input_dni, listado_usuarios) and len(str(input_dni)) != 8:
                 input_dni = int(input('El DNI ingresado ya existe o no cumple los requisitos(8 numeros), pruebe con otro:\n'))
             
             input_nombre = input('Ingrese su nombre:\n')
@@ -110,13 +95,13 @@ elif eleccion_home == 2:
             input_email = input('ingrese su Email:\n').split('@')
             input_password = int(input('Ingrese una password (Solo numeros):\n'))
 
-            crear_user(input_dni, input_nombre, input_apellido, input_email, input_password, usuarios)
+            crear_user(input_dni, input_nombre, input_apellido, input_email, input_password, listado_usuarios)
             print('Usuario creado exitosamente')
-            print(f'El usuario quedo de esta manera:\n{usuarios[-1]}')
+            print(f'El usuario quedo de esta manera:\n{listado_usuarios[-1]}')
 
             fin = input('Enter para terminar')
         elif eleccion_usuarios == 3:
-            mostrar_usuarios(usuarios)
+            mostrar_usuarios(listado_usuarios)
             fin = input('Enter para terminar')
         else:
             print('La opcion ingresada es incorrecta. Vuelva a intentar.')
