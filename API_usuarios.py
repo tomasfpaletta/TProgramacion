@@ -1,3 +1,6 @@
+import re
+from funciones_generales import registrar_error
+
 def existe_dni(input_dni, usuarios):
     '''
     Valida si existe o no el DNI, iterando por los diferentes diccionarios (usuarios).
@@ -71,3 +74,24 @@ def mostrar_usuarios(usuarios):
         print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
         print()
         i += 1
+
+def correo_valido(correo): # Uso de Expresion regular
+    '''
+    Valida mediante el uso de Expresiones Regulares - regEX que el correo ingresado contiene al menos uno de los dominios validos.
+
+    Inputs:
+    - Correo (string)
+
+    Output:
+    - True o False
+    '''
+    correos_validos = r'.*@(gmail\.com|outlook\.com|hotmail\.com|yahoo\.com\.ar|uade\.edu\.ar)$'
+    try:
+        if re.match(correos_validos, correo):
+            return True
+        else:
+            print('El correo es invalido.')
+            return False
+    except Exception as err:
+        print(f'Ocurrio un error al intentar verificar el dominio del correo -> correo_Valido()\n{err}')
+        registrar_error(err)
