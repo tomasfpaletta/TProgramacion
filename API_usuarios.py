@@ -75,9 +75,12 @@ def mostrar_usuarios(usuarios):
         print()
         i += 1
 
-def correo_valido(correo): # Uso de Expresion regular
+def validar_correo(correo): # Uso de Expresion regular
     '''
-    Valida mediante el uso de Expresiones Regulares - regEX que el correo ingresado contiene al menos uno de los dominios validos.
+    Valida mediante el uso de Expresiones Regulares - regEX que el correo ingresado cumple con el patron declarado
+    - Contempla que tenga letras y simbolos
+    - Contempla que pueda tener un sub dominio como -> .com.ar
+    - No permite correos incompletos como -> correo.domino / correo.com
 
     Inputs:
     - Correo (string)
@@ -85,13 +88,13 @@ def correo_valido(correo): # Uso de Expresion regular
     Output:
     - True o False
     '''
-    correos_validos = r'.*@(gmail\.com|outlook\.com|hotmail\.com|yahoo\.com\.ar|uade\.edu\.ar)$'
+    patron_correo = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     try:
-        if re.match(correos_validos, correo):
+        if re.match(patron_correo, correo):
             return True
         else:
-            print('El correo es invalido.')
+            print('El correo es no cumple con los requisitos:\nEjemplo: micorreo@uade.edu.ar')
             return False
     except Exception as err:
-        print(f'Ocurrio un error al intentar verificar el dominio del correo -> correo_Valido()\n{err}')
+        print(f'Ocurrio un error al intentar validar el correo -> correo_Valido()\n{err}')
         registrar_error(err)
