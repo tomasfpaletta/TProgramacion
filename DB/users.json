@@ -7,7 +7,7 @@
     "password": "12345",
     "admin": true,
     "historial_compras": [],
-    "preguntas_seguridad": ["color_favorito", "azul"]
+    "pregunta_seguridad": { "color_favorito": "azul" }
   },
   {
     "DNI": 44362800,
@@ -17,6 +17,6 @@
     "password": "12345",
     "admin": true,
     "historial_compras": [],
-    "preguntas_seguridad": ["color_favorito", "rojo"]
+    "pregunta_seguridad": { "color_favorito": "azul" }
   }
 ]
