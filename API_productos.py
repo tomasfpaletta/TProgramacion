@@ -19,18 +19,96 @@ def asignar_pid(productos):
     
     return pid_random
 
+def mostrar_logo():
+    print("===============================================================================")
+    print("|                        Bienvenido al sistema CLI E-SHOP                     |")
+    print("===============================================================================\n")
+
+# Función para centrar texto en un recuadro
+def centrar(texto, ancho_total):
+    espacios_izq = (ancho_total - 2 - len(texto)) // 2
+    espacios_der = ancho_total - 2 - len(texto) - espacios_izq
+    return "|" + " " * espacios_izq + texto + " " * espacios_der + "|"
+
+# Alinear texto a la izquierda rellenando con espacios
+def rellenar_izq(texto, largo):
+    texto = texto.upper()
+    espacios = largo - len(texto)
+    if espacios > 0:
+        return texto + " " * espacios
+    else:
+        return texto[:largo]
+
+# Alinear texto a la derecha rellenando con espacios
+def rellenar_der(texto, largo):
+    espacios = largo - len(texto)
+    if espacios > 0:
+        return " " * espacios + texto
+    else:
+        return texto[:largo]
+
+# Función principal
 def mostrar_productos(productos):
     '''
-    Iteracion para mostrar todos los productos que se encuentran dentro de la lista 'Productos'.
-
-    Input:
-    - Lista de productos (Lista de tuplas)
-    Output:
-    - Print de productos
-
+    Muestra los productos en forma de tabla tipo Excel, sin usar métodos avanzados.
     '''
-    for ID, marca, modelo, categoria, color, stock, precio in productos:
-        print(f'ID: {ID} | Marca: {marca.upper()} | Modelo: {modelo.upper()} | Categoria: {categoria.upper()} | Color: {color.upper()} | Stock: {stock} unidades | Precio: {precio} U$D |')
+
+    # Anchos por columna
+    ancho_nro = 4
+    ancho_marca = 12
+    ancho_modelo = 18
+    ancho_categoria = 12
+    ancho_color = 10
+    ancho_stock = 6
+    ancho_precio = 12
+
+    ancho_total = ancho_nro + ancho_marca + ancho_modelo + ancho_categoria + ancho_color + ancho_stock + ancho_precio + 7
+
+    # Encabezado
+    print("=" * ancho_total)
+    print(centrar("", ancho_total))
+    print(centrar("CATÁLOGO DE PRODUCTOS", ancho_total))
+    print(centrar("", ancho_total))
+    print("=" * ancho_total)
+
+    # Encabezado de tabla
+    print("=" * ancho_total)
+    print(
+        " " + rellenar_izq("N°", ancho_nro - 1) + "|" +
+        " " + rellenar_izq("MARCA", ancho_marca - 1) + "|" +
+        " " + rellenar_izq("MODELO", ancho_modelo - 1) + "|" +
+        " " + rellenar_izq("CATEGORÍA", ancho_categoria - 1) + "|" +
+        " " + rellenar_izq("COLOR", ancho_color - 1) + "|" +
+        rellenar_der("STOCK", ancho_stock) + "|" +
+        rellenar_der("PRECIO (U$D)", ancho_precio)
+    )
+    print("-" * ancho_total)
+
+    # Filas
+    indice = 1
+    for producto in productos:
+        if producto['disponible'] != False:
+            marca = producto['marca']
+            modelo = producto['modelo']
+            categoria = producto['categoria']
+            color = producto['color']
+            stock = producto['stock']
+            precio = producto['precio']
+
+
+            fila = (
+                " " + rellenar_izq(str(indice), ancho_nro - 1) + "|" +
+                " " + rellenar_izq(marca, ancho_marca - 1) + "|" +
+                " " + rellenar_izq(modelo, ancho_modelo - 1) + "|" +
+                " " + rellenar_izq(categoria, ancho_categoria - 1) + "|" +
+                " " + rellenar_izq(color, ancho_color - 1) + "|" +
+                rellenar_der(str(stock), ancho_stock) + "|" +
+                rellenar_der(str(round(precio, 2)), ancho_precio)
+            )
+            print(fila)
+            indice = indice + 1
+
+    print("=" * ancho_total)
 
 def retornar_prod(pid, productos):
     '''
@@ -42,7 +120,7 @@ def retornar_prod(pid, productos):
     - Listado de productos
 
     Output:
-    - Producto 'empaquetado' = [(producto)]
+    - Producto 'empaquetado' = [{producto}]
     '''
     return [prod for prod in productos if prod[0] == pid]
 
@@ -65,10 +143,11 @@ def alta_producto(lista_productos, pid):
     color= input('Color del producto:\n')
     precio = int(input('Precio del producto:\n'))
     stock = int(input('Stock del producto:\n'))
+    disponible = True
 
     print(f'Producto {marca} dado de alta con exito!')
 
-    nuevo_producto = (pid , marca, modelo, categoria, color, stock, precio)
+    nuevo_producto = (pid , marca, modelo, categoria, color, stock, precio, disponible)
     lista_productos.append(nuevo_producto)
     return lista_productos
 
@@ -169,3 +248,5 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos): # El p
     else:
         print('No se guardaron los cambios')
         return lista_productos
+    
+# def actulizar_productos(productos)

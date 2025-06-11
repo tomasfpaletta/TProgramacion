@@ -11,13 +11,17 @@ def importar_datos_json(archivo_json):
     - Lista (de diccionarios)
     '''
     try:
-        with open(archivo_json, 'r', encoding='utf-8') as archivo_x:
-            lista_importada = json.load(archivo_x)
+        with open(archivo_json, 'r', encoding='utf-8') as contentido:
+            lista_importada = json.load(contentido)
             return lista_importada
     except FileNotFoundError:
         print(f'El archivo "{archivo_json}.json" no existe!')
+    except PermissionError:
+        print('No posees permisos para el archivo')
     except json.JSONDecodeError:
         print('Revisa que el archivo tenga un forma JSON valido!')
+    except Exception as err:
+        print(f'No se logro abrir el archivo. El error es: {err}')
 
 def cargar_datos_json(archivo_json, lista_nueva):
     '''
@@ -31,7 +35,9 @@ def cargar_datos_json(archivo_json, lista_nueva):
     - Archivo JSON Actualizado
     '''
     try:
-        with open(archivo_json, 'w', encoding='utf-8') as archivo_x:
-            json.dump(lista_nueva, archivo_x, indent=4) # Indent le da formato para que sea legible despues en el JSON
-    except FileNotFoundError:
-        print(f'El archivo "{archivo_json}.json" no existe!')
+        with open(archivo_json, 'w', encoding='utf-8') as contentido:
+            json.dump(lista_nueva, contentido, indent=4) # Indent le da formato para que sea legible despues en el JSON
+    except PermissionError:
+        print('No posees permisos para el archivo')
+    except Exception as err:
+        print(f'No se logro abrir el archivo. El error es: {err}')
