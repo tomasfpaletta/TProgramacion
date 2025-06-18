@@ -1,5 +1,5 @@
-from API_productos import mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
-from API_usuarios import existe_dni, login_correcto, crear_user, mostrar_usuarios
+from API_productos import buscar_productos, mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
+from API_usuarios import login_correcto, crear_user, mostrar_usuarios
 from json_handler import importar_datos_json
 
 """Estructura principal del programa"""
@@ -7,87 +7,197 @@ listado_productos = importar_datos_json('DB/prods.json')
 listado_usuarios = importar_datos_json('DB/users.json')
 
 mostrar_logo()
-eleccion_home = int(input('Elija la seccion a la que quiere ingresar:\n1. Productos\n2. Usuarios\n'))
+# Manejo de la elección inicial con try-except para evitar errores si no ingresa número
+try:
+    eleccion_home = int(input('Elija la seccion a la que quiere ingresar:\n1. Productos\n2. Usuarios\n'))
+except ValueError:
+    print("Opción inválida. Ingrese un número.")
+    eleccion_home = 0 # Valor para que entre en el bucle de validación
 
 while eleccion_home < 1 or eleccion_home > 2:
-    eleccion_home = int(input('La opcion ingresada no es valida. Porfavor indique con numero:\n1. Usuarios\n2. Productos\n'))
+    try:
+        eleccion_home = int(input('La opcion ingresada no es valida. Por favor, indique con numero:\n1. Productos\n2. Usuarios\n'))
+    except ValueError:
+        print("Opción inválida. Ingrese un número.")
+        eleccion_home = 0 # Valor para que siga en el bucle de validación
 
 if eleccion_home == 1:
     seguir_menu_productos = True
-    while seguir_menu_productos:
-        eleccion_productos = int(input('Indique que desea hacer:\n1. Visualizar productos\n2. Cargar nuevo producto\n3. Modificar producto\n4. Eliminar producto\n'))
+    while seguir_menu_productos: # Este es el ÚNICO bucle principal del menú de productos
+        eleccion_productos_str = input('Indique qué desea hacer:\n1. Visualizar productos\n2. Cargar nuevo producto\n3. Modificar producto\n4. Eliminar producto\n5. Buscar producto\n6. Salir\n')
+        
+        try:
+            eleccion_productos = int(eleccion_productos_str)
+        except ValueError:
+            print('Opción inválida. Por favor, ingrese un número.')
+            continue # Vuelve al inicio del bucle para pedir la opción de nuevo
+
         if eleccion_productos == 1:
             mostrar_productos(listado_productos)
             fin = input('Enter para terminar')
         elif eleccion_productos == 2:
             pid_random = asignar_pid(listado_productos)
             alta_producto(listado_productos, pid_random)
-            print(listado_productos[-1])
-            
+            print("Producto cargado exitosamente.")
             fin = input('Enter para terminar')
         elif eleccion_productos == 3:
-
             resp_editar = 1
             while resp_editar == 1:
                 mostrar_productos(listado_productos)
-                input_pid = int(input('Indique el ID del producto a buscar: '))
+                try:
+                    input_pid_str = input('Indique el PID del producto a buscar (o -1 para salir): ')
+                    input_pid = int(input_pid_str)
+                except ValueError:
+                    print("ID inválido. Ingrese un número.")
+                    continue
+
+                if input_pid == -1:
+                    resp_editar = -1
+                    break
+
                 producto_empaquetado = retornar_prod(input_pid, listado_productos)
 
+                # Si producto_empaquetado está vacío, significa que el PID no se encontró.
                 while not producto_empaquetado:
-                    input_pid = int(input('No se encontro el PID. Ingrese otro. (-1 para salir): '))
+                    try:
+                        input_pid_str = input('No se encontró el PID. Ingrese otro (-1 para salir): ')
+                        input_pid = int(input_pid_str)
+                    except ValueError:
+                        print("ID inválido. Ingrese un número.")
+                        continue
                     if input_pid == -1:
                         resp_editar = -1
                         break
+                    producto_empaquetado = retornar_prod(input_pid, listado_productos)
 
                 if producto_empaquetado and resp_editar == 1:
-                    producto = producto_empaquetado[0]
-                    indice = obtener_indice(input_pid, listado_productos)
+                    producto = producto_empaquetado[0] # Esto te da el diccionario del producto
+                    indice = obtener_indice(input_pid, listado_productos) # Obtiene el índice correcto
+                    
                     lista_actualizada = editar_producto(producto, indice, listado_productos)
 
-                    print(f'Lista original:\n{listado_productos}')
-                    print(f'Asi quedo su nueva lista de productos:\n{lista_actualizada}')
-
-                    resp_editar = int(input('Desea editar otro producto?\n1. SI\n2. NO\n'))
+                    try:
+                        resp_editar = int(input('¿Desea editar otro producto?\n1. SI\n2. NO\n'))
+                    except ValueError:
+                        print("Opción inválida. Por favor, ingrese 1 o 2.")
+                        resp_editar = 2 
             
-            print('Salio de la edicion.')
+            print('Salió de la edición.')
             fin = input('Enter para terminar')
         elif eleccion_productos == 4:
             resp_eliminar = 1
             while resp_eliminar == 1:
-                indice = int(input(f'Indique indice del producto a eliminar -> 0 a {len(listado_productos) - 1}(-1 para salir): '))
-                if indice >= 0 and indice < len(listado_productos):
-                    lista_actualizada = eliminar_producto(indice, listado_productos)
-                    print(f'Asi quedo la lista de productos:\n{lista_actualizada}')
-                    resp_eliminar = int(input('Desea eliminar otro producto?\n1. SI\n2. NO\n'))
+                mostrar_productos(listado_productos)
+                try:
+                    pid_a_eliminar_str = input(f'Indique el PID del producto a eliminar (-1 para salir): ')
+                    pid_a_eliminar = int(pid_a_eliminar_str)
+                except ValueError:
+                    print("ID inválido. Ingrese un número.")
+                    continue
 
-                    if resp_eliminar != 1:
-                        resp_eliminar = -1   
-                elif indice == -1:
-                    resp_eliminar = -1    
+                if pid_a_eliminar == -1:
+                    resp_eliminar = -1
+                    break
+                
+                indice_a_eliminar = obtener_indice(pid_a_eliminar, listado_productos)
+
+                if indice_a_eliminar != -1: 
+                    eliminar_producto(indice_a_eliminar, listado_productos) # eliminar_producto ya imprime confirmación
+                    try:
+                        resp_eliminar = int(input('¿Desea eliminar otro producto?\n1. SI\n2. NO\n'))
+                    except ValueError:
+                        print("Opción inválida. Por favor, ingrese 1 o 2.")
+                        resp_eliminar = 2 
                 else:
-                    print('Indice invalido. Vuelva a intentar.')
+                    print(f"No se encontró un producto con PID {pid_a_eliminar}.")
+                    try:
+                        resp_eliminar = int(input('¿Desea intentar eliminar otro producto?\n1. SI\n2. NO\n'))
+                    except ValueError:
+                        print("Opción inválida. Por favor, ingrese 1 o 2.")
+                        resp_eliminar = 2
+            
             print('Proceso para eliminar producto finalizado.')
             fin = input('Enter para terminar')
+        elif eleccion_productos == 5: # Sección para buscar productos
+            print("\n--- BÚSQUEDA DE PRODUCTOS ---")
+            print("Puedes escribir '-1' o 'salir' en cualquier momento para cancelar la búsqueda.")
+
+            criterios_validos = ["marca", "modelo", "categoria", "color", "pid", "stock", "precio"] # Agregado "stock" y "precio"
+
+            criterio_busqueda_input = input(f"Ingrese el criterio de búsqueda ({', '.join(criterios_validos)}): ").lower()
+            
+            # --- Aquí validamos si el usuario quiere salir antes de seguir ---
+            if criterio_busqueda_input == '-1' or criterio_busqueda_input == 'salir':
+                print("Búsqueda cancelada.")
+                fin = input('Enter para terminar') 
+                continue 
+
+            while criterio_busqueda_input not in criterios_validos:
+                print("Criterio de búsqueda inválido.")
+                criterio_busqueda_input = input(f"Por favor, ingrese un criterio válido ({', '.join(criterios_validos)} o '-1' para salir): ").lower()
+                
+                if criterio_busqueda_input == '-1' or criterio_busqueda_input == 'salir':
+                    print("Búsqueda cancelada.")
+                    fin = input('Enter para terminar')
+                    break 
+            
+            if criterio_busqueda_input == '-1' or criterio_busqueda_input == 'salir':
+                continue 
+
+
+            valor_busqueda_input = input(f"Ingrese el valor para '{criterio_busqueda_input}': ")
+            
+            if valor_busqueda_input == '-1' or valor_busqueda_input.lower() == 'salir':
+                print("Búsqueda cancelada.")
+                fin = input('Enter para terminar')
+                continue 
+
+
+            # Para criterios numéricos, la conversión se hace dentro de buscar_productos
+            # Aquí solo pasamos el string del valor_busqueda_input
+            productos_encontrados = buscar_productos(listado_productos, criterio_busqueda_input, valor_busqueda_input)
+
+            if productos_encontrados:
+                print(f"\n--- Resultados de la búsqueda para {criterio_busqueda_input}: '{valor_busqueda_input}' ---")
+                mostrar_productos(productos_encontrados)
+            else:
+                print(f"No se encontraron productos con {criterio_busqueda_input} '{valor_busqueda_input}'.")
+            
+            fin = input('Enter para terminar')
+        elif eleccion_productos == 6: # Opción para salir del menú de productos
+            seguir_menu_productos = False
+            print("Saliendo del menú de productos.")
+        else:
+            print('Opción inválida. Por favor, intente de nuevo.')
 elif eleccion_home == 2:
     seguir_menu_usuarios = True
     while seguir_menu_usuarios:
-        eleccion_usuarios = int(input('Indique que desea hacer:\n1. Login\n2. Crear cuenta\n3. Ver usuarios\n'))
+        eleccion_usuarios_str = input('Indique que desea hacer:\n1. Login\n2. Crear cuenta\n3. Ver usuarios\n4. Salir\n') # Agregué salir
+        try:
+            eleccion_usuarios = int(eleccion_usuarios_str)
+        except ValueError:
+            print('Opción inválida. Por favor, ingrese un número.')
+            continue
+
         if eleccion_usuarios == 1:
             flag = True
             while flag:
-                input_dni = int(input('Ingrese su DNI:\n'))
-                input_password = int(input('Ingrese su contraseña:\n'))
-                if login_correcto(input_dni, input_password, listado_usuarios):
-                    flag = False
-                else:
-                    print('Contraseña y/o DNI incorrecto/s. Vuelva a intentarlo.')
+                try:
+                    input_dni = int(input('Ingrese su DNI:\n'))
+                    input_password = int(input('Ingrese su contraseña:\n'))
+                    if login_correcto(input_dni, input_password, listado_usuarios):
+                        flag = False
+                    else:
+                        print('Contraseña y/o DNI incorrecto/s. Vuelva a intentarlo.')
+                except ValueError:
+                    print("DNI/Contraseña inválidos. Ingrese solo números.")
             print('Login Exitoso')
-
             fin = input('Enter para terminar')
-        elif eleccion_usuarios == 2:
+            """
+            elif eleccion_usuarios == 2:
             print('Crear cuenta')
             input_dni = int(input('Ingrese su DNI:\n'))
-            while not existe_dni(input_dni, listado_usuarios) and len(str(input_dni)) != 8:
+            while not (input_dni, listado_usuarios) and len(str(input_dni)) != 8:
                 input_dni = int(input('El DNI ingresado ya existe o no cumple los requisitos(8 numeros), pruebe con otro:\n'))
             
             input_nombre = input('Ingrese su nombre:\n')
@@ -100,8 +210,12 @@ elif eleccion_home == 2:
             print(f'El usuario quedo de esta manera:\n{listado_usuarios[-1]}')
 
             fin = input('Enter para terminar')
+            """
         elif eleccion_usuarios == 3:
             mostrar_usuarios(listado_usuarios)
             fin = input('Enter para terminar')
+        elif eleccion_usuarios == 4: # Opción para salir del menú de usuarios
+            seguir_menu_usuarios = False
+            print("Saliendo del menú de usuarios.")
         else:
             print('La opcion ingresada es incorrecta. Vuelva a intentar.')
