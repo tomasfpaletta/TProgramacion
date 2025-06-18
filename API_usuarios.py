@@ -37,12 +37,16 @@ def login_correcto(input_dni, input_password, usuarios):
     Output:
     - True o False
     '''
-    for usuario in usuarios:
-        if usuario['DNI'] == input_dni:
-            if usuario ['password'] == input_password:
-                return True
-    
-    return False
+    try:
+        for usuario in usuarios:
+            if usuario['DNI'] == input_dni:
+                if usuario ['password'] == input_password:
+                    return True
+        
+        return False
+    except Exception as err:
+        print(f'Ocurrio un error al intentar crear el usuario -> crear_user()\n{err}')
+        registrar_error(err)        
 
 
 def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad):
@@ -60,26 +64,43 @@ def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad):
     Output:
     - Nuevo usuario (diccionario)
     '''
-    nuevo_usuario = {
-        'DNI': dni,
-        'nombre': nombre,
-        'apellido': apellido,
-        'email': email,
-        'password': password,
-        'admin': False,
-        'historial_compras': [],
-        'preguntas_seguridad': preguntas_seguridad
-    }
+    try:
+        nuevo_usuario = {
+            'DNI': dni,
+            'nombre': nombre,
+            'apellido': apellido,
+            'email': email,
+            'password': password,
+            'admin': False,
+            'historial_compras': [],
+            'preguntas_seguridad': preguntas_seguridad
+        }
 
-    return nuevo_usuario
+        return nuevo_usuario
+    except Exception as err:
+        print(f'Ocurrio un error al intentar crear el usuario -> crear_user()\n{err}')
+        registrar_error(err)
 
 def mostrar_usuarios(usuarios):
+    '''
+    Muestra la lista de usuarios
+    
+    Inputs:
+    - Usuarios (Lista de diccionarios)
+
+    Output:
+    - Nuevo usuario (diccionario)
+    '''
     i = 1
-    for usuario in usuarios:
-        print(f'---> {i}')
-        print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
-        print()
-        i += 1
+    try:
+        for usuario in usuarios:
+            print(f'---> {i}')
+            print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
+            print()
+            i += 1
+    except Exception as err:
+        print(f'Ocurrio un error al intentar mostrar los usuarios -> mostrar_usuarios()\n{err}')
+        registrar_error(err)
 
 def validar_email(input_email, usuarios): # Uso de Expresion regular
     '''
