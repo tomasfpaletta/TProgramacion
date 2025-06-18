@@ -37,49 +37,70 @@ def login_correcto(input_dni, input_password, usuarios):
     Output:
     - True o False
     '''
-    for usuario in usuarios:
-        if usuario['DNI'] == input_dni:
-            if usuario ['password'] == input_password:
-                return True
-    
-    return False
+    try:
+        for usuario in usuarios:
+            if usuario['DNI'] == input_dni:
+                if usuario ['password'] == input_password:
+                    return True
+        
+        return False
+    except Exception as err:
+        print(f'Ocurrio un error al intentar crear el usuario -> crear_user()\n{err}')
+        registrar_error(err)        
 
 
-def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad, usuarios):
+def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad):
     '''
-    Crea un nuevo usuario. Se genera el diccionario y se inserta en la lista 'usuarios'
+    Crea un nuevo usuario. Se genera el diccionario'
     
     Inputs:
-    - DNI del input (menu)
-    - Nombre del input (menu)
-    - Apellido del input (menu)
-    - Contraseña del input (menu)
-    - Lista de diccionarios con los usuarios
+    - DNI
+    - Nombre
+    - Apellido
+    - Contraseña
+    - Email
+    - Preguntas de seguridad
 
     Output:
-    - Return de lista 'usuarios' con el nuevo usuario
+    - Nuevo usuario (diccionario)
     '''
-    nuevo_usuario = {
-        'DNI': dni,
-        'nombre': nombre,
-        'apellido': apellido,
-        'email': email,
-        'password': password,
-        'admin': False,
-        'historial_compras': [],
-        'preguntas_seguridad': preguntas_seguridad
-    }
+    try:
+        nuevo_usuario = {
+            'DNI': dni,
+            'nombre': nombre,
+            'apellido': apellido,
+            'email': email,
+            'password': password,
+            'admin': False,
+            'historial_compras': [],
+            'preguntas_seguridad': preguntas_seguridad
+        }
 
-    usuarios.append(nuevo_usuario)
-    return usuarios
+        return nuevo_usuario
+    except Exception as err:
+        print(f'Ocurrio un error al intentar crear el usuario -> crear_user()\n{err}')
+        registrar_error(err)
 
 def mostrar_usuarios(usuarios):
+    '''
+    Muestra la lista de usuarios
+    
+    Inputs:
+    - Usuarios (Lista de diccionarios)
+
+    Output:
+    - Nuevo usuario (diccionario)
+    '''
     i = 1
-    for usuario in usuarios:
-        print(f'---> {i}')
-        print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
-        print()
-        i += 1
+    try:
+        for usuario in usuarios:
+            print(f'---> {i}')
+            print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
+            print()
+            i += 1
+    except Exception as err:
+        print(f'Ocurrio un error al intentar mostrar los usuarios -> mostrar_usuarios()\n{err}')
+        registrar_error(err)
 
 def validar_email(input_email, usuarios): # Uso de Expresion regular
     '''
@@ -131,8 +152,79 @@ def validar_password(input_password, comprobacion):
         print(f'No se pudo validar la contraseña -> validar_password()\n{err}')
         registrar_error(err)      
 
+def validar_nombre_apellido(input):
+    '''
+    Valida que el input del nombre / apellido no contenga simbolos y 3 caracteres como minimo.
 
-def menu_nuevo_usuario(usuarios):
+    Inputs:
+    - input de nombre o apellido
+
+    Output:
+    - True o False
+    '''
+    requisitos = r"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,}$"
+    try:
+        if re.fullmatch(requisitos, input):
+            return True
+        else:
+            print(f'El nombre/apellido no puede poseer simbolos y debe tener al menos 3 letras.')
+            return False
+    except Exception as err:
+        print(f'No se pudo validar el nombre/apellido -> validar_nombre_apellido()\n{err}')
+        registrar_error(err) 
+
+def gen_pregunta_seguridad():
+    '''
+    Genera un diccionario como pregunta de seguridad para futura recuperacion de contraseña.
+
+    Inputs:
+    - NA
+
+    Output:
+    - Pregunta de seguridad (Diccionario)
+    '''
+    seleccion = 0
+    try:
+        while seleccion != 1 or seleccion != 2:
+            seleccion = int(input('Seleccione una pregunta de seguridad para recuperar la contraseña:\n1. Color favorito\n2. Nombre de mascota'))
+        
+        if seleccion == 1:
+            color = input('Indique su color favorito: ')
+
+            preguntas = {
+                "color_favorito": color
+            }
+
+            return preguntas
+        elif seleccion == 2:
+            nombre_mascota = input('Indique el nombre de su mascota: ')
+            preguntas = {
+                "nombre_mascota": nombre_mascota
+            }
+
+            return preguntas
+        else:
+            print('Se genero por default la pregunta de seguidad.\nColor favorito: azul')
+            preguntas = {
+                "color_favorito": "azul"
+            }
+
+            return preguntas
+        
+    except Exception as err:
+        print(f'No se pudo generar una pregunta de seguridad preguntas_seguridad()\n{err}')
+        registrar_error(err) 
+
+def form_nuevo_usuario(usuarios):
+    '''
+    Genera el formulario de nuevo usuario y devuelve el nuevo usuario.
+
+    Inputs:
+    - Lista de usuarios (Lista de diccionarios)
+
+    Output:
+    - Lista de usuarios actualizada con el nuevo usuario
+    '''
     try:
         print('Creacion de cuenta')
         input_dni = int(input('Ingrese su DNI:\n'))
@@ -143,14 +235,101 @@ def menu_nuevo_usuario(usuarios):
         while not validar_email(input_email, usuarios):
             print('El correo ya existe o no cumple con los requisitos (ej: micorreo@uade.edu.ar)')
             input_email = int(input('Ingrese otro: '))
-
-        input_nombre = input('Ingrese su nombre: ')
-        input_apellido = input('ingrese su apellido: ')
-        input_password = input('Ingrese una contraseña: ')
-
-        input_pregunta = input('')
-
         
+        input_password = input('Ingrese una contraseña: ')
+        input_validacion = input('Repita la contraseña: ')
+        while not validar_password(input_password, input_validacion):
+            input_password = input('Vuelva a ingresar una contraseña: ')
+            input_validacion = input('Repita la contraseña: ')
+
+        input_nombre = input('Ingrese su nombre: ').lower()
+        while not validar_nombre_apellido(input_nombre):
+            input_nombre = input('Vuelva a ingresar su nombre: ').lower()
+        
+        input_apellido = input('ingrese su apellido: ').lower()
+        while not validar_nombre_apellido(input_apellido):
+            input_apellido = input('Vuelva a ingresar su apellido: ').lower()
+
+        pregunta_recuperacion = gen_pregunta_seguridad()
+
+        nuevo_usuario = crear_user(input_dni, input_nombre, input_apellido, input_email, input_password, pregunta_recuperacion)
+
+        return nuevo_usuario
     except Exception as err:
         print(f'Se produjo el siguiente error al generar el usuario:\n{err}')
+        registrar_error(err)
+
+def actualizar_password(usuario):
+    '''
+    Actualiza la contraseña del usuario.
+
+    Inputs:
+    - Usuario (diccionario)
+
+    Output:
+    - Usuario con contraseña actualizada
+    '''
+    try:
+        nueva_password = input('Ingrese una contraseña: ')
+        validacion = input('Repita la contraseña: ')
+        while not validar_password(nueva_password, validacion):
+                nueva_password = input('Vuelva a ingresar una contraseña: ')
+                validacion = input('Repita la contraseña: ')
+        
+        usuario['password'] == nueva_password
+        
+        return usuario
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar actualizar la contraseña:\n{err}')
+        registrar_error(err)
+
+
+def recuperar_password(usuario):
+    '''
+    Solicita al usuario que ingrese la respuesta de la pregunta de seguridad.
+    Si hace match entonces permite cambiar la contraseña.
+
+    Inputs:
+    - Usuario (diccionario)
+
+    Output:
+    - Usuario con contraseña actualizada
+    '''
+    try:
+        pregunta_seguridad = usuario['pregunta_seguirdad']
+        pregunta = list(pregunta_seguridad.keys())[0]
+        respuesta_correcta = pregunta_seguridad[pregunta]
+
+        print(f'Indique la respuesta la pregunta de seguridad -> {pregunta}')
+
+        respuesta = input('Respuesta: ').strip().lower()
+
+        if respuesta_correcta == respuesta:
+            nueva_password = actualizar_password(usuario)
+            usuario['password'] = nueva_password
+
+            return usuario
+        else:
+            print('La respuesta ingresada es incorrecta.')
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar recuperar la contraseña:\n{err}')
+        registrar_error(err)
+
+def es_admin(usuario):
+    '''
+    Valida si el usuario es admin.
+
+    Inputs:
+    - Usuario (diccionario)
+
+    Output:
+    - True o False
+    '''
+    try:
+        if usuario['admin'] == True:
+            return True
+        else:
+            return False
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar validar si el usuario es admin:\n{err}')
         registrar_error(err)
