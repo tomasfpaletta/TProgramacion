@@ -1,4 +1,5 @@
 import random
+import os
 from datetime import datetime
 
 def generar_id(lista):
@@ -40,3 +41,19 @@ def registrar_error(err):
             archivo.write(registro)
     except Exception as err:
         print(f'No se pudo registrar el error:\n{err}')
+
+def limpiar_consola():
+    '''
+    Limpia la consola.   
+
+    Inputs:
+    - N/A
+
+    Output:
+    - Consola limpia ('cls' en Windows / 'clear' en GNULinux)
+    '''
+    try:
+        os.system('cls' if os.name == 'nt' else 'clear')
+    except Exception as err:
+        print(f'Error al tratar de limpiar la consola:\n---->{err}')
+        registrar_error(err)
