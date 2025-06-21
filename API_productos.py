@@ -1,29 +1,10 @@
 import random
 from json_handler import importar_datos_json
+from funciones_generales import generar_id
 
 """Estructura principal del programa"""
 listado_productos = importar_datos_json('DB/prods.json')
 listado_usuarios = importar_datos_json('DB/users.json')
-
-def asignar_pid(productos):
-    '''
-    Genera un numero random el cual sera el Product ID (PID). Va de 1000 a 9999.
-    Se valida ademas que no exista duplicados.
-
-    Input:
-    - Lista de productos (donde cada producto es un diccionario)
-
-    Output:
-    - Numero PID
-    '''
-    pid_random = random.randint(1000, 9999)
-    # Accede al PID usando la clave 'pid' del diccionario
-    pids_existentes = [prod['pid'] for prod in productos] 
-    
-    while pid_random in pids_existentes: 
-        pid_random = random.randint(1000, 9999)
-    
-    return pid_random
 
 def mostrar_logo():
     print("===============================================================================")
@@ -114,13 +95,31 @@ def retornar_prod(pid_buscado, productos):
     '''
     return [prod for prod in productos if prod['pid'] == pid_buscado]
 
-def alta_producto(lista_productos, pid):
+def actualizar_stock(cantidad, pid, lista_prods):
+    '''
+    Reduce la cantidad de stock, si llega a 0 el producto pasa a estar deshabilitado.
+
+    Input:
+    - Cantidad de stock a restar
+
+    Output:
+    - Producto actualizado
+    '''
+    for producto in lista_prods:
+        if producto['pid'] == pid:
+            producto['stock'] -= cantidad
+            if producto['stock'] == 0:
+                producto['stock'] = 0
+                producto['disponible'] = False
+            break
+    return lista_prods
+
+def alta_producto(lista_productos):
     '''
     Genera un producto (Diccionario) y lo agrega a la lista 'lista_productos'.
 
     Input:
     - lista_productos (Lista de diccionarios)
-    - PID generado previamente con la funcion asignar_pid()
 
     Output:
     - Devuelve la lista actualizada de productos con el nuevo prod.
@@ -135,6 +134,8 @@ def alta_producto(lista_productos, pid):
     disponible = True
 
     print(f'Producto {marca} dado de alta con exito!')
+
+    pid = generar_id(lista_productos, 'pid')
 
     nuevo_producto = {
         "pid": pid,

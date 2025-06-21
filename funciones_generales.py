@@ -2,19 +2,20 @@ import random
 import os
 from datetime import datetime
 
-def generar_id(lista):
+def generar_id(lista, key):
     '''
     Genera un numero random el cual sera el ID (PID/CID). Va de 1000 a 9999.
     Se valida que no exista duplicados.
 
     Input:
     - Lista de productos
+    - Key
 
     Output:
     - Numero PID
     '''
     id_random = random.randint(1000, 9999)
-    ids_existentes = {item['DNI'] for item in lista if 'DNI' in item}
+    ids_existentes = {item[key] for item in lista if key in item}
     
     while id_random in ids_existentes: # Si no existe lo agrego, sino vuelve a probar otro numero
         id_random = random.randint(1000, 9999)

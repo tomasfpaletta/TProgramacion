@@ -1,26 +1,10 @@
 from datetime import datetime
 from funciones_generales import registrar_error, generar_id
 from json_handler import importar_datos_json, cargar_datos_json
-from API_productos import mostrar_productos, retornar_prod
+from API_productos import mostrar_productos, retornar_prod, actualizar_stock
 
 listado_productos = importar_datos_json('DB/prods.json')
 ventas = importar_datos_json('DB/carts.json')
-
-def actualizar_stock(cantidad, producto, lista_prods):
-    '''
-    Reduce la cantidad de stock, si llega a 0 el producto pasa a estar deshabilitado.
-
-    Input:
-    - Cantidad de stock a restar
-
-    Output:
-    - Producto actualizado
-    '''
-    producto['stock'] -= cantidad
-    if producto['stock'] == 0:
-        producto['disponible'] = False
-    
-    return producto
 
 def seleccionar_producto(productos):
     '''
@@ -93,7 +77,8 @@ def generar_carrito(productos):
         if not cantidad:
             continue
 
-        actualizar_stock(cantidad, producto)
+        pid = producto['pid']
+        lista_prods_actualizada = actualizar_stock(cantidad, pid, productos)
 
         item = {
             'marca': producto['marca'],
@@ -146,7 +131,7 @@ def generar_compra(carrito, dni, lista_historial_ventas):
     timestamp = datetime.now().strftime('%d/%m/%Y')
     total = 0
     
-    n_venta = generar_id(lista_historial_ventas)
+    n_venta = generar_id(lista_historial_ventas, 'DNI')
 
     for prod in carrito:
         total += prod['total_prod']
