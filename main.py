@@ -1,6 +1,9 @@
-from API_productos import buscar_productos, mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
+from API_productos import menu_busqueda_productos, ordenar_por_precio, mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
 from API_usuarios import login_correcto, crear_user, mostrar_usuarios
+from API_comprador import menu_comprar_productos
 from json_handler import importar_datos_json
+
+dni = "40946880"  # hasta que implementemos login
 
 """Estructura principal del programa"""
 listado_productos = importar_datos_json('DB/prods.json')
@@ -9,7 +12,7 @@ listado_usuarios = importar_datos_json('DB/users.json')
 mostrar_logo()
 # Manejo de la elección inicial con try-except para evitar errores si no ingresa número
 try:
-    eleccion_home = int(input('Elija la seccion a la que quiere ingresar:\n1. Productos\n2. Usuarios\n'))
+    eleccion_home = int(input('=== Elija la seccion a la que quiere ingresar ===\n1. Productos\n2. Usuarios\n'))
 except ValueError:
     print("Opción inválida. Ingrese un número.")
     eleccion_home = 0 # Valor para que entre en el bucle de validación
@@ -24,7 +27,7 @@ while eleccion_home < 1 or eleccion_home > 2:
 if eleccion_home == 1:
     seguir_menu_productos = True
     while seguir_menu_productos: # Este es el ÚNICO bucle principal del menú de productos
-        eleccion_productos_str = input('Indique qué desea hacer:\n1. Visualizar productos\n2. Cargar nuevo producto\n3. Modificar producto\n4. Eliminar producto\n5. Buscar producto\n6. Salir\n')
+        eleccion_productos_str = input('=== Indique qué desea hacer ===\n1. Visualizar productos\n2. Cargar nuevo producto\n3. Comprar producto\n4. Modificar producto\n5. Eliminar producto\n6. Buscar producto\n7. Salir\n')
         
         try:
             eleccion_productos = int(eleccion_productos_str)
@@ -32,15 +35,21 @@ if eleccion_home == 1:
             print('Opción inválida. Por favor, ingrese un número.')
             continue # Vuelve al inicio del bucle para pedir la opción de nuevo
 
-        if eleccion_productos == 1:
+        if eleccion_productos == 1:    
             mostrar_productos(listado_productos)
-            fin = input('Enter para terminar')
+
+            sub_eleccion = input("\n=== ¿Querés filtrar los productos? ===\nPresioná 1 para buscar, o cualquier otra tecla para salir: ")
+
+            if sub_eleccion == "1":
+                menu_busqueda_productos()
         elif eleccion_productos == 2:
             pid_random = asignar_pid(listado_productos)
             alta_producto(listado_productos, pid_random)
             print("Producto cargado exitosamente.")
             fin = input('Enter para terminar')
         elif eleccion_productos == 3:
+            menu_comprar_productos(dni, listado_productos)
+        elif eleccion_productos == 4:
             resp_editar = 1
             while resp_editar == 1:
                 mostrar_productos(listado_productos)
@@ -84,7 +93,7 @@ if eleccion_home == 1:
             
             print('Salió de la edición.')
             fin = input('Enter para terminar')
-        elif eleccion_productos == 4:
+        elif eleccion_productos == 5:
             resp_eliminar = 1
             while resp_eliminar == 1:
                 mostrar_productos(listado_productos)
@@ -118,53 +127,10 @@ if eleccion_home == 1:
             
             print('Proceso para eliminar producto finalizado.')
             fin = input('Enter para terminar')
-        elif eleccion_productos == 5: # Sección para buscar productos
-            print("\n--- BÚSQUEDA DE PRODUCTOS ---")
-            print("Puedes escribir '-1' o 'salir' en cualquier momento para cancelar la búsqueda.")
+        elif eleccion_productos == 6: # Sección para buscar productos
+           menu_busqueda_productos()
 
-            criterios_validos = ["marca", "modelo", "categoria", "color", "pid", "stock", "precio"] # Agregado "stock" y "precio"
-
-            criterio_busqueda_input = input(f"Ingrese el criterio de búsqueda ({', '.join(criterios_validos)}): ").lower()
-            
-            # --- Aquí validamos si el usuario quiere salir antes de seguir ---
-            if criterio_busqueda_input == '-1' or criterio_busqueda_input == 'salir':
-                print("Búsqueda cancelada.")
-                fin = input('Enter para terminar') 
-                continue 
-
-            while criterio_busqueda_input not in criterios_validos:
-                print("Criterio de búsqueda inválido.")
-                criterio_busqueda_input = input(f"Por favor, ingrese un criterio válido ({', '.join(criterios_validos)} o '-1' para salir): ").lower()
-                
-                if criterio_busqueda_input == '-1' or criterio_busqueda_input == 'salir':
-                    print("Búsqueda cancelada.")
-                    fin = input('Enter para terminar')
-                    break 
-            
-            if criterio_busqueda_input == '-1' or criterio_busqueda_input == 'salir':
-                continue 
-
-
-            valor_busqueda_input = input(f"Ingrese el valor para '{criterio_busqueda_input}': ")
-            
-            if valor_busqueda_input == '-1' or valor_busqueda_input.lower() == 'salir':
-                print("Búsqueda cancelada.")
-                fin = input('Enter para terminar')
-                continue 
-
-
-            # Para criterios numéricos, la conversión se hace dentro de buscar_productos
-            # Aquí solo pasamos el string del valor_busqueda_input
-            productos_encontrados = buscar_productos(listado_productos, criterio_busqueda_input, valor_busqueda_input)
-
-            if productos_encontrados:
-                print(f"\n--- Resultados de la búsqueda para {criterio_busqueda_input}: '{valor_busqueda_input}' ---")
-                mostrar_productos(productos_encontrados)
-            else:
-                print(f"No se encontraron productos con {criterio_busqueda_input} '{valor_busqueda_input}'.")
-            
-            fin = input('Enter para terminar')
-        elif eleccion_productos == 6: # Opción para salir del menú de productos
+        elif eleccion_productos == 7: # Opción para salir del menú de productos
             seguir_menu_productos = False
             print("Saliendo del menú de productos.")
         else:
