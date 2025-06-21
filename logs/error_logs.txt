@@ -1,1 +1,4 @@
 20/06/2025 01:22:09 TIPO: <class 'KeyError'> - ERROR: 'dni'
+21/06/2025 14:29:54 TIPO: <class 'TypeError'> - ERROR: cannot unpack non-iterable NoneType object
+21/06/2025 14:33:18 TIPO: <class 'TypeError'> - ERROR: cannot unpack non-iterable NoneType object
+21/06/2025 14:35:47 TIPO: <class 'TypeError'> - ERROR: get_cant_ventas() missing 1 required positional argument: 'lista_ventas'
