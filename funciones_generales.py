@@ -13,7 +13,7 @@ def generar_id(lista):
     - Numero PID
     '''
     id_random = random.randint(1000, 9999)
-    ids_existentes = [item[0] for item in lista] # Guardo los ID que existen en una lista
+    ids_existentes = {item['DNI'] for item in lista if 'DNI' in item}
     
     while id_random in ids_existentes: # Si no existe lo agrego, sino vuelve a probar otro numero
         id_random = random.randint(1000, 9999)
@@ -40,3 +40,17 @@ def registrar_error(err):
             archivo.write(registro)
     except Exception as err:
         print(f'No se pudo registrar el error:\n{err}')
+
+def guardar_cambios(diccionario, lista): #TODO?
+    '''
+    Actualiza la lista con el ABM que se haya realizado.
+
+    Inputs:
+    - Diccionario
+    - Lista (de diccionarios)
+
+    Output:
+    - Lista actualizada
+    '''
+    print()
+

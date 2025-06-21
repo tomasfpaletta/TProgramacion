@@ -83,21 +83,22 @@ def mostrar_encabezado(anchos):
 
 def formatear_fila(producto, anchos):
     valores = {
-        'pid': str(producto.get('pid', 'N/A')),
-        'marca': str(producto.get('marca', 'N/A')),
-        'modelo': str(producto.get('modelo', 'N/A')),
-        'categoria': str(producto.get('categoria', 'N/A')),
-        'color': str(producto.get('color', 'N/A')),
-        'stock': str(producto.get('stock', 'N/A')),
-        'precio': f"{producto.get('precio', 0):.2f}",
-        'disponible': 'Sí' if producto.get('disponible', False) else 'No'
+        'pid': str(producto['pid']),
+        'marca': str(producto['marca']),
+        'modelo': str(producto['modelo']),
+        'categoria': str(producto['categoria']),
+        'color': str(producto['color']),
+        'stock': str(producto['stock']),
+        'precio': f"{producto['precio']:.2f}",
+        'disponible': 'Sí' if producto['disponible'] else 'No'
     }
 
     fila = ""
-    for campo in valores:
+    for campo in ['pid', 'marca', 'modelo', 'categoria', 'color', 'stock', 'precio', 'disponible']:
         fila += "|" + valores[campo].center(anchos[campo])
     fila += "|"
     return fila
+
 
 def retornar_prod(pid_buscado, productos):
     '''
@@ -358,28 +359,21 @@ def menu_busqueda_productos():
 
 def filtrar_productos(valor_busqueda, lista_productos, campo):
     valor_busqueda = str(valor_busqueda).lower()
-    productos_filtrados = []
-
-    for producto in lista_productos:
-        valor_campo = str(producto.get(campo, "")).lower()
-        if valor_campo.startswith(valor_busqueda):
-            productos_filtrados.append(producto)
-
+    productos_filtrados = list(filter(lambda p: str(p[campo]).lower().startswith(valor_busqueda), lista_productos))
     return productos_filtrados
 
-def ordenar_por_precio(listado_productos):
-    """
-    Usar el slice para poder visualizar la lista por los productos más baratos - más caros.
-    Le paso la lista, automaticamente me va a ordernar por precio. Se va a basar por la keyValue de precio.
-    Asi automaticamente va a ordenar por más caro, más barato.
-    Slice(::-1), trae todo pero al revez.  
-    """
-    # Ordena de mayor a menor
-    productos_ordenados_desc = sorted(listado_productos, key=lambda x: x.get("precio", 0), reverse=True)
-
-    # Slice para invertir y mostrar de menor a mayor
-    productos_ordenados_asc = productos_ordenados_desc[::-1]
-
-    print("\n=== Productos ordenados por precio (menor a mayor) ===")
-    mostrar_productos(productos_ordenados_asc)
+def ordenar_por_precio(lista_productos):
+    productos = lista_productos.copy()
+    ordenados = []
+    while productos:
+        # Encuentro el índice del producto de precio mínimo
+        min_idx = 0
+        for j in range(1, len(productos)):
+            if productos[j]["precio"] < productos[min_idx]["precio"]:
+                min_idx = j
+        # Lo extraigo y lo agrego a la lista ordenada
+        ordenados.append(productos.pop(min_idx))
+    
+    mostrar_productos(ordenados[::-1])
+    
 
