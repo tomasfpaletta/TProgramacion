@@ -1,4 +1,4 @@
-from API_productos import menu_busqueda_productos, ordenar_por_precio, mostrar_productos, alta_producto, asignar_pid, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
+from API_productos import menu_busqueda_productos, ordenar_por_precio, mostrar_productos, alta_producto, generar_id, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
 from API_usuarios import login_correcto, crear_user, mostrar_usuarios
 from API_comprador import menu_comprar_productos
 from json_handler import importar_datos_json
@@ -43,7 +43,7 @@ if eleccion_home == 1:
             if sub_eleccion == "1":
                 menu_busqueda_productos()
         elif eleccion_productos == 2:
-            pid_random = asignar_pid(listado_productos)
+            pid_random = generar_id(listado_productos, 'pid')
             alta_producto(listado_productos, pid_random)
             print("Producto cargado exitosamente.")
             fin = input('Enter para terminar')
