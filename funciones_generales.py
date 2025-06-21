@@ -1,4 +1,5 @@
 import random
+import os
 from datetime import datetime
 
 def generar_id(lista):
@@ -41,16 +42,18 @@ def registrar_error(err):
     except Exception as err:
         print(f'No se pudo registrar el error:\n{err}')
 
-def guardar_cambios(diccionario, lista): #TODO?
+def limpiar_consola():
     '''
-    Actualiza la lista con el ABM que se haya realizado.
+    Limpia la consola.   
 
     Inputs:
-    - Diccionario
-    - Lista (de diccionarios)
+    - N/A
 
     Output:
-    - Lista actualizada
+    - Consola limpia ('cls' en Windows / 'clear' en GNULinux)
     '''
-    print()
-
+    try:
+        os.system('cls' if os.name == 'nt' else 'clear')
+    except Exception as err:
+        print(f'Error al tratar de limpiar la consola:\n---->{err}')
+        registrar_error(err)
