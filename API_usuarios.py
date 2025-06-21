@@ -351,22 +351,23 @@ def recuperar_password(dni, usuarios):
     '''
     try:
         usuario = get_user(dni, usuarios)
-        pregunta_seguridad = usuario['pregunta_seguirdad']
-        pregunta = list(pregunta_seguridad.keys())[0]
-        respuesta_correcta = pregunta_seguridad[pregunta]
+        if usuario:
+            pregunta_seguridad = usuario['pregunta_seguirdad']
+            pregunta = list(pregunta_seguridad.keys())[0]
+            respuesta_correcta = pregunta_seguridad[pregunta]
 
-        print(f'Indique la respuesta la pregunta de seguridad -> {pregunta}')
+            print(f'Indique la respuesta la pregunta de seguridad -> {pregunta}')
 
-        respuesta = input('Respuesta: ').strip().lower()
+            respuesta = input('Respuesta: ').strip().lower()
 
-        if respuesta_correcta == respuesta:
-            nueva_password = actualizar_password(usuario)
-            usuario['password'] = nueva_password
-            print('---> Contraseña reestablecida <---')
-            return usuario
-        else:
-            print('La respuesta ingresada es incorrecta.')
-            return {}
+            if respuesta_correcta == respuesta:
+                nueva_password = actualizar_password(usuario)
+                usuario['password'] = nueva_password
+                print('---> Contraseña reestablecida <---')
+                return usuario
+            else:
+                print('La respuesta ingresada es incorrecta.')
+                return {}
     except Exception as err:
         print(f'Se produjo el siguiente error al intentar recuperar la contraseña:\n{err}')
         registrar_error(err)
