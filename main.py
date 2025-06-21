@@ -1,15 +1,21 @@
 from API_productos import menu_busqueda_productos, ordenar_por_precio, mostrar_productos, alta_producto, generar_id, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
-from API_usuarios import login_correcto, crear_user, mostrar_usuarios
+from API_usuarios import login_correcto, crear_user, mostrar_usuarios, menu_login, es_admin
 from API_comprador import menu_comprar_productos
 from json_handler import importar_datos_json
-
-dni = "40946880"  # hasta que implementemos login
 
 """Estructura principal del programa"""
 listado_productos = importar_datos_json('DB/prods.json')
 listado_usuarios = importar_datos_json('DB/users.json')
 
+dni = menu_login(listado_usuarios) # Usuario actual
+
 mostrar_logo()
+
+if es_admin(dni):
+    print("¡Bienvenido, administrador!")
+else:
+    print(f"¡Bienvenido/a, {dni['nombre'].capitalize()}!")
+
 # Manejo de la elección inicial con try-except para evitar errores si no ingresa número
 try:
     eleccion_home = int(input('=== Elija la seccion a la que quiere ingresar ===\n1. Productos\n2. Usuarios\n'))
@@ -27,7 +33,22 @@ while eleccion_home < 1 or eleccion_home > 2:
 if eleccion_home == 1:
     seguir_menu_productos = True
     while seguir_menu_productos: # Este es el ÚNICO bucle principal del menú de productos
-        eleccion_productos_str = input('=== Indique qué desea hacer ===\n1. Visualizar productos\n2. Cargar nuevo producto\n3. Comprar producto\n4. Modificar producto\n5. Eliminar producto\n6. Buscar producto\n7. Salir\n')
+        if es_admin(dni):
+            print('=== Indique qué desea hacer ===')
+            print('1. Visualizar productos')
+            print('2. Cargar nuevo producto')
+            print('3. Comprar producto')
+            print('4. Modificar producto')
+            print('5. Eliminar producto')
+            print('6. Buscar producto')
+            print('7. Salir')
+        else:
+            print('=== Indique qué desea hacer ===')
+            print('1. Visualizar productos')
+            print('3. Comprar producto')
+            print('6. Buscar producto')
+            print('7. Salir')
+        eleccion_productos_str = input('Opcion: ')
         
         try:
             eleccion_productos = int(eleccion_productos_str)
@@ -35,6 +56,13 @@ if eleccion_home == 1:
             print('Opción inválida. Por favor, ingrese un número.')
             continue # Vuelve al inicio del bucle para pedir la opción de nuevo
 
+        if not es_admin(dni):
+            opciones_usuario = {
+                1: 1,  # Visualizar productos
+                2: 3,  # Comprar producto (realmente opción 3 en código)
+                3: 6,  # Buscar producto
+                4: 7   # Salir
+    }
         if eleccion_productos == 1:    
             mostrar_productos(listado_productos)
 

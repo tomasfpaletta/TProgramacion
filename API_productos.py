@@ -8,7 +8,7 @@ listado_usuarios = importar_datos_json('DB/users.json')
 
 def mostrar_logo():
     print("===============================================================================")
-    print("|                       Bienvenido al sistema CLI E-SHOP                        |")
+    print("|                       Bienvenido al sistema CLI E-SHOP                       |")
     print("===============================================================================\n")
 
 def centrar_con_metodo(texto, ancho):
@@ -79,7 +79,6 @@ def formatear_fila(producto, anchos):
         fila += "|" + valores[campo].center(anchos[campo])
     fila += "|"
     return fila
-
 
 def retornar_prod(pid_buscado, productos):
     '''

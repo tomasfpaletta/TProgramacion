@@ -65,9 +65,9 @@ def get_user(dni, usuarios):
         for usuario in usuarios:
             if usuario['DNI'] == dni:
                 return usuario
-            else:
-                print(f'No existe el usuario con el DNI -> {dni}')
-                return {}
+                  
+        print(f'No existe el usuario con el DNI -> {dni}')
+        return {}
     except Exception as err:
         print(f'Ocurrio un error al intentar devolver el usuario -> get_user()\n{err}')
         registrar_error(err)
@@ -402,49 +402,42 @@ def menu_login(usuarios):
     - Menu de login
     - El usuario que se registro o logueo
     '''
-    print(f'Hola!\nSi ya tenes cuenta Logueate sino Registrate ')
+    print(f'=== Hola, Bienvenido! ===\nSi ya tenés cuenta, logueate. Si no, podés registrarte.')
 
-    opcion_inicial = 0
     volver_a_empezar = True
-    try:
-        while opcion_inicial != 1 and opcion_inicial != 2 and opcion_inicial != 3 and opcion_inicial != 4 and volver_a_empezar:
-            try:
-                opcion_inicial = int(input(f'1. Login\n2. Registrarse\n3. Reestablecer contraseña\n4. Recuperar contraseña\nElija una opcion: '))
-            except ValueError:
-                pass
+    while volver_a_empezar:
+        try:
+            opcion = int(input(f'1. Login\n2. Registrarse\n3. Reestablecer contraseña\n4. Recuperar contraseña\nElija una opcion: '))
 
-            if opcion_inicial == 1:
+            if opcion == 1:
                 usuario = form_login(usuarios)
                 if usuario:
                     return usuario
-                continue
-            elif opcion_inicial == 2:
+            elif opcion == 2:
                 nuevo_usuario = form_nuevo_usuario(usuarios)
                 if nuevo_usuario:
                     return nuevo_usuario
                 else:
-                    return {}
-            elif opcion_inicial == 3:
-                print('Para cambiar la contraseña debera volver a ingresar sus credenciales por seguridad.')
+                    print("No se pudo registrar el usuario.")
+            elif opcion == 3:
+                print('Para cambiar la contraseña deberá volver a ingresar sus credenciales por seguridad.')
                 usuario = form_login(usuarios)
                 if usuario:
                     usuario_actualizado = actualizar_password(usuario)
                     return usuario_actualizado
-                else:
-                    return {}
-            elif opcion_inicial == 4:
-                print('Recuperacion de contraseña.')
-                input_dni = int(input('Indique su DNI: '))
-                usuario_actualizado = recuperar_password(input_dni, usuarios)
-                if usuario_actualizado:
-                    return usuario_actualizado
-                else:
-                    return {}
+            elif opcion == 4:
+                print('Recuperación de contraseña.')
+                try:
+                    input_dni = int(input('Indique su DNI: '))
+                    usuario_actualizado = recuperar_password(input_dni, usuarios)
+                    if usuario_actualizado:
+                        return usuario_actualizado
+                except ValueError:
+                    print("DNI inválido.")
             else:
-                return {}
-            
-    except Exception as err:
-        print(f'Se produjo el siguiente error al ejecutarse el menu de login\n{err}')
-        registrar_error(err)
-
-menu_login(lista_usuarios)
+                print("Opción inválida. Debe elegir entre 1 y 4.")
+        except ValueError:
+            print("Entrada inválida. Ingrese solo números.")
+        except Exception as err:
+            print(f"Se produjo un error inesperado:\n{err}")
+            registrar_error(err)

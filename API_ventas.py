@@ -100,7 +100,6 @@ def menu_ventas():
         ventas = importar_datos_json('DB/ventas.json')
     except Exception as err:
 
-
 # cant = get_cant_ventas('10/05/2025', '22/05/2025', ventas)
 # print(cant)
 
