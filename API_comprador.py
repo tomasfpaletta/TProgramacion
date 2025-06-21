@@ -4,40 +4,44 @@ from json_handler import importar_datos_json, cargar_datos_json
 from API_productos import mostrar_productos, retornar_prod, actualizar_stock
 
 listado_productos = importar_datos_json('DB/prods.json')
-ventas = importar_datos_json('DB/carts.json')
+ventas = importar_datos_json('DB/ventas.json')
 
 def seleccionar_producto(productos):
     '''
     Permite al usuario seleccionar un producto ingresando su PID.
-    Valida la existencia del producto en la lista.
+    Se valida la existencia del producto en la lista.
 
     Input:
-    - productos: Lista de diccionarios de productos.
+    - Productos (Lista de diccionarios)
 
     Output:
-    - producto (dict): El producto seleccionado si existe, o None si no se encuentra o hay error.
+    - Producto (Diccionario)
     '''
     try:
         pid = int(input("Ingrese el PID del producto a agregar: "))
-        resultado = retornar_prod(pid, productos)
-        if not resultado:
+        prod = retornar_prod(pid, productos)
+        if not prod:
             print("PID no encontrado.")
-            return None # podria firjarme retornar un producto (lista) vacio.
-        return resultado[0]
+            return {}
+        return prod[0] # Hacemos 'prod[0]' porque la funcion retornar_prod lo devuelve empaquetado, asi que seleccionamos el unico y primer indice.
     except ValueError:
-        print("PID inválido.")
-        return None
+        print(f'PID no encontrado -> ValueError al indicar PID del producto a agregar')
+        return {}
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar seleccionar el producto en la funcion -> seleccionar_prod():\n{err}')
+        registrar_error(err)
+        return {}
 
 def pedir_cantidad(producto):
     '''
     Solicita al usuario la cantidad de unidades deseadas para un producto determinado.
-    Valida que la cantidad esté dentro del stock disponible.
+    Se valida que la cantidad esté dentro del stock disponible.
 
     Input:
-    - producto: Diccionario del producto seleccionado.
+    - Producto (Diccionario)
 
     Output:
-    - cantidad (int): Cantidad validada, o None si la entrada es inválida.
+    - Cantidad (numero int)
     '''
     try:
         cantidad = int(input(f"¿Cuántas unidades desea? (Disponibles: {producto['stock']}): "))
@@ -47,26 +51,46 @@ def pedir_cantidad(producto):
         return cantidad
     except ValueError:
         print("Cantidad inválida.")
-        return None
+        return 0
+
+def eliminar_del_carrito(producto, carrito):
+    '''
+    Elimina el producto (diccionario) del carrito (lista de diccionarios). Devolviendo asi el carrito actualizado sin el producto indicado
+
+    Input:
+    - Producto (Diccionario)
+
+    Output:
+    - Carrito actualizado sin el producto indicado (Lista de diccionarios)
+    '''
+
+    try:
+        carrito_actualizado = carrito.remove(producto)
+        return carrito_actualizado
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar eliminar el producto del carrito en la funcion -> eliminar_del_carrito():\n{err}')
+        registrar_error(err)
+        return carrito
 
 def generar_carrito(productos):
     '''
-    Permite al usuario agregar productos al carrito de compra a través del PID.
+    Permite al usuario agregar productos al carrito de compra seleccionando con el PID.
     Muestra el catálogo, valida la disponibilidad del producto y la cantidad ingresada,
     actualiza el stock y construye una lista con los productos seleccionados.
 
     Input:
-    - productos: Lista de productos disponibles (diccionarios).
+    - Productos (Lista de diccionarios)
 
     Output:
-    - carrito: Lista de diccionarios con los productos seleccionados por el usuario.
+    - Carrito (Lista de diccionarios)
     '''
     carrito = []
 
-    print("\n=== CATÁLOGO DE PRODUCTOS ===")
-    mostrar_productos(productos)
-
     while input("¿Deseás agregar un producto al carrito? (S/N): ").lower() == 's':
+        print("\n=== CATÁLOGO DE PRODUCTOS ===")
+        mostrar_productos(productos)
+
+
         producto = seleccionar_producto(productos)
 
         if not producto or not producto['disponible']:
@@ -102,7 +126,7 @@ def generar_carrito(productos):
 
 def calcular_total(carrito):
     '''
-    Calcula el costo total/final del carrito.
+    Calcula el valor total/final del carrito.
 
     Input:
     - Carrito (Lista de diccionarios)
@@ -111,52 +135,58 @@ def calcular_total(carrito):
     - Costo total
     '''
     total = 0
+    try:
+        for prod in carrito:
+            total += prod['total_prod']
+        return total
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar calcular el total del carrito en la funcion -> calcular_total():\n{err}')
+        registrar_error(err)
+        return total
 
-    for prod in carrito:
-        total += prod['total_prod']
-
-    return total
-
-def generar_compra(carrito, dni, lista_historial_ventas):
+def generar_venta(carrito, dni, lista_historial_ventas):
     '''
     Simula la finalizacion de la compra guardando el carrito en el json 'carts.json' y devolviendo el comprobante (Numero de venta)
 
     Input:
     - Carrito (Lista de diccionarios)
     - DNI
+    - Historial de ventas (Lista de diccionarios)
 
     Output:
-    - Valor total
+    - Venta (Lista de diccionarios)
+    - ventas.json actualizado
     '''
-    timestamp = datetime.now().strftime('%d/%m/%Y')
-    total = 0
-    
-    n_venta = generar_id(lista_historial_ventas, 'DNI')
-
-    for prod in carrito:
-        total += prod['total_prod']
-
-    compra = {
-        'n_venta': n_venta,
-        'user': dni,
-        'fecha': timestamp,
-        'total': total,
-        'productos': carrito
-    }
-
     try:
+        timestamp = datetime.now().strftime('%d/%m/%Y')
+        total = 0
+        
+        n_venta = generar_id(lista_historial_ventas, 'DNI')
+
+        for prod in carrito:
+            total += prod['total_prod']
+
+        venta = {
+            'n_venta': n_venta,
+            'user': dni,
+            'fecha': timestamp,
+            'total': total,
+            'productos': carrito
+        }
+
         lista_ventas = importar_datos_json('DB/carts.json')
-        lista_ventas.append(compra)
+        lista_ventas.append(venta)
         cargar_datos_json('DB/carts.json', lista_ventas)
 
-        return compra
+        return venta
     except Exception as err:
         print('No se pudo realizar la compra debido al siguiente error:\n{err}')
         registrar_error(err)
+        return {}
 
 def menu_comprar_productos(dni, listado_productos):
     '''
-    Genera el menu de compra de productos
+    Genera el menu de compra de productos.
 
     Input:
     - DNI
@@ -173,12 +203,13 @@ def menu_comprar_productos(dni, listado_productos):
         
         confirmar = input("¿Desea finalizar la compra? (S/N): ").lower()
         if confirmar == 's':
-            venta = generar_compra(carrito, dni, ventas)
+            venta = generar_venta(carrito, dni, ventas)
             print("\n=== Compra realizada con éxito ===")
             print(f"N° de venta : {venta['n_venta']}")
             print(f"Total: U$D {venta['total']:.2f}")
-            print(f"Fecha: {venta['fecha']}")
+            print(f"Fecha: {venta['fecha']}\n")
 
+            print('Gracias por confiar en nostros!')
             return venta
         else:
             print("Compra cancelada.")
