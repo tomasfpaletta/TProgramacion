@@ -36,14 +36,14 @@ def gen_home():
             limpiar_consola()
             usuario = menu_login(usuarios)
             if usuario:
-                if es_admin(usuario['DNI']):
+                if es_admin(usuario):
                     limpiar_consola()
                     gen_panel_admin()
                 else:
                     limpiar_consola()
                     print(f"¡Bienvenido/a, {usuario['nombre'].capitalize()}!")
-                    gen_menu_cliente(usuario, productos)
-            print('No se ingreso a la cuenta.')
+                    gen_menu_cliente(usuario, usuarios, productos)
+            # print('No se ingreso a la cuenta.')
         else:
             limpiar_consola()
             print('Volviendo al inicio...')
@@ -93,10 +93,10 @@ def gen_panel_admin():
         if seleccion == 6:
             print()
     except Exception as err:
-        print(f'Error al intentar generar el MENU ADMIN en gen_menu_admin()\n{err}')
+        print(f'Error al intentar generar el PANEL ADMIN en gen_menu_admin()\n{err}')
         registrar_error(err)
 
-def gen_menu_cliente(usuario, lista_prod):
+def gen_menu_cliente(usuario, usuarios, lista_prod):
     '''
     Genera el menu Cliente / Usuario  
 
@@ -127,24 +127,26 @@ def gen_menu_cliente(usuario, lista_prod):
         if seleccion == 1:
             limpiar_consola()
             mostrar_productos(lista_prod)
-        if seleccion == 2:
+        elif seleccion == 2:
             limpiar_consola()
             lista_prod_ordenada = ordenar_por_precio(lista_prod)
             mostrar_productos(lista_prod_ordenada[::-1])
-        if seleccion == 3:
+        elif seleccion == 3:
             limpiar_consola()
             lista_prod_ordenada = ordenar_por_precio(lista_prod)
             mostrar_productos(lista_prod_ordenada)
-        if seleccion == 4:
+        elif seleccion == 4:
             limpiar_consola()
             menu_comprar_productos(usuario['DNI'], lista_prod)
-        if seleccion == 5:
+        elif seleccion == 5:
             limpiar_consola()
             historial_compras_usuario(usuario['DNI'])
-        if seleccion == 6:
-            limpiar_consola()
-            usuari_actualizado = actualizar_password(usuario)
-            
+        elif seleccion == 6:
+            # limpiar_consola()
+            actualizar_password(usuario, usuarios)
     except Exception as err:
         print(f'Error al intentar generar el MENU ADMIN en gen_menu_admin()\n{err}')
         registrar_error(err)
+
+
+gen_home()
