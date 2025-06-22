@@ -113,6 +113,7 @@ def get_cant_ventas(fecha_inicio, fecha_fin, lista_ventas):
     Input:
     - Fecha de inicio periodo
     - Fecha de fin periodo
+    - Lista de ventas
 
     Output:
     - Cantidad de ventas (num int)
@@ -134,6 +135,7 @@ def get_fact_total(fecha_inicio, fecha_fin, lista_ventas):
     Input:
     - Fecha de inicio periodo
     - Fecha de fin periodo
+    - Lista de ventas
 
     Output:
     - Cantidad de ventas (num int)

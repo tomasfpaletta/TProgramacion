@@ -59,6 +59,7 @@ def eliminar_del_carrito(producto, carrito):
 
     Input:
     - Producto (Diccionario)
+    - Carrito (lista de diccionarios)
 
     Output:
     - Carrito actualizado sin el producto indicado (Lista de diccionarios)
