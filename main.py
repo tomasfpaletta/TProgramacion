@@ -1,6 +1,7 @@
-from API_productos import menu_busqueda_productos, ordenar_por_precio, mostrar_productos, alta_producto, generar_id, editar_producto, obtener_indice, retornar_prod, eliminar_producto, mostrar_logo
+from API_productos import menu_busqueda_productos, ordenar_por_precio, mostrar_productos, alta_producto, generar_id, editar_producto, obtener_indice, retornar_prod, eliminar_producto
 from API_usuarios import login_correcto, crear_user, mostrar_usuarios, menu_login, es_admin
 from API_comprador import menu_comprar_productos
+from menu import mostrar_logo
 from json_handler import importar_datos_json
 
 """Estructura principal del programa"""
@@ -72,7 +73,7 @@ if eleccion_home == 1:
                 menu_busqueda_productos()
         elif eleccion_productos == 2:
             pid_random = generar_id(listado_productos, 'pid')
-            alta_producto(listado_productos, pid_random)
+            alta_producto(listado_productos)
             print("Producto cargado exitosamente.")
             fin = input('Enter para terminar')
         elif eleccion_productos == 3:

@@ -77,7 +77,7 @@ def actualizar_lista(key, value, diccionario, lista):
     try:
         for i, item in enumerate(lista):
             if item[key] == value:
-                lista[i] == diccionario
+                lista[i] = diccionario
                 break
             else:
                 print('ADVERTENCIA: La lista no cambio.')

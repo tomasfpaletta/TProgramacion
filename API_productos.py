@@ -1,6 +1,7 @@
 import random
 from json_handler import importar_datos_json
 from funciones_generales import generar_id, registrar_error
+from json_handler import cargar_datos_json
 
 """Estructura principal del programa"""
 listado_productos = importar_datos_json('DB/prods.json')
@@ -171,6 +172,7 @@ def alta_producto(lista_productos): #Stock valueError
         "disponible": disponible
     }
     lista_productos.append(nuevo_producto)
+    cargar_datos_json('DB/prods.json', lista_productos)
     return lista_productos
 
 def eliminar_producto(producto, lista_productos):
