@@ -174,9 +174,9 @@ def generar_venta(carrito, dni, lista_historial_ventas):
             'productos': carrito
         }
 
-        lista_ventas = importar_datos_json('DB/carts.json')
+        lista_ventas = importar_datos_json('DB/ventas.json')
         lista_ventas.append(venta)
-        cargar_datos_json('DB/carts.json', lista_ventas)
+        cargar_datos_json('DB/ventas.json', lista_ventas)
 
         return venta
     except Exception as err:

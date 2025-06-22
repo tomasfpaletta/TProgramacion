@@ -162,7 +162,6 @@ def menu_ventas():
 
     try:
         ventas = importar_datos_json('DB/ventas.json')
-
         while consultar_nuevamente == 's':
             print('=== MENU DE FACTURACION Y VENTAS ===')
             fecha_inicio, fecha_fin = menu_periodo()
