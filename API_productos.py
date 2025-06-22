@@ -1,6 +1,6 @@
 import random
 from json_handler import importar_datos_json
-from funciones_generales import generar_id
+from funciones_generales import generar_id, registrar_error
 
 """Estructura principal del programa"""
 listado_productos = importar_datos_json('DB/prods.json')
@@ -150,24 +150,23 @@ def alta_producto(lista_productos):
     lista_productos.append(nuevo_producto)
     return lista_productos
 
-def eliminar_producto(indice_prod, lista_productos):
+def eliminar_producto(producto, lista_productos):
     '''
-    Elimina el producto de la lista productos con el indice que se le indique.
+    Elimina el producto que se pase como argumento de la lista productos.
 
     Input:
-    - Indice del producto
-    - Lista de productos
+    - Producto (Diccionario)
+    - Lista de productos (Lista de diccionarios)
 
     Output:
     - Lista de productos actualizada sin el producto
     '''
-    # Esta función ya estaba bien, solo agregué un mensaje de confirmación.
-    if 0 <= indice_prod < len(lista_productos):
-        del lista_productos[indice_prod]
-        print(f"Producto en índice {indice_prod} eliminado.")
-    else:
-        print("Índice de eliminación inválido.")
-    return lista_productos
+    try:
+        lista_prods_actualizada = lista_productos.remove(producto)
+        return lista_prods_actualizada
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar eliminar el producto de la lista de productos -> historial_compras_usuario():\n{err}')
+        registrar_error(err)
 
 def obtener_indice(pid_buscado, lista):
     '''

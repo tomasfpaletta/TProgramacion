@@ -37,8 +37,6 @@ def historial_compras_usuario(dni):
         print(f'Se produjo el siguiente error al intentar mostrar el historial de compras del usuario {dni} -> historial_compras_usuario():\n{err}')
         registrar_error(err)
 
-historial_compras_usuario('40946880')
-
 def consultar_fecha():
     '''
     Input y validaciones de fecha.
