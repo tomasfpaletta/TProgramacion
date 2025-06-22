@@ -1,6 +1,6 @@
 from funciones_generales import registrar_error, limpiar_consola
 from json_handler import importar_datos_json
-from API_productos import mostrar_productos, ordenar_por_precio
+from API_productos import mostrar_productos, ordenar_por_precio, menu_busqueda_productos
 from API_usuarios import es_admin, menu_login, actualizar_password
 from API_comprador import menu_comprar_productos
 from API_ventas import historial_compras_usuario
@@ -108,16 +108,16 @@ def gen_menu_cliente(usuario, usuarios, lista_prod):
     '''
     try:
         print('Opciones disponibles:')
-        print('├─ 1. Visualizar productos')
-        print('├─ 2. Ordenar productos por precio de Mayor a Menor')
-        print('├─ 3. Ordenar productos por precio de Menor a Mayor')
+        print('├─ 1. Ordenar productos por precio de Mayor a Menor')
+        print('├─ 2. Ordenar productos por precio de Menor a Mayor')
+        print('├─ 3. Filtrar productos')
         print('├─ 4. Comprar productos')
         print('├─ 5. Historial de compras')
         print('├─ 6. Cambiar contraseña')
         print('└─ 7. Salir')
 
         seleccion = 0
-        while seleccion < 1 or seleccion > 6:
+        while seleccion < 1 or seleccion > 7:
             try:
                 seleccion = int(input(f'--- Elija la seccion a la que quiere ingresar ---\n'))
             except ValueError:
@@ -126,17 +126,17 @@ def gen_menu_cliente(usuario, usuarios, lista_prod):
 
         if seleccion == 1:
             limpiar_consola()
-            mostrar_productos(lista_prod)
+            lista_prod_ordenada = ordenar_por_precio(lista_prod)
+            mostrar_productos(lista_prod_ordenada[::-1])
         elif seleccion == 2:
             limpiar_consola()
             lista_prod_ordenada = ordenar_por_precio(lista_prod)
-            mostrar_productos(lista_prod_ordenada[::-1])
+            mostrar_productos(lista_prod_ordenada)
         elif seleccion == 3:
             limpiar_consola()
-            lista_prod_ordenada = ordenar_por_precio(lista_prod)
-            mostrar_productos(lista_prod_ordenada)
+            menu_busqueda_productos()
         elif seleccion == 4:
-            limpiar_consola()
+            # limpiar_consola()
             menu_comprar_productos(usuario['DNI'], lista_prod)
         elif seleccion == 5:
             limpiar_consola()
@@ -144,9 +144,9 @@ def gen_menu_cliente(usuario, usuarios, lista_prod):
         elif seleccion == 6:
             # limpiar_consola()
             actualizar_password(usuario, usuarios)
+        elif seleccion == 6:
+            limpiar_consola()
+
     except Exception as err:
         print(f'Error al intentar generar el MENU ADMIN en gen_menu_admin()\n{err}')
         registrar_error(err)
-
-
-gen_home()

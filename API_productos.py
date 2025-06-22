@@ -1,6 +1,6 @@
 import random
 from json_handler import importar_datos_json
-from funciones_generales import generar_id, registrar_error
+from funciones_generales import generar_id, registrar_error, actualizar_lista
 from json_handler import cargar_datos_json
 
 """Estructura principal del programa"""
@@ -119,7 +119,7 @@ def retornar_prod(pid_buscado, productos):
     '''
     return [prod for prod in productos if prod['pid'] == pid_buscado]
 
-def actualizar_stock(cantidad, pid, lista_prods):
+def restar_stock(cantidad, pid, lista_prods):
     '''
     Reduce la cantidad de stock, si llega a 0 el producto pasa a estar deshabilitado.
 
@@ -127,7 +127,7 @@ def actualizar_stock(cantidad, pid, lista_prods):
     - Cantidad de stock a restar
 
     Output:
-    - Producto actualizado
+    - Lista de productos con el prod actualizado
     '''
     for producto in lista_prods:
         if producto['pid'] == pid:
@@ -135,6 +135,23 @@ def actualizar_stock(cantidad, pid, lista_prods):
             if producto['stock'] == 0:
                 producto['stock'] = 0
                 producto['disponible'] = False
+            break
+    return lista_prods
+
+def sumar_stock(cantidad, pid, lista_prods):
+    '''
+    Esta funcion esta pensada para devolver la cantidad de stock que se le resto al producto mas que nada.
+
+    Input:
+    - Cantidad de stock a sumar
+
+    Output:
+    - Lista de productos con el prod actualizado
+    '''
+    for producto in lista_prods:
+        if producto['pid'] == pid:
+            producto['stock'] += cantidad
+            producto['disponible'] = True
             break
     return lista_prods
 
