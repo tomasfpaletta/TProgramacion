@@ -402,7 +402,9 @@ def menu_login(usuarios):
     - Menu de login
     - El usuario que se registro o logueo
     '''
-    print(f'=== Hola, Bienvenido! ===\nSi ya tenés cuenta, logueate. Si no, podés registrarte.')
+    print(f"{'-'*30}")
+    print(f'Menu de Login.')
+    print(f"{'-'*30}")
 
     volver_a_empezar = True
     while volver_a_empezar:

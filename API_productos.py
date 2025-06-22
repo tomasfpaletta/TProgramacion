@@ -6,11 +6,6 @@ from funciones_generales import generar_id, registrar_error
 listado_productos = importar_datos_json('DB/prods.json')
 listado_usuarios = importar_datos_json('DB/users.json')
 
-def mostrar_logo():
-    print("===============================================================================")
-    print("|                       Bienvenido al sistema CLI E-SHOP                       |")
-    print("===============================================================================\n")
-
 def centrar_con_metodo(texto, ancho):
     return texto.center(ancho)
 
@@ -362,17 +357,30 @@ def filtrar_productos(valor_busqueda, lista_productos, campo):
     return productos_filtrados
 
 def ordenar_por_precio(lista_productos):
-    productos = lista_productos.copy()
-    ordenados = []
-    while productos:
-        # Encuentro el índice del producto de precio mínimo
-        min_idx = 0
-        for j in range(1, len(productos)):
-            if productos[j]["precio"] < productos[min_idx]["precio"]:
-                min_idx = j
-        # Lo extraigo y lo agrego a la lista ordenada
-        ordenados.append(productos.pop(min_idx))
-    
-    mostrar_productos(ordenados[::-1])
+    '''
+    Ordena los productos de la lista_productos de Menor a Mayor.
+
+    Inputs:
+    - Lista de productos (Lista de diccionarios)
+
+    Output:
+    - Lista de productos ordenada de Menor a Mayor (Lista de diccionarios)
+    '''
+    try:
+        productos = lista_productos.copy()
+        ordenados = []
+        while productos: # Voy quitando productos de la copia de la lista productos hasta que queda vacia para saber que termino
+            # Encuentro el índice del producto de precio mínimo
+            min_idx = 0
+            for j in range(1, len(productos)):
+                if productos[j]["precio"] < productos[min_idx]["precio"]:
+                    min_idx = j
+            # Lo extraigo y lo agrego a la lista ordenada
+            ordenados.append(productos.pop(min_idx))
+        
+        return ordenados
+    except Exception as err:
+        print(f'Error al intentar ordenar la lista de productos por precio en ordenar_por_precio()\n{err}')
+        registrar_error(err)
     
 
