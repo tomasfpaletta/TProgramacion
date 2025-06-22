@@ -1,2 +1,0 @@
-20/06/2025 01:22:09 TIPO: <class 'KeyError'> - ERROR: 'dni'
-21/06/2025 14:53:03 TIPO: <class 'AttributeError'> - ERROR: 'NoneType' object has no attribute 'append'
