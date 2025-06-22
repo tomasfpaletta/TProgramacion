@@ -1,0 +1,8 @@
+22/06/2025 02:32:25 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 02:32:25 TIPO: <class 'NameError'> - ERROR: name 'gen_menu_cliente' is not defined
+22/06/2025 02:34:01 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 02:34:01 TIPO: <class 'NameError'> - ERROR: name 'gen_menu_cliente' is not defined
+22/06/2025 02:34:19 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 02:34:19 TIPO: <class 'NameError'> - ERROR: name 'gen_menu_cliente' is not defined
+22/06/2025 02:35:21 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 03:20:31 TIPO: <class 'TypeError'> - ERROR: actualizar_password() missing 1 required positional argument: 'usuarios'

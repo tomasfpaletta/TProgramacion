@@ -14,13 +14,17 @@ def generar_id(lista, key):
     Output:
     - Numero PID
     '''
-    id_random = random.randint(1000, 9999)
-    ids_existentes = {item[key] for item in lista if key in item}
-    
-    while id_random in ids_existentes: # Si no existe lo agrego, sino vuelve a probar otro numero
+    try:
         id_random = random.randint(1000, 9999)
-    
-    return id_random
+        ids_existentes = {item[key] for item in lista if key in item}
+        
+        while id_random in ids_existentes: # Si no existe lo agrego, sino vuelve a probar otro numero
+            id_random = random.randint(1000, 9999)
+        
+        return id_random
+    except Exception as err:
+        print(f'Error al intentar generar un ID en generar_id()\n{err}')
+        registrar_error(err)
 
 def registrar_error(err):
     '''
@@ -56,5 +60,29 @@ def limpiar_consola():
     try:
         os.system('cls' if os.name == 'nt' else 'clear')
     except Exception as err:
-        print(f'Error al tratar de limpiar la consola:\n---->{err}')
+        print(f'Error al intentar limpiar la consola:\n---->{err}')
+        registrar_error(err)
+
+def actualizar_lista(key, value, diccionario, lista):
+    '''
+    Actualiza la lista que se pase por argumento con el diccionario indicado.
+
+    Inputs:
+    - Diccionario = Usuario y/o Producto
+    - Lista de diccionarios = lista de productos y/o lista de usuarios
+
+    Output:
+    - Lista de diccionarios actualizada
+    '''
+    try:
+        for i, item in enumerate(lista):
+            if item[key] == value:
+                lista[i] == diccionario
+                break
+            else:
+                print('ADVERTENCIA: La lista no cambio.')
+                return lista
+        return lista
+    except Exception as err:
+        print(f'Error al intentar actualizar la lista {lista}\n{err}')
         registrar_error(err)

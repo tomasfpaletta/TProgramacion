@@ -3,20 +3,22 @@
     "DNI": 40946880,
     "nombre": "Nicolas",
     "apellido": "Lazaro",
-    "email": ["nlazaro", "uade.edu.ar"],
-    "password": "12345",
-    "admin": true,
-    "historial_compras": [],
-    "pregunta_seguridad": { "color_favorito": "azul" }
+    "email": "nlazaro@uade.edu.ar",
+    "password": "Multifruta_123456",
+    "admin": false,
+    "pregunta_seguridad": {
+      "color_favorito": "azul"
+    }
   },
   {
     "DNI": 44362800,
     "nombre": "Tomas",
     "apellido": "Paletta",
-    "email": ["tpaletta", "uade.edu.ar"],
+    "email": "tpaletta@uade.edu.ar",
     "password": "12345",
     "admin": true,
-    "historial_compras": [],
-    "pregunta_seguridad": { "color_favorito": "azul" }
+    "pregunta_seguridad": {
+      "color_favorito": "azul"
+    }
   }
 ]

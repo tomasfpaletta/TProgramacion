@@ -1,6 +1,6 @@
 import re
-from json_handler import importar_datos_json
-from funciones_generales import registrar_error
+from json_handler import importar_datos_json, cargar_datos_json
+from funciones_generales import registrar_error, actualizar_lista
 
 lista_usuarios = importar_datos_json('DB/users.json')
 
@@ -312,7 +312,7 @@ def form_login(usuarios):
         print(f'Se produjo el siguiente error al intentar ingresar en la cuenta form_login():\n{err}')
         registrar_error(err)
 
-def actualizar_password(usuario):
+def actualizar_password(usuario, usuarios):
     '''
     Actualiza la contraseña del usuario.
 
@@ -323,15 +323,20 @@ def actualizar_password(usuario):
     - Usuario con contraseña actualizada
     '''
     try:
+        print(f"{'-'*30}")
+        print(f'Cambio de contraseña')
+        print(f"{'-'*30}")
         nueva_password = input('Ingrese una contraseña: ')
         validacion = input('Repita la contraseña: ')
         while not validar_password(nueva_password, validacion):
                 nueva_password = input('Vuelva a ingresar una contraseña: ')
                 validacion = input('Repita la contraseña: ')
         
-        usuario['password'] == nueva_password
+        usuario['password'] = nueva_password
+
+        usuarios_actualizada = actualizar_lista('DNI', usuario['DNI'], usuario, usuarios)
+        cargar_datos_json('DB/users.json', usuarios_actualizada)
         print('---> Contraseña actualizada <---')
-        return usuario
     except Exception as err:
         print(f'Se produjo el siguiente error al intentar actualizar la contraseña:\n{err}')
         registrar_error(err)
@@ -403,13 +408,13 @@ def menu_login(usuarios):
     - El usuario que se registro o logueo
     '''
     print(f"{'-'*30}")
-    print(f'Menu de Login.')
+    print(f'Menu de Login')
     print(f"{'-'*30}")
 
     volver_a_empezar = True
     while volver_a_empezar:
         try:
-            opcion = int(input(f'1. Login\n2. Registrarse\n3. Reestablecer contraseña\n4. Recuperar contraseña\nElija una opcion: '))
+            opcion = int(input(f'1. Login\n2. Registrarse\n3. Recuperar contraseña\nElija una opcion: '))
 
             if opcion == 1:
                 usuario = form_login(usuarios)
@@ -422,12 +427,6 @@ def menu_login(usuarios):
                 else:
                     print("No se pudo registrar el usuario.")
             elif opcion == 3:
-                print('Para cambiar la contraseña deberá volver a ingresar sus credenciales por seguridad.')
-                usuario = form_login(usuarios)
-                if usuario:
-                    usuario_actualizado = actualizar_password(usuario)
-                    return usuario_actualizado
-            elif opcion == 4:
                 print('Recuperación de contraseña.')
                 try:
                     input_dni = int(input('Indique su DNI: '))
@@ -437,7 +436,7 @@ def menu_login(usuarios):
                 except ValueError:
                     print("DNI inválido.")
             else:
-                print("Opción inválida. Debe elegir entre 1 y 4.")
+                print("Opción inválida. Debe elegir entre 1 y 3.")
         except ValueError:
             print("Entrada inválida. Ingrese solo números.")
         except Exception as err:

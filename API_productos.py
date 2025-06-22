@@ -7,6 +7,16 @@ listado_productos = importar_datos_json('DB/prods.json')
 listado_usuarios = importar_datos_json('DB/users.json')
 
 def centrar_con_metodo(texto, ancho):
+    '''
+    Centra un texto dentro de un ancho determinado.
+
+    Input:
+    - cadena a centrar.
+    - cantidad total de caracteres del campo.
+
+    Output:
+    - Texto centrado como string.
+    '''
     return texto.center(ancho)
 
 def mostrar_productos(productos):
@@ -39,6 +49,15 @@ def mostrar_productos(productos):
     print("=" * ancho_total)
 
 def mostrar_encabezado(anchos):
+    '''
+    Muestra los encabezados de la tabla de productos con el ancho definido por campo.
+
+    Input:
+    - diccionario que contiene el ancho de cada columna.
+
+    Output:
+    - Imprime en consola la fila de encabezados.
+    '''
     encabezados = {
         'pid': "PID",
         'marca': "MARCA",
@@ -58,6 +77,16 @@ def mostrar_encabezado(anchos):
 
 
 def formatear_fila(producto, anchos):
+    '''
+    Formatea los valores de un producto en una fila para la tabla de catálogo.
+
+    Input:
+    - diccionario con la información de un producto.
+    - diccionario con los anchos de cada columna.
+
+    Output:
+    - Devuelve un string que representa una fila de la tabla.
+    '''
     valores = {
         'pid': str(producto['pid']),
         'marca': str(producto['marca']),
@@ -81,8 +110,8 @@ def retornar_prod(pid_buscado, productos):
     Devuelve una lista con el diccionario del producto si se encuentra.
 
     Input:
-    - pid_buscado: El PID del producto a buscar.
-    - productos: Listado de diccionarios de productos.
+    - El PID del producto a buscar.
+    - Listado de diccionarios de productos.
 
     Output:
     - Producto 'empaquetado' = [{producto}] o [] si no se encuentra.
@@ -108,7 +137,7 @@ def actualizar_stock(cantidad, pid, lista_prods):
             break
     return lista_prods
 
-def alta_producto(lista_productos):
+def alta_producto(lista_productos): #Stock valueError
     '''
     Genera un producto (Diccionario) y lo agrega a la lista 'lista_productos'.
 
@@ -168,7 +197,7 @@ def obtener_indice(pid_buscado, lista):
 
     Input:
     - pid_buscado: Recibe un PID.
-    - lista: Lista sobre la que iterar (debe ser de diccionarios).
+    - Lista sobre la que iterar (debe ser de diccionarios).
 
     Output:
     - Si encuentra te devuelve la posicion (Indice)
@@ -188,7 +217,7 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos):
     Input:
     - prod_seleccionado: El diccionario del producto a editar.
     - indice_producto: El índice del producto para luego reemplazarlo en la lista de productos.
-    - lista_productos: La lista de productos.
+    - lista_productos (lista de diccionarios)
 
     Output:
     - Lista de productos actualizada con los cambios
@@ -288,9 +317,9 @@ def buscar_productos(productos, criterio, valor):
     La búsqueda en texto es insensible a mayúsculas/minúsculas.
 
     Input:
-    - productos: Lista de diccionarios de productos.
-    - criterio: La clave del diccionario por la cual buscar (ej. "marca", "modelo", "categoria", "color", "pid", "stock", "precio").
-    - valor: Las letras (subcadena) o el valor numérico a buscar.
+    - Lista de diccionarios de productos.
+    - La clave del diccionario por la cual buscar (ej. "marca", "modelo", "categoria", "color", "pid", "stock", "precio").
+    - Las letras (subcadena) o el valor numérico a buscar.
 
     Output:
     - Una lista de diccionarios con los productos que coinciden con la búsqueda.
@@ -322,6 +351,16 @@ def buscar_productos(productos, criterio, valor):
     return resultados
 
 def menu_busqueda_productos():
+    '''
+    Muestra un menú para buscar productos por distintos campos (marca, modelo, etc.).
+    Realiza la búsqueda en base a la selección del usuario e imprime los resultados encontrados.
+
+    Input:
+    - Sin parámetros.
+
+    Output:
+    - Muestra en consola los productos filtrados o mensaje de no encontrados.
+    '''
     print("\n=== MENÚ DE BÚSQUEDA DE PRODUCTOS ===")
     print("1. Buscar por marca")
     print("2. Buscar por modelo")
@@ -352,6 +391,17 @@ def menu_busqueda_productos():
         print("Opción inválida. Intente nuevamente.")
 
 def filtrar_productos(valor_busqueda, lista_productos, campo):
+    '''
+    Filtra productos de una lista comparando el valor del campo especificado con el valor de búsqueda.
+
+    Inputs:
+    - texto que debe coincidir al inicio del campo especificado.
+    - lista_productos (lista de diccionarios)
+    - clave del diccionario sobre la que se aplicará el filtro.
+
+    Output:
+    - Lista de productos que cumplen el filtro.
+    '''
     valor_busqueda = str(valor_busqueda).lower()
     productos_filtrados = list(filter(lambda p: str(p[campo]).lower().startswith(valor_busqueda), lista_productos))
     return productos_filtrados
