@@ -1,7 +1,7 @@
 from datetime import datetime
 from funciones_generales import registrar_error, generar_id
 from json_handler import importar_datos_json, cargar_datos_json
-from API_productos import mostrar_productos, retornar_prod, actualizar_stock
+from API_productos import mostrar_productos, retornar_prod, restar_stock, sumar_stock
 
 listado_productos = importar_datos_json('DB/prods.json')
 ventas = importar_datos_json('DB/ventas.json')
@@ -18,7 +18,7 @@ def seleccionar_producto(productos):
     - Producto (Diccionario)
     '''
     try:
-        pid = int(input("Ingrese el PID del producto a agregar: "))
+        pid = int(input("Ingrese el PID del producto: "))
         prod = retornar_prod(pid, productos)
         if not prod:
             print("PID no encontrado.")
@@ -88,10 +88,8 @@ def generar_carrito(productos):
     carrito = []
 
     while input("¿Deseás agregar un producto al carrito? (S/N): ").lower() == 's':
-        print("\n=== CATÁLOGO DE PRODUCTOS ===")
-        mostrar_productos(productos)
-
-
+        # print("\n=== CATÁLOGO DE PRODUCTOS ===")
+        # mostrar_productos(productos)
         producto = seleccionar_producto(productos)
 
         if not producto or not producto['disponible']:
@@ -103,7 +101,7 @@ def generar_carrito(productos):
             continue
 
         pid = producto['pid']
-        lista_prods_actualizada = actualizar_stock(cantidad, pid, productos)
+        productos = restar_stock(cantidad, pid, productos)
 
         item = {
             'marca': producto['marca'],
@@ -120,10 +118,11 @@ def generar_carrito(productos):
         print("\n🛒 Productos en el carrito:")
         for prod in carrito:
             print(f"- {prod['marca']} {prod['modelo']} x{prod['cantidad']} = U$D {prod['total_prod']:.2f}")
+
+        return carrito, productos
     else:
         print("No se agregó ningún producto.")
-
-    return carrito
+        return carrito, productos
 
 def calcular_total(carrito):
     '''
@@ -181,7 +180,7 @@ def generar_venta(carrito, dni, lista_historial_ventas):
 
         return venta
     except Exception as err:
-        print('No se pudo realizar la compra debido al siguiente error:\n{err}')
+        print('No se pudo cargar la venta debido al siguiente error:\n{err}')
         registrar_error(err)
         return {}
 
@@ -194,26 +193,44 @@ def menu_comprar_productos(dni, listado_productos):
     - listado_productos: Lista de productos disponibles (diccionarios).
 
     Output:
-    - Si la compra se confirma, guarda los datos en el historial y muestra el comprobante.
+    - Si la compra se confirma, guarda los datos en ventas.json y muestra al cliente la confirmacion.
     '''
-    carrito = generar_carrito(listado_productos)
+    try:
+        carrito, productos_stock_actualizado = generar_carrito(listado_productos)
+        quitar = input('Desea sacar algun producto del carrito ? (S/N): ').lower()
 
-    if carrito:
-        total = calcular_total(carrito)
-        print(f"\nTotal de la compra: U$D {total:.2f}")
-        
-        confirmar = input("¿Desea finalizar la compra? (S/N): ").lower()
-        if confirmar == 's':
-            venta = generar_venta(carrito, dni, ventas)
-            print("\n=== Compra realizada con éxito ===")
-            print(f"N° de venta : {venta['n_venta']}")
-            print(f"Total: U$D {venta['total']:.2f}")
-            print(f"Fecha: {venta['fecha']}\n")
+        while quitar == 's' and carrito:
+            prod_to_del = seleccionar_producto(carrito)
+            carrito = eliminar_del_carrito(prod_to_del, carrito)
+            productos_stock_actualizado = sumar_stock(prod_to_del['pid'], prod_to_del['cantidad'], productos_stock_actualizado) # Devolvemos el stock que se quito en memoria
+            if carrito:
+                quitar = input('Desea sacar otro producto del carrito ? (S/N): ').lower()
+            else:
+                print('Quitaste todos los productos del carrito.')
 
-            print('Gracias por confiar en nostros!')
-            return venta
-        else:
-            print("Compra cancelada.")
+
+        if carrito: # Validamos que el carrito no este vacio.
+            total = calcular_total(carrito)
+            print(f"\nTotal de la compra: U$D {total:.2f}")
             
-    else:
-        print("Fin del proceso de compra.")
+            confirmar = input("Confirmar la compra (S/N): ").lower()
+            if confirmar == 's':
+                cargar_datos_json('DB/prods.json', productos_stock_actualizado) # Hacemos efectivo el cambio en el stock en disco
+                venta = generar_venta(carrito, dni, ventas)
+                print("\n=== Compra realizada con éxito ===")
+                print(f"N° de venta : {venta['n_venta']}")
+                print(f"Total: U$D {venta['total']:.2f}")
+                print(f"Fecha: {venta['fecha']}\n")
+
+                print('Gracias por confiar en nostros!')
+                return venta
+            else:
+                print("Compra cancelada.")
+                return []    
+        else:
+            print('Para proceder a la compra debes tener al menos un producto en el carrito.')
+            return []
+    except Exception as err:
+        print('Ocurrio un error al intentar ejecutar el menu_comprar_productos()')
+        print('VENTA NO CARGADA debido al siguiente error:\n{err}')
+        registrar_error(err)
