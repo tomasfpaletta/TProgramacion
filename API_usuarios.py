@@ -134,6 +134,7 @@ def validar_email(input_email, usuarios): # Uso de Expresion regular
 
     Inputs:
     - Correo (string)
+    - Usuarios (diccionario)
 
     Output:
     - True o False
@@ -317,6 +318,7 @@ def actualizar_password(usuario, usuarios):
     Actualiza la contraseña del usuario.
 
     Inputs:
+    - Usuario (actual)
     - Usuario (diccionario)
 
     Output:

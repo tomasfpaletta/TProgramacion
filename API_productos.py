@@ -23,6 +23,9 @@ def centrar_con_metodo(texto, ancho):
 def mostrar_productos(productos):
     '''
     Muestra los productos en forma de tabla.
+
+    Input:
+    - diccionario con la información de un producto.
     '''
     anchos = {
         'pid': 6,
@@ -125,6 +128,8 @@ def actualizar_stock(cantidad, pid, lista_prods):
 
     Input:
     - Cantidad de stock a restar
+    - El PID del producto a buscar
+    - Lista de productos (Lista de diccionarios)
 
     Output:
     - Producto actualizado
@@ -136,7 +141,7 @@ def actualizar_stock(cantidad, pid, lista_prods):
                 producto['stock'] = 0
                 producto['disponible'] = False
             break
-    return lista_prods
+    return lista_prods      
 
 def alta_producto(lista_productos): #Stock valueError
     '''
@@ -302,9 +307,10 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos):
             except ValueError:
                 print("Respuesta inválida. Continuando edición.")
 
-    cargar = input('Cargar cambios ? S/N').lower()
+    cargar = input('Cargar cambios ? S/N\n').lower()
     if cargar == 's':
         lista_productos[indice_producto] = producto_final # Reemplaza el diccionario
+        cargar_datos_json('DB/prods.json', lista_productos)
         print('Cambios guardados')
         return lista_productos
     else:

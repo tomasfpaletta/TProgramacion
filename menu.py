@@ -149,4 +149,4 @@ def gen_menu_cliente(usuario, usuarios, lista_prod):
         registrar_error(err)
 
 
-gen_home()
+# gen_home()

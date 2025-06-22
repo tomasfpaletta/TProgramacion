@@ -7,3 +7,4 @@
 22/06/2025 02:35:21 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
 22/06/2025 03:20:31 TIPO: <class 'TypeError'> - ERROR: actualizar_password() missing 1 required positional argument: 'usuarios'
 22/06/2025 04:51:40 TIPO: <class 'ValueError'> - ERROR: invalid literal for int() with base 10: ''
+22/06/2025 18:28:45 TIPO: <class 'ValueError'> - ERROR: list.remove(x): x not in list

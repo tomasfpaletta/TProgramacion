@@ -72,5 +72,37 @@
                 "total_prod": 1300
             }
         ]
+    },
+    {
+        "n_venta": 6350,
+        "user": {
+            "DNI": 44362800,
+            "nombre": "Tomas",
+            "apellido": "Paletta",
+            "email": "tpaletta@uade.edu.ar",
+            "password": "12345",
+            "admin": true,
+            "pregunta_seguridad": {
+                "color_favorito": "azul"
+            }
+        },
+        "fecha": "22/06/2025",
+        "total": 2260.0,
+        "productos": [
+            {
+                "marca": "Lenovo",
+                "modelo": "P14s",
+                "color": "Negro",
+                "cantidad": 1,
+                "total_prod": 1930.0
+            },
+            {
+                "marca": "sony",
+                "modelo": "linkbuds open",
+                "color": "negro",
+                "cantidad": 1,
+                "total_prod": 330
+            }
+        ]
     }
 ]
