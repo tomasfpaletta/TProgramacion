@@ -9,10 +9,10 @@ def generar_id(lista, key):
 
     Input:
     - Lista de productos
-    - Key
+    - Key del diccionario
 
     Output:
-    - Numero PID
+    - Numero random
     '''
     try:
         id_random = random.randint(1000, 9999)

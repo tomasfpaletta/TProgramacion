@@ -71,6 +71,7 @@ def get_user(dni, usuarios):
     except Exception as err:
         print(f'Ocurrio un error al intentar devolver el usuario -> get_user()\n{err}')
         registrar_error(err)
+        return {}
 
 def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad):
     '''
@@ -102,27 +103,28 @@ def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad):
     except Exception as err:
         print(f'Ocurrio un error al intentar crear el usuario -> crear_user()\n{err}')
         registrar_error(err)
+        return {}
 
-def mostrar_usuarios(usuarios):
-    '''
-    Muestra la lista de usuarios
+# def mostrar_usuarios(usuarios):
+#     '''
+#     Muestra la lista de usuarios
     
-    Inputs:
-    - Usuarios (Lista de diccionarios)
+#     Inputs:
+#     - Usuarios (Lista de diccionarios)
 
-    Output:
-    - Nuevo usuario (diccionario)
-    '''
-    i = 1
-    try:
-        for usuario in usuarios:
-            print(f'---> {i}')
-            print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
-            print()
-            i += 1
-    except Exception as err:
-        print(f'Ocurrio un error al intentar mostrar los usuarios -> mostrar_usuarios()\n{err}')
-        registrar_error(err)
+#     Output:
+#     - Lista de usuarios
+#     '''
+#     i = 1
+#     try:
+#         for usuario in usuarios:
+#             print(f'---> {i}')
+#             print(f'- DNI: {usuario["DNI"]}\n- Nombre: {usuario["nombre"]}\n- Apellido: {usuario["apellido"]}\n- Email: {"@".join(usuario["email"])}\n')
+#             print()
+#             i += 1
+#     except Exception as err:
+#         print(f'Ocurrio un error al intentar mostrar los usuarios -> mostrar_usuarios()\n{err}')
+#         registrar_error(err)
 
 def validar_email(input_email, usuarios): # Uso de Expresion regular
     '''
@@ -209,29 +211,25 @@ def gen_pregunta_seguridad():
     seleccion = 0
     try:
         while seleccion != 1 and seleccion != 2:
-            seleccion = int(input('Seleccione una pregunta de seguridad para recuperar la contraseña:\n1. Color favorito\n2. Nombre de mascota\nElija una opcion: '))
-        
+            try:
+                seleccion = int(input('Seleccione una pregunta de seguridad para recuperar la contraseña:\n1. Color favorito\n2. Nombre de mascota\nElija una opcion: '))
+            except ValueError:
+                print('Elegir con valor numerico 1 o 2.')
+                continue
+
         if seleccion == 1:
             color = input('Indique su color favorito: ')
 
             preguntas = {
                 "color_favorito": color
             }
-
             return preguntas
-        elif seleccion == 2:
+        
+        if seleccion == 2:
             nombre_mascota = input('Indique el nombre de su mascota: ')
             preguntas = {
                 "nombre_mascota": nombre_mascota
             }
-
-            return preguntas
-        else:
-            print('Se genero por default la pregunta de seguidad.\nColor favorito: azul')
-            preguntas = {
-                "color_favorito": "azul"
-            }
-
             return preguntas
         
     except Exception as err:
@@ -440,7 +438,7 @@ def menu_login(usuarios):
             else:
                 print("Opción inválida. Debe elegir entre 1 y 3.")
         except ValueError:
-            print("Entrada inválida. Ingrese solo números.")
+            print("Entrada inválida. Debe elegir entre 1 y 3.")
         except Exception as err:
-            print(f"Se produjo un error inesperado:\n{err}")
+            print(f"Se produjo un error inesperado al intentar ejecutar el menu de login:\n{err}")
             registrar_error(err)

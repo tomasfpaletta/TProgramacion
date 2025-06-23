@@ -40,7 +40,7 @@ def gen_home():
                 if usuario:
                     if es_admin(usuario):
                         limpiar_consola()
-                        gen_panel_admin(productos)
+                        gen_panel_admin()
                     else:
                         limpiar_consola()
                         print(f"¡Bienvenido/a, {usuario['nombre'].capitalize()}!")

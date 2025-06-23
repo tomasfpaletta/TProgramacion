@@ -1,8 +1,6 @@
 from json_handler import importar_datos_json, cargar_datos_json
 from funciones_generales import generar_id, registrar_error, limpiar_consola
 
-# listado_productos = importar_datos_json('DB/prods.json')
-# listado_usuarios = importar_datos_json('DB/users.json')
 
 def centrar_con_metodo(texto, ancho):
     '''
@@ -128,10 +126,10 @@ def formatear_fila(producto, anchos):
     try:
         valores = {
             'pid': str(producto['pid']),
-            'marca': str(producto['marca']),
-            'modelo': str(producto['modelo']),
-            'categoria': str(producto['categoria']),
-            'color': str(producto['color']),
+            'marca': str(producto['marca'].capitalize()),
+            'modelo': str(producto['modelo'].capitalize()),
+            'categoria': str(producto['categoria'].capitalize()),
+            'color': str(producto['color'].capitalize()),
             'stock': str(producto['stock']),
             'precio': f"{producto['precio']:.2f}",
             'disponible': 'Sí' if producto['disponible'] else 'No'
@@ -385,20 +383,26 @@ def editar_producto(prod_seleccionado, lista_productos):
                 continue # Vuelve al inicio del buble para pedir la opción de nuevo
 
             if opcion == 1:
-                cambio = input('Ingrese la marca:\n')
+                cambio = input('Ingrese la marca:\n').lower()
                 producto_final['marca'] = cambio
             elif opcion == 2:
-                cambio = input('Ingrese el modelo:\n')
+                cambio = input('Ingrese el modelo:\n').lower()
                 producto_final['modelo'] = cambio
             elif opcion == 3:
-                cambio = input('Ingrese la categoria:\n')
+                cambio = input('Ingrese la categoria:\n').lower()
                 producto_final['categoria'] = cambio
             elif opcion == 4:
-                cambio = input('Ingrese el color:\n')
+                cambio = input('Ingrese el color:\n').lower()
                 producto_final['color'] = cambio
             elif opcion == 5:
                 try:
                     cambio = int(input('Ingrese el stock:\n'))
+                    while cambio < 0:
+                        print('Solo se aceptan numeros positivos o 0')
+                        cambio = int(input('Ingrese el stock:\n'))
+                    if cambio == 0:
+                        producto_final['disponible'] == False
+
                     producto_final['stock'] = cambio
                 except ValueError:
                     print("Stock inválido. Ingrese un número entero.")
