@@ -104,5 +104,36 @@
                 "total_prod": 330
             }
         ]
+    },
+    {
+        "n_venta": 4041,
+        "user": 40946880,
+        "fecha": "22/06/2025",
+        "total": 11000,
+        "productos": [
+            {
+                "marca": "samsung",
+                "modelo": "s25 fe",
+                "color": "gris",
+                "cantidad": 22,
+                "total_prod": 11000
+            }
+        ]
+    },
+    {
+        "n_venta": 4172,
+        "user": 40946880,
+        "fecha": "22/06/2025",
+        "total": 800,
+        "productos": [
+            {
+                "pid": 1004,
+                "marca": "lenovo",
+                "modelo": "thinkpad e14",
+                "color": "negro",
+                "cantidad": 1,
+                "total_prod": 800
+            }
+        ]
     }
 ]
