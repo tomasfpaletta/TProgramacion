@@ -1,22 +1,46 @@
 [
-  {
-    "DNI": 40946880,
-    "nombre": "Nicolas",
-    "apellido": "Lazaro",
-    "email": ["nlazaro", "uade.edu.ar"],
-    "password": "12345",
-    "admin": true,
-    "historial_compras": [],
-    "preguntas_seguridad": ["color_favorito", "azul"]
-  },
-  {
-    "DNI": 44362800,
-    "nombre": "Tomas",
-    "apellido": "Paletta",
-    "email": ["tpaletta", "uade.edu.ar"],
-    "password": "12345",
-    "admin": true,
-    "historial_compras": [],
-    "preguntas_seguridad": ["color_favorito", "rojo"]
-  }
+    {
+        "DNI": 40946880,
+        "nombre": "Nicolas",
+        "apellido": "Lazaro",
+        "email": "nlazaro@uade.edu.ar",
+        "password": "tito_Calderon1",
+        "admin": false,
+        "pregunta_seguridad": {
+            "color_favorito": "azul"
+        }
+    },
+    {
+        "DNI": 44362800,
+        "nombre": "Tomas",
+        "apellido": "Paletta",
+        "email": "tpaletta@uade.edu.ar",
+        "password": "12345",
+        "admin": true,
+        "pregunta_seguridad": {
+            "color_favorito": "azul"
+        }
+    },
+    {
+        "DNI": 111222333,
+        "nombre": "nicolas",
+        "apellido": "fernandez",
+        "email": "nico@gmail.com",
+        "password": "Nicolas_12345",
+        "admin": false,
+        "preguntas_seguridad": {
+            "color_favorito": "rojo"
+        }
+    },
+    {
+        "DNI": 123123123,
+        "nombre": "candela",
+        "apellido": "copetti",
+        "email": "cande@gmail.com",
+        "password": "Cande_12345",
+        "admin": false,
+        "preguntas_seguridad": {
+            "color_favorito": "Blanco"
+        }
+    }
 ]

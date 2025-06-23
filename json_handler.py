@@ -1,4 +1,5 @@
 import json
+from funciones_generales import registrar_error
 
 def importar_datos_json(archivo_json):
     '''
@@ -22,6 +23,7 @@ def importar_datos_json(archivo_json):
         print('Revisa que el archivo tenga un forma JSON valido!')
     except Exception as err:
         print(f'No se logro abrir el archivo. El error es: {err}')
+        registrar_error(err)
 
 def cargar_datos_json(archivo_json, lista_nueva):
     '''
@@ -41,3 +43,4 @@ def cargar_datos_json(archivo_json, lista_nueva):
         print('No posees permisos para el archivo')
     except Exception as err:
         print(f'No se logro abrir el archivo. El error es: {err}')
+        registrar_error(err)
