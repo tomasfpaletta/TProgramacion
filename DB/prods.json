@@ -5,7 +5,7 @@
         "modelo": "s25 ultra",
         "categoria": "celular",
         "color": "negro",
-        "stock": 10,
+        "stock": 5,
         "precio": 1200,
         "disponible": true
     },
@@ -15,9 +15,9 @@
         "modelo": "s25 fe",
         "categoria": "celular",
         "color": "gris",
-        "stock": 22,
+        "stock": 0,
         "precio": 500,
-        "disponible": true
+        "disponible": false
     },
     {
         "pid": 1002,
@@ -45,7 +45,7 @@
         "modelo": "thinkpad e14",
         "categoria": "notebook",
         "color": "negro",
-        "stock": 3,
+        "stock": 2,
         "precio": 800,
         "disponible": true
     },

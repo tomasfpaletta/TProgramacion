@@ -66,8 +66,9 @@ def eliminar_del_carrito(producto, carrito):
     '''
 
     try:
-        carrito_actualizado = carrito.remove(producto)
-        return carrito_actualizado
+        nuevo_carrito = [prod for prod in carrito if prod["pid"] != producto['pid']]
+        print('Producto eliminado')
+        return nuevo_carrito
     except Exception as err:
         print(f'Se produjo el siguiente error al intentar eliminar el producto del carrito en la funcion -> eliminar_del_carrito():\n{err}')
         registrar_error(err)
@@ -88,8 +89,8 @@ def generar_carrito(productos):
     carrito = []
 
     while input("¿Deseás agregar un producto al carrito? (S/N): ").lower() == 's':
-        # print("\n=== CATÁLOGO DE PRODUCTOS ===")
-        # mostrar_productos(productos)
+        print("\n=== CATÁLOGO DE PRODUCTOS ===")
+        mostrar_productos(productos)
         producto = seleccionar_producto(productos)
 
         if not producto or not producto['disponible']:
@@ -104,6 +105,7 @@ def generar_carrito(productos):
         productos = restar_stock(cantidad, pid, productos)
 
         item = {
+            'pid': producto['pid'],
             'marca': producto['marca'],
             'modelo': producto['modelo'],
             'color': producto['color'],
@@ -117,7 +119,8 @@ def generar_carrito(productos):
     if carrito:
         print("\n🛒 Productos en el carrito:")
         for prod in carrito:
-            print(f"- {prod['marca']} {prod['modelo']} x{prod['cantidad']} = U$D {prod['total_prod']:.2f}")
+            marca_upper, modelo_upper = map(str.upper, [prod['marca'], prod['modelo']])
+            print(f"- PID: {prod['pid']} | {marca_upper} | {modelo_upper} x{prod['cantidad']} = U$D {prod['total_prod']:.2f}")
 
         return carrito, productos
     else:
@@ -211,6 +214,9 @@ def menu_comprar_productos(dni, listado_productos):
 
         if carrito: # Validamos que el carrito no este vacio.
             total = calcular_total(carrito)
+            for prod in carrito:
+                marca_upper, modelo_upper = map(str.upper, [prod['marca'], prod['modelo']])
+                print(f"- PID: {prod['pid']} | {marca_upper} | {modelo_upper} x{prod['cantidad']} = U$D {prod['total_prod']:.2f}")
             print(f"\nTotal de la compra: U$D {total:.2f}")
             
             confirmar = input("Confirmar la compra (S/N): ").lower()
