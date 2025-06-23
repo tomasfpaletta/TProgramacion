@@ -1,0 +1,18 @@
+22/06/2025 02:32:25 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 02:32:25 TIPO: <class 'NameError'> - ERROR: name 'gen_menu_cliente' is not defined
+22/06/2025 02:34:01 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 02:34:01 TIPO: <class 'NameError'> - ERROR: name 'gen_menu_cliente' is not defined
+22/06/2025 02:34:19 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 02:34:19 TIPO: <class 'NameError'> - ERROR: name 'gen_menu_cliente' is not defined
+22/06/2025 02:35:21 TIPO: <class 'TypeError'> - ERROR: 'int' object is not subscriptable
+22/06/2025 03:20:31 TIPO: <class 'TypeError'> - ERROR: actualizar_password() missing 1 required positional argument: 'usuarios'
+22/06/2025 04:51:40 TIPO: <class 'ValueError'> - ERROR: invalid literal for int() with base 10: ''
+22/06/2025 18:28:45 TIPO: <class 'ValueError'> - ERROR: list.remove(x): x not in list
+22/06/2025 20:16:18 TIPO: <class 'KeyError'> - ERROR: 'pid'
+22/06/2025 20:16:18 TIPO: <class 'ValueError'> - ERROR: list.remove(x): x not in list
+22/06/2025 20:16:18 TIPO: <class 'KeyError'> - ERROR: 'pid'
+22/06/2025 20:51:23 TIPO: <class 'KeyError'> - ERROR: 'pid'
+22/06/2025 20:51:23 TIPO: <class 'KeyError'> - ERROR: 'pid'
+22/06/2025 21:11:01 TIPO: <class 'TypeError'> - ERROR: gen_panel_admin() missing 2 required positional arguments: 'productos' and 'usuarios'
+22/06/2025 21:11:25 TIPO: <class 'TypeError'> - ERROR: gen_panel_admin() missing 1 required positional argument: 'productos'
+22/06/2025 21:13:12 TIPO: <class 'TypeError'> - ERROR: gen_panel_admin() missing 1 required positional argument: 'productos'

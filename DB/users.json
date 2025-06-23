@@ -1,22 +1,24 @@
 [
-  {
-    "DNI": 40946880,
-    "nombre": "Nicolas",
-    "apellido": "Lazaro",
-    "email": ["nlazaro", "uade.edu.ar"],
-    "password": "12345",
-    "admin": true,
-    "historial_compras": [],
-    "pregunta_seguridad": { "color_favorito": "azul" }
-  },
-  {
-    "DNI": 44362800,
-    "nombre": "Tomas",
-    "apellido": "Paletta",
-    "email": ["tpaletta", "uade.edu.ar"],
-    "password": "12345",
-    "admin": true,
-    "historial_compras": [],
-    "pregunta_seguridad": { "color_favorito": "azul" }
-  }
+    {
+        "DNI": 40946880,
+        "nombre": "Nicolas",
+        "apellido": "Lazaro",
+        "email": "nlazaro@uade.edu.ar",
+        "password": "tito_Calderon1",
+        "admin": false,
+        "pregunta_seguridad": {
+            "color_favorito": "azul"
+        }
+    },
+    {
+        "DNI": 44362800,
+        "nombre": "Tomas",
+        "apellido": "Paletta",
+        "email": "tpaletta@uade.edu.ar",
+        "password": "12345",
+        "admin": true,
+        "pregunta_seguridad": {
+            "color_favorito": "azul"
+        }
+    }
 ]

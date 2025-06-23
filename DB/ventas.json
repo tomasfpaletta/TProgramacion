@@ -1,0 +1,139 @@
+[
+    {
+        "n_venta": 9700,
+        "user": "40946880",
+        "fecha": "21/06/2025",
+        "total": 2200,
+        "productos": [
+            {
+                "marca": "samsung",
+                "modelo": "s24 plus",
+                "color": "gris",
+                "cantidad": 2,
+                "total_prod": 1400
+            },
+            {
+                "marca": "apple",
+                "modelo": "iphone 16",
+                "color": "gris",
+                "cantidad": 1,
+                "total_prod": 800
+            }
+        ]
+    },
+    {
+        "n_venta": 2797,
+        "user": "40946880",
+        "fecha": "21/06/2025",
+        "total": 2100,
+        "productos": [
+            {
+                "marca": "samsung",
+                "modelo": "s24 plus",
+                "color": "gris",
+                "cantidad": 3,
+                "total_prod": 2100
+            }
+        ]
+    },
+    {
+        "n_venta": 4839,
+        "user": "40946880",
+        "fecha": "21/06/2025",
+        "total": 2100,
+        "productos": [
+            {
+                "marca": "samsung",
+                "modelo": "s24 plus",
+                "color": "gris",
+                "cantidad": 3,
+                "total_prod": 2100
+            }
+        ]
+    },
+    {
+        "n_venta": 6945,
+        "user": "40946880",
+        "fecha": "21/06/2025",
+        "total": 2100,
+        "productos": [
+            {
+                "marca": "apple",
+                "modelo": "iphone 16",
+                "color": "gris",
+                "cantidad": 1,
+                "total_prod": 800
+            },
+            {
+                "marca": "dell",
+                "modelo": "latitude 5410",
+                "color": "negro",
+                "cantidad": 2,
+                "total_prod": 1300
+            }
+        ]
+    },
+    {
+        "n_venta": 6350,
+        "user": {
+            "DNI": 44362800,
+            "nombre": "Tomas",
+            "apellido": "Paletta",
+            "email": "tpaletta@uade.edu.ar",
+            "password": "12345",
+            "admin": true,
+            "pregunta_seguridad": {
+                "color_favorito": "azul"
+            }
+        },
+        "fecha": "22/06/2025",
+        "total": 2260.0,
+        "productos": [
+            {
+                "marca": "Lenovo",
+                "modelo": "P14s",
+                "color": "Negro",
+                "cantidad": 1,
+                "total_prod": 1930.0
+            },
+            {
+                "marca": "sony",
+                "modelo": "linkbuds open",
+                "color": "negro",
+                "cantidad": 1,
+                "total_prod": 330
+            }
+        ]
+    },
+    {
+        "n_venta": 4041,
+        "user": 40946880,
+        "fecha": "22/06/2025",
+        "total": 11000,
+        "productos": [
+            {
+                "marca": "samsung",
+                "modelo": "s25 fe",
+                "color": "gris",
+                "cantidad": 22,
+                "total_prod": 11000
+            }
+        ]
+    },
+    {
+        "n_venta": 4172,
+        "user": 40946880,
+        "fecha": "22/06/2025",
+        "total": 800,
+        "productos": [
+            {
+                "pid": 1004,
+                "marca": "lenovo",
+                "modelo": "thinkpad e14",
+                "color": "negro",
+                "cantidad": 1,
+                "total_prod": 800
+            }
+        ]
+    }
+]

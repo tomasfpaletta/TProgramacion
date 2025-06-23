@@ -1,97 +1,112 @@
 import random
+from json_handler import importar_datos_json
+from funciones_generales import generar_id, registrar_error, actualizar_lista
+from json_handler import cargar_datos_json
 
-def asignar_pid(productos):
+"""Estructura principal del programa"""
+listado_productos = importar_datos_json('DB/prods.json')
+listado_usuarios = importar_datos_json('DB/users.json')
+
+def centrar_con_metodo(texto, ancho):
     '''
-    Genera un numero random el cual sera el Product ID (PID). Va de 1000 a 9999.
-    Se valida ademas que no exista duplicados.
+    Centra un texto dentro de un ancho determinado.
 
     Input:
-    - Lista de productos (donde cada producto es un diccionario)
+    - cadena a centrar.
+    - cantidad total de caracteres del campo.
 
     Output:
-    - Numero PID
+    - Texto centrado como string.
     '''
-    pid_random = random.randint(1000, 9999)
-    # Accede al PID usando la clave 'pid' del diccionario
-    pids_existentes = [prod['pid'] for prod in productos] 
-    
-    while pid_random in pids_existentes: 
-        pid_random = random.randint(1000, 9999)
-    
-    return pid_random
-
-def mostrar_logo():
-    print("===============================================================================")
-    print("|                       Bienvenido al sistema CLI E-SHOP                        |")
-    print("===============================================================================\n")
-
-# Función para centrar texto (si aún la quieres, aunque podrías hacerla inline)
-def centrar_con_metodo(texto, ancho):
     return texto.center(ancho)
 
 def mostrar_productos(productos):
     '''
-    Muestra los productos en forma de tabla usando métodos de cadena como ljust y rjust.
+    Muestra los productos en forma de tabla.
+
+    Input:
+    - diccionario con la información de un producto.
     '''
-    # Anchos por columna
-    ancho_pid = 6
-    ancho_marca = 12
-    ancho_modelo = 18
-    ancho_categoria = 13
-    ancho_color = 10
-    ancho_stock = 6
-    ancho_precio = 12
-    ancho_disponible = 12
+    anchos = {
+        'pid': 6,
+        'marca': 12,
+        'modelo': 18,
+        'categoria': 13,
+        'color': 10,
+        'stock': 6,
+        'precio': 12,
+        'disponible': 12
+    }
 
-    # Calculamos el ancho total para los bordes (ajustado para los | entre columnas)
-    ancho_total = ancho_pid + ancho_marca + ancho_modelo + ancho_categoria + \
-                  ancho_color + ancho_stock + ancho_precio + ancho_disponible + 9
+    ancho_total = sum(anchos.values()) + 9  # 8 columnas + bordes
 
-    # Encabezado principal del catálogo
     print("=" * ancho_total)
     print("|" + centrar_con_metodo("CATÁLOGO DE PRODUCTOS", ancho_total - 2) + "|")
     print("=" * ancho_total)
 
-    # Encabezado de tabla
-    header_line = (
-        "|" + "PID".center(ancho_pid) +
-        "|" + "MARCA".center(ancho_marca) +
-        "|" + "MODELO".center(ancho_modelo) +
-        "|" + "CATEGORÍA".center(ancho_categoria) +
-        "|" + "COLOR".center(ancho_color) +
-        "|" + "STOCK".center(ancho_stock) + 
-        "|" + "PRECIO (U$D)".center(ancho_precio) + 
-        "|" + "DISPONIBLE".center(ancho_disponible) +
-        "|"
-    )
-    print(header_line)
+    mostrar_encabezado(anchos)
     print("-" * ancho_total)
 
-    # Filas de datos
     for producto in productos:
-        pid_str = str(producto.get('pid', 'N/A'))
-        marca_str = str(producto.get('marca', 'N/A'))
-        modelo_str = str(producto.get('modelo', 'N/A'))
-        categoria_str = str(producto.get('categoria', 'N/A'))
-        color_str = str(producto.get('color', 'N/A'))
-        stock_str = str(producto.get('stock', 'N/A'))
-        precio_str = f"{producto.get('precio', 0):.2f}"
-        disponible_str = 'Sí' if producto.get('disponible', False) else 'No'
-
-        fila = (
-            "|" + pid_str.center(ancho_pid) +
-            "|" + marca_str.center(ancho_marca) +
-            "|" + modelo_str.center(ancho_modelo) +
-            "|" + categoria_str.center(ancho_categoria) +
-            "|" + color_str.center(ancho_color) +
-            "|" + stock_str.center(ancho_stock) +
-            "|" + precio_str.center(ancho_precio) +
-            "|" + disponible_str.center(ancho_disponible) +
-            "|"
-        )
-        print(fila)
+        print(formatear_fila(producto, anchos))
 
     print("=" * ancho_total)
+
+def mostrar_encabezado(anchos):
+    '''
+    Muestra los encabezados de la tabla de productos con el ancho definido por campo.
+
+    Input:
+    - diccionario que contiene el ancho de cada columna.
+
+    Output:
+    - Imprime en consola la fila de encabezados.
+    '''
+    encabezados = {
+        'pid': "PID",
+        'marca': "MARCA",
+        'modelo': "MODELO",
+        'categoria': "CATEGORÍA",
+        'color': "COLOR",
+        'stock': "STOCK",
+        'precio': "PRECIO (U$D)",
+        'disponible': "DISPONIBLE"
+    }
+
+    fila = ""
+    for campo in encabezados:
+        fila += "|" + encabezados[campo].center(anchos[campo])
+    fila += "|"
+    print(fila)
+
+
+def formatear_fila(producto, anchos):
+    '''
+    Formatea los valores de un producto en una fila para la tabla de catálogo.
+
+    Input:
+    - diccionario con la información de un producto.
+    - diccionario con los anchos de cada columna.
+
+    Output:
+    - Devuelve un string que representa una fila de la tabla.
+    '''
+    valores = {
+        'pid': str(producto['pid']),
+        'marca': str(producto['marca']),
+        'modelo': str(producto['modelo']),
+        'categoria': str(producto['categoria']),
+        'color': str(producto['color']),
+        'stock': str(producto['stock']),
+        'precio': f"{producto['precio']:.2f}",
+        'disponible': 'Sí' if producto['disponible'] else 'No'
+    }
+
+    fila = ""
+    for campo in ['pid', 'marca', 'modelo', 'categoria', 'color', 'stock', 'precio', 'disponible']:
+        fila += "|" + valores[campo].center(anchos[campo])
+    fila += "|"
+    return fila
 
 def retornar_prod(pid_buscado, productos):
     '''
@@ -99,22 +114,58 @@ def retornar_prod(pid_buscado, productos):
     Devuelve una lista con el diccionario del producto si se encuentra.
 
     Input:
-    - pid_buscado: El PID del producto a buscar.
-    - productos: Listado de diccionarios de productos.
+    - El PID del producto a buscar.
+    - Listado de diccionarios de productos.
 
     Output:
     - Producto 'empaquetado' = [{producto}] o [] si no se encuentra.
     '''
-    # CORREGIDO: Accede al PID usando la clave 'pid' del diccionario
     return [prod for prod in productos if prod['pid'] == pid_buscado]
 
-def alta_producto(lista_productos, pid):
+def restar_stock(cantidad, pid, lista_prods):
+    '''
+    Reduce la cantidad de stock, si llega a 0 el producto pasa a estar deshabilitado.
+
+    Input:
+    - Cantidad de stock a restar
+    - El PID del producto a buscar
+    - Lista de productos (Lista de diccionarios)
+
+    Output:
+    - Lista de productos con el prod actualizado
+    '''
+    for producto in lista_prods:
+        if producto['pid'] == pid:
+            producto['stock'] -= cantidad
+            if producto['stock'] == 0:
+                producto['stock'] = 0
+                producto['disponible'] = False
+            break
+    return lista_prods      
+
+def sumar_stock(cantidad, pid, lista_prods):
+    '''
+    Esta funcion esta pensada para devolver la cantidad de stock que se le resto al producto mas que nada.
+
+    Input:
+    - Cantidad de stock a sumar
+
+    Output:
+    - Lista de productos con el prod actualizado
+    '''
+    for producto in lista_prods:
+        if producto['pid'] == pid:
+            producto['stock'] += cantidad
+            producto['disponible'] = True
+            break
+    return lista_prods
+
+def alta_producto(lista_productos): #Stock valueError
     '''
     Genera un producto (Diccionario) y lo agrega a la lista 'lista_productos'.
 
     Input:
     - lista_productos (Lista de diccionarios)
-    - PID generado previamente con la funcion asignar_pid()
 
     Output:
     - Devuelve la lista actualizada de productos con el nuevo prod.
@@ -124,14 +175,14 @@ def alta_producto(lista_productos, pid):
     modelo= input('Modelo del producto:\n')
     categoria = input('Categoria del producto:\n')
     color= input('Color del producto:\n')
-    # CORREGIDO: Asegurarse de convertir a float o int
     precio = float(input('Precio del producto:\n'))
     stock = int(input('Stock del producto:\n'))
     disponible = True
 
     print(f'Producto {marca} dado de alta con exito!')
 
-    # CORREGIDO: Crear un diccionario en lugar de una tupla
+    pid = generar_id(lista_productos, 'pid')
+
     nuevo_producto = {
         "pid": pid,
         "marca": marca,
@@ -143,26 +194,26 @@ def alta_producto(lista_productos, pid):
         "disponible": disponible
     }
     lista_productos.append(nuevo_producto)
+    cargar_datos_json('DB/prods.json', lista_productos)
     return lista_productos
 
-def eliminar_producto(indice_prod, lista_productos):
+def eliminar_producto(producto, lista_productos):
     '''
-    Elimina el producto de la lista productos con el indice que se le indique.
+    Elimina el producto que se pase como argumento de la lista productos.
 
     Input:
-    - Indice del producto
-    - Lista de productos
+    - Producto (Diccionario)
+    - Lista de productos (Lista de diccionarios)
 
     Output:
     - Lista de productos actualizada sin el producto
     '''
-    # Esta función ya estaba bien, solo agregué un mensaje de confirmación.
-    if 0 <= indice_prod < len(lista_productos):
-        del lista_productos[indice_prod]
-        print(f"Producto en índice {indice_prod} eliminado.")
-    else:
-        print("Índice de eliminación inválido.")
-    return lista_productos
+    try:
+        lista_prods_actualizada = lista_productos.remove(producto)
+        return lista_prods_actualizada
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar eliminar el producto de la lista de productos -> historial_compras_usuario():\n{err}')
+        registrar_error(err)
 
 def obtener_indice(pid_buscado, lista):
     '''
@@ -170,7 +221,7 @@ def obtener_indice(pid_buscado, lista):
 
     Input:
     - pid_buscado: Recibe un PID.
-    - lista: Lista sobre la que iterar (debe ser de diccionarios).
+    - Lista sobre la que iterar (debe ser de diccionarios).
 
     Output:
     - Si encuentra te devuelve la posicion (Indice)
@@ -190,12 +241,11 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos):
     Input:
     - prod_seleccionado: El diccionario del producto a editar.
     - indice_producto: El índice del producto para luego reemplazarlo en la lista de productos.
-    - lista_productos: La lista de productos.
+    - lista_productos (lista de diccionarios)
 
     Output:
     - Lista de productos actualizada con los cambios
     '''
-    # CORREGIDO: 'prod_seleccionado' ya es un diccionario. Hacemos una copia para trabajar.
     producto_final = prod_seleccionado.copy() 
     seguir_editando = True 
 
@@ -274,9 +324,10 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos):
             except ValueError:
                 print("Respuesta inválida. Continuando edición.")
 
-    cargar = input('Cargar cambios ? S/N').lower()
+    cargar = input('Cargar cambios ? S/N\n').lower()
     if cargar == 's':
         lista_productos[indice_producto] = producto_final # Reemplaza el diccionario
+        cargar_datos_json('DB/prods.json', lista_productos)
         print('Cambios guardados')
         return lista_productos
     else:
@@ -291,19 +342,18 @@ def buscar_productos(productos, criterio, valor):
     La búsqueda en texto es insensible a mayúsculas/minúsculas.
 
     Input:
-    - productos: Lista de diccionarios de productos.
-    - criterio: La clave del diccionario por la cual buscar (ej. "marca", "modelo", "categoria", "color", "pid", "stock", "precio").
-    - valor: Las letras (subcadena) o el valor numérico a buscar.
+    - Lista de diccionarios de productos.
+    - La clave del diccionario por la cual buscar (ej. "marca", "modelo", "categoria", "color", "pid", "stock", "precio").
+    - Las letras (subcadena) o el valor numérico a buscar.
 
     Output:
     - Una lista de diccionarios con los productos que coinciden con la búsqueda.
     '''
     resultados = []
     
-    # Manejo de criterios de búsqueda numéricos vs. texto
+    # Manejo de criterios de búsqueda numéricos, texto
     if criterio in ['pid', 'stock', 'precio']:
         try:
-            # Para campos numéricos, convertimos el valor de búsqueda al tipo adecuado
             if criterio == 'precio':
                 valor_busqueda_num = float(valor)
             else: # 'pid' o 'stock'
@@ -319,9 +369,93 @@ def buscar_productos(productos, criterio, valor):
     else: # Criterios de texto (marca, modelo, categoria, color)
         valor_busqueda_lower = str(valor).lower() # Convertir valor de búsqueda a minúsculas
         for producto in productos:
-            # Asegurarse de que el campo existe y es una cadena antes de intentar la búsqueda parcial
             if criterio in producto and isinstance(producto[criterio], str):
                 if valor_busqueda_lower in str(producto[criterio]).lower(): # Búsqueda parcial (contiene)
                     resultados.append(producto)
     
     return resultados
+
+def menu_busqueda_productos():
+    '''
+    Muestra un menú para buscar productos por distintos campos (marca, modelo, etc.).
+    Realiza la búsqueda en base a la selección del usuario e imprime los resultados encontrados.
+
+    Input:
+    - Sin parámetros.
+
+    Output:
+    - Muestra en consola los productos filtrados o mensaje de no encontrados.
+    '''
+    print("\n=== MENÚ DE BÚSQUEDA DE PRODUCTOS ===")
+    print("1. Buscar por marca")
+    print("2. Buscar por modelo")
+    print("3. Buscar por categoría")
+    print("4. Buscar por color")
+    print("5. Buscar por precio")
+
+    opcion = input("Ingrese el número correspondiente a la búsqueda: ").strip()
+
+    campos = {
+        "1": "marca",
+        "2": "modelo",
+        "3": "categoria",
+        "4": "color",
+        "5": "precio"
+    }
+
+    if opcion in campos:
+        valor = input(f"Ingrese el valor para buscar en {campos[opcion]}: ").strip()
+        resultados = filtrar_productos(valor, listado_productos, campos[opcion])
+
+        if resultados:
+            print("\n--- Resultados encontrados ---")
+            mostrar_productos(resultados)
+        else:
+            print("No se encontraron productos con ese criterio.")
+    else:
+        print("Opción inválida. Intente nuevamente.")
+
+def filtrar_productos(valor_busqueda, lista_productos, campo):
+    '''
+    Filtra productos de una lista comparando el valor del campo especificado con el valor de búsqueda.
+
+    Inputs:
+    - texto que debe coincidir al inicio del campo especificado.
+    - lista_productos (lista de diccionarios)
+    - clave del diccionario sobre la que se aplicará el filtro.
+
+    Output:
+    - Lista de productos que cumplen el filtro.
+    '''
+    valor_busqueda = str(valor_busqueda).lower()
+    productos_filtrados = list(filter(lambda p: str(p[campo]).lower().startswith(valor_busqueda), lista_productos))
+    return productos_filtrados
+
+def ordenar_por_precio(lista_productos):
+    '''
+    Ordena los productos de la lista_productos de Menor a Mayor.
+
+    Inputs:
+    - Lista de productos (Lista de diccionarios)
+
+    Output:
+    - Lista de productos ordenada de Menor a Mayor (Lista de diccionarios)
+    '''
+    try:
+        productos = lista_productos.copy()
+        ordenados = []
+        while productos: # Voy quitando productos de la copia de la lista productos hasta que queda vacia para saber que termino
+            # Encuentro el índice del producto de precio mínimo
+            min_idx = 0
+            for j in range(1, len(productos)):
+                if productos[j]["precio"] < productos[min_idx]["precio"]:
+                    min_idx = j
+            # Lo extraigo y lo agrego a la lista ordenada
+            ordenados.append(productos.pop(min_idx))
+        
+        return ordenados
+    except Exception as err:
+        print(f'Error al intentar ordenar la lista de productos por precio en ordenar_por_precio()\n{err}')
+        registrar_error(err)
+    
+
