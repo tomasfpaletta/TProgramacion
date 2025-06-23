@@ -95,7 +95,6 @@ def crear_user(dni, nombre, apellido, email, password, preguntas_seguridad):
             'email': email,
             'password': password,
             'admin': False,
-            'historial_compras': [],
             'preguntas_seguridad': preguntas_seguridad
         }
 
@@ -359,7 +358,7 @@ def recuperar_password(dni, usuarios):
     try:
         usuario = get_user(dni, usuarios)
         if usuario:
-            pregunta_seguridad = usuario['pregunta_seguirdad']
+            pregunta_seguridad = usuario['pregunta_seguridad']
             pregunta = list(pregunta_seguridad.keys())[0]
             respuesta_correcta = pregunta_seguridad[pregunta]
 
@@ -368,8 +367,7 @@ def recuperar_password(dni, usuarios):
             respuesta = input('Respuesta: ').strip().lower()
 
             if respuesta_correcta == respuesta:
-                nueva_password = actualizar_password(usuario)
-                usuario['password'] = nueva_password
+                actualizar_password(usuario, usuarios)
                 print('---> Contraseña reestablecida <---')
                 return usuario
             else:
@@ -425,6 +423,8 @@ def menu_login(usuarios):
             elif opcion == 2:
                 nuevo_usuario = form_nuevo_usuario(usuarios)
                 if nuevo_usuario:
+                    usuarios.append(nuevo_usuario)
+                    cargar_datos_json('DB/users.json', usuarios)
                     return nuevo_usuario
                 else:
                     print("No se pudo registrar el usuario.")

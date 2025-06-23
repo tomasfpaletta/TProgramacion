@@ -44,11 +44,11 @@ def gen_home():
                     else:
                         limpiar_consola()
                         print(f"¡Bienvenido/a, {usuario['nombre'].capitalize()}!")
-                        gen_menu_cliente(usuario, usuarios, productos)
+                        gen_menu_cliente(usuario)
                 # print('No se ingreso a la cuenta.')
             elif acceder == 'n':
                 print('Hasta pronto...')
-                seguir_menu_productos = False
+                return
             else:
                 limpiar_consola()
                 print('Volviendo al inicio...')
@@ -57,7 +57,7 @@ def gen_home():
             print(f'Error al intentar generar el HOME en gen_home()\n{err}')
             registrar_error(err)
 
-def gen_panel_admin(productos):
+def gen_panel_admin():
     '''
     Genera el panel de gestion para el admin/vendedor.
 
@@ -70,6 +70,8 @@ def gen_panel_admin(productos):
     seguir_menu_productos = True
     while seguir_menu_productos:
         try:
+            productos = importar_datos_json('DB/prods.json')
+
             print(f"{'='*30}")
             print(f'MENU ADMIN')
             print(f"{'-'*30}")
@@ -117,7 +119,7 @@ def gen_panel_admin(productos):
             print(f'Error al intentar generar el PANEL ADMIN en gen_menu_admin()\n{err}')
             registrar_error(err)
 
-def gen_menu_cliente(usuario, usuarios, productos):
+def gen_menu_cliente(usuario):
     '''
     Genera el menu Cliente / Usuario  
 
@@ -132,6 +134,9 @@ def gen_menu_cliente(usuario, usuarios, productos):
     seguir_menu = True
     while seguir_menu:
         try:
+            productos = importar_datos_json('DB/prods.json')
+            usuarios = importar_datos_json('DB/users.json')
+
             print('Opciones disponibles:')
             print('├─ 1. Visualizar productos')
             print('├─ 2. Ordenar productos por precio de Mayor a Menor')
@@ -178,5 +183,3 @@ def gen_menu_cliente(usuario, usuarios, productos):
             seguir_menu = False
             print(f'Error al intentar generar el MENU ADMIN en gen_menu_admin()\n{err}')
             registrar_error(err)
-    
-gen_home()

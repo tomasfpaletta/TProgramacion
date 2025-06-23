@@ -19,3 +19,10 @@
 23/06/2025 00:23:28 TIPO: <class 'TypeError'> - ERROR: menu_abm() takes 0 positional arguments but 1 was given
 23/06/2025 00:23:40 TIPO: <class 'TypeError'> - ERROR: menu_abm() takes 0 positional arguments but 1 was given
 23/06/2025 00:23:41 TIPO: <class 'TypeError'> - ERROR: menu_abm() takes 0 positional arguments but 1 was given
+23/06/2025 11:54:45 TIPO: <class 'TypeError'> - ERROR: gen_menu_cliente() takes 1 positional argument but 3 were given
+23/06/2025 11:58:04 TIPO: <class 'KeyError'> - ERROR: 'pregunta_seguirdad'
+23/06/2025 12:00:28 TIPO: <class 'KeyError'> - ERROR: 'pregunta_seguirdad'
+23/06/2025 12:08:01 TIPO: <class 'TypeError'> - ERROR: actualizar_password() missing 1 required positional argument: 'usuarios'
+23/06/2025 12:14:07 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'
+23/06/2025 12:18:33 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'
+23/06/2025 12:25:30 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'

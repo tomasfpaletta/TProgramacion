@@ -4,7 +4,7 @@
         "nombre": "Nicolas",
         "apellido": "Lazaro",
         "email": "nlazaro@uade.edu.ar",
-        "password": "Tito_calderon1",
+        "password": "tito_Calderon1",
         "admin": false,
         "pregunta_seguridad": {
             "color_favorito": "azul"
@@ -19,6 +19,28 @@
         "admin": true,
         "pregunta_seguridad": {
             "color_favorito": "azul"
+        }
+    },
+    {
+        "DNI": 111222333,
+        "nombre": "nicolas",
+        "apellido": "fernandez",
+        "email": "nico@gmail.com",
+        "password": "Nicolas_12345",
+        "admin": false,
+        "preguntas_seguridad": {
+            "color_favorito": "rojo"
+        }
+    },
+    {
+        "DNI": 123123123,
+        "nombre": "candela",
+        "apellido": "copetti",
+        "email": "cande@gmail.com",
+        "password": "Cande_12345",
+        "admin": false,
+        "preguntas_seguridad": {
+            "color_favorito": "Blanco"
         }
     }
 ]

@@ -13,11 +13,13 @@ def historial_compras_usuario(dni):
     Output:
     - Historial de compras
     '''
+    compras_realizadas = 0
     try:
 
         ventas = importar_datos_json('DB/ventas.json')
         for venta in ventas:
             if venta['user'] == dni:
+                compras_realizadas += 1
                 print(f"{'='*30}")
                 print(f'Compra N°{venta['n_venta']}')
                 print(f"{'-'*30}")
@@ -33,6 +35,9 @@ def historial_compras_usuario(dni):
                     print(f'├─ Cantidad: {prod['cantidad']}')
                     print(f'└─ Subtotal: U$D {prod['total_prod']:.2f}')
                     i += 1
+        
+        if compras_realizadas == 0:
+            print('No tenes ninguna compra registrada.')
     except Exception as err:
         print(f'Se produjo el siguiente error al intentar mostrar el historial de compras del usuario {dni} -> historial_compras_usuario():\n{err}')
         registrar_error(err)

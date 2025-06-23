@@ -1,5 +1,5 @@
 from datetime import datetime
-from funciones_generales import registrar_error, generar_id
+from funciones_generales import registrar_error, generar_id, limpiar_consola
 from json_handler import importar_datos_json, cargar_datos_json
 from API_productos import mostrar_productos, restar_stock, sumar_stock, seleccionar_producto
 
@@ -63,7 +63,7 @@ def generar_carrito(productos):
     carrito = []
 
     while input("¿Deseás agregar un producto al carrito? (S/N): ").lower() == 's':
-        print("\n=== CATÁLOGO DE PRODUCTOS ===")
+        limpiar_consola()
         mostrar_productos(productos)
         producto = seleccionar_producto(productos)
 
@@ -88,10 +88,11 @@ def generar_carrito(productos):
         }
 
         carrito.append(item)
-        print("✅ Producto agregado al carrito.")
+        print("Producto agregado al carrito.")
 
     if carrito:
-        print("\n🛒 Productos en el carrito:")
+        limpiar_consola()
+        print("\nProductos en el carrito:")
         for prod in carrito:
             marca_upper, modelo_upper = map(str.upper, [prod['marca'], prod['modelo']])
             print(f"- PID: {prod['pid']} | {marca_upper} | {modelo_upper} x{prod['cantidad']} = U$D {prod['total_prod']:.2f}")
@@ -203,13 +204,13 @@ def menu_comprar_productos(dni, listado_productos):
                 print(f"Fecha: {venta['fecha']}\n")
 
                 print('Gracias por confiar en nostros!')
-                return venta
+                return productos_stock_actualizado
             else:
                 print("Compra cancelada.")
-                return []    
+                return listado_productos    
         else:
             print('Para proceder a la compra debes tener al menos un producto en el carrito.')
-            return []
+            return listado_productos
     except Exception as err:
         print('Ocurrio un error al intentar ejecutar el menu_comprar_productos()')
         print('VENTA NO CARGADA debido al siguiente error:\n{err}')
