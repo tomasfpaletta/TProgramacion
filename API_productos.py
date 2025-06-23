@@ -1,8 +1,7 @@
 import random
-from json_handler import importar_datos_json
-from funciones_generales import generar_id, registrar_error, actualizar_lista
-from json_handler import cargar_datos_json
-
+from json_handler import importar_datos_json, cargar_datos_json
+from funciones_generales import generar_id, registrar_error, actualizar_lista, limpiar_consola
+from API_comprador import seleccionar_producto
 """Estructura principal del programa"""
 listado_productos = importar_datos_json('DB/prods.json')
 listado_usuarios = importar_datos_json('DB/users.json')
@@ -197,7 +196,7 @@ def alta_producto(lista_productos): #Stock valueError
     cargar_datos_json('DB/prods.json', lista_productos)
     return lista_productos
 
-def eliminar_producto(producto, lista_productos):
+def eliminar_producto(pid, lista_productos):
     '''
     Elimina el producto que se pase como argumento de la lista productos.
 
@@ -209,8 +208,13 @@ def eliminar_producto(producto, lista_productos):
     - Lista de productos actualizada sin el producto
     '''
     try:
-        lista_prods_actualizada = lista_productos.remove(producto)
-        return lista_prods_actualizada
+        for prod in lista_productos:
+            if prod['pid'] == pid:
+                prod['disponible'] = False
+                prod['stock'] = 0
+                break
+        print('Producto eliminado')
+        return lista_productos
     except Exception as err:
         print(f'Se produjo el siguiente error al intentar eliminar el producto de la lista de productos -> historial_compras_usuario():\n{err}')
         registrar_error(err)
@@ -234,7 +238,7 @@ def obtener_indice(pid_buscado, lista):
     
     return -1
 
-def editar_producto(prod_seleccionado, indice_producto, lista_productos):
+def editar_producto(prod_seleccionado, lista_productos):
     '''
     Permite editar los campos que se deseen hasta que el usuario rompa el bucle.
     
@@ -248,6 +252,7 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos):
     '''
     producto_final = prod_seleccionado.copy() 
     seguir_editando = True 
+    indice_producto = obtener_indice(prod_seleccionado['pid'], lista_productos)
 
     while seguir_editando:
         print('====================================')
@@ -262,15 +267,14 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos):
         print('====================================')
         
         print('\n¿Qué deseas editar?')
-        print('Indicar con número de opción')
-        print('1. Marca')
-        print('2. Modelo')
-        print('3. Categoria')
-        print('4. Color')
-        print('5. Stock ')
-        print('6. Precio')
-        print('7. Disponibilidad') # Nueva opción para editar disponibilidad
-        print('8. ---> CANCELAR <---')
+        print('├─ 1. Marca')
+        print('├─ 2. Modelo')
+        print('├─ 3. Categoria')
+        print('├─ 4. Color')
+        print('├─ 5. Stock ')
+        print('├─ 6. Precio')
+        print('├─ 7. Disponibilidad') # Nueva opción para editar disponibilidad
+        print('└─ 8. Salir')
         
         try:
             opcion = int(input('Ingrese su opción: '))
@@ -315,16 +319,23 @@ def editar_producto(prod_seleccionado, indice_producto, lista_productos):
         if seguir_editando: # Solo pregunta si seguir editando si no se canceló
             print(f'\nAsí va quedando tu producto:\n {producto_final}')
             try:
-                respuesta = int(input('Desea seguir editando ?\nIndicar con indice 1 o 2:\n1. SI\n2. NO\n'))
-                if respuesta == 2:
-                    seguir_editando = False
-                    print('Edicion Terminada')
-                elif respuesta != 1: 
-                    print("Opción inválida. Continuando edición.")
+                respuesta = input('Desea seguir editando ? (S/N): ').lower()
             except ValueError:
                 print("Respuesta inválida. Continuando edición.")
 
-    cargar = input('Cargar cambios ? S/N\n').lower()
+            if respuesta == 's':
+                continue
+            elif respuesta == 'n': 
+                seguir_editando = False
+                print('Edicion Terminada')
+            else:
+                print("Opción inválida.")
+
+    try:
+        cargar = input('Cargar cambios ? S/N\n').lower()
+    except ValueError:
+        print("Solo se aceptan las letras -> S o N")
+
     if cargar == 's':
         lista_productos[indice_producto] = producto_final # Reemplaza el diccionario
         cargar_datos_json('DB/prods.json', lista_productos)
@@ -375,13 +386,61 @@ def buscar_productos(productos, criterio, valor):
     
     return resultados
 
-def menu_busqueda_productos():
+def menu_abm():
     '''
-    Muestra un menú para buscar productos por distintos campos (marca, modelo, etc.).
-    Realiza la búsqueda en base a la selección del usuario e imprime los resultados encontrados.
+    Genera el menu para la alta/baja/modificacion de productos.
 
     Input:
-    - Sin parámetros.
+    - Productos (Lista de diccionarios)
+
+    Output:
+    - Menu para la alta/baja/modificacion de productos.
+    '''
+    flag = True
+    print(f"{'-'*30}")
+    print(f'Alta / Baja / Modificacion de productos')
+    print(f"{'-'*30}")
+
+    while flag:
+        try:
+            productos = importar_datos_json('DB/prods.json')
+            print('Opciones disponibles:')
+            print('├─ 1. Visualizar productos')
+            print('├─ 2. Alta')
+            print('├─ 3. Baja')
+            print('├─ 4. Modificacion')
+            print('└─ 5. Salir')
+            seleccion = int(input(f'--- Elija la seccion a la que quiere ingresar ---\n'))
+
+            if seleccion == 1:
+                mostrar_productos(productos)
+            elif seleccion == 2:
+                alta_producto(productos)
+            elif seleccion == 3:
+                prod_sel = seleccionar_producto(productos)
+                productos = eliminar_producto(prod_sel['pid'], productos)
+                cargar_datos_json('DB/prods.json', productos)
+            elif seleccion == 4:
+                prod_sel = seleccionar_producto(productos)
+                editar_producto(prod_sel, productos) 
+            elif seleccion == 5:
+                flag = False
+            else:
+                print('Opcion ingresada invalida.')
+                continue
+        except ValueError:
+            print('Solo se aceptan caracteres numericos.')
+            continue
+        except Exception as err:
+            print(f'Error al intentar generar menu de ABM en menu_abm()\n{err}')
+            registrar_error(err)
+
+def menu_busqueda_productos():
+    '''
+    Muestra un menu para buscar productos por distintos campos (marca, modelo, etc).
+
+    Input:
+    - N/A
 
     Output:
     - Muestra en consola los productos filtrados o mensaje de no encontrados.
