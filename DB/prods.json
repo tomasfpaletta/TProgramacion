@@ -108,5 +108,15 @@
         "stock": 0,
         "precio": 1350.0,
         "disponible": false
+    },
+    {
+        "pid": 4569,
+        "marca": "Motorola",
+        "modelo": "Razr",
+        "categoria": "Celular",
+        "color": "Plata",
+        "stock": 100,
+        "precio": 100.0,
+        "disponible": true
     }
 ]

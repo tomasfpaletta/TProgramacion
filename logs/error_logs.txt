@@ -26,3 +26,4 @@
 23/06/2025 12:14:07 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'
 23/06/2025 12:18:33 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'
 23/06/2025 12:25:30 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'
+23/06/2025 13:38:56 TIPO: <class 'ValueError'> - ERROR: invalid literal for int() with base 10: 'sadasdasd'

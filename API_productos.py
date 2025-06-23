@@ -1,6 +1,6 @@
 from json_handler import importar_datos_json, cargar_datos_json
 from funciones_generales import generar_id, registrar_error, limpiar_consola
-
+import re
 
 def centrar_con_metodo(texto, ancho):
     '''
@@ -240,7 +240,45 @@ def sumar_stock(cantidad, pid, lista_prods):
         registrar_error(err)
         return lista_prods 
 
-def alta_producto(lista_productos): #Stock valueError
+
+def validar_stock_precio(valor):
+    '''
+    Valida que el stock o el precio no excedan los limites
+
+    Input:
+    - Valor: el input
+
+    Output:
+    - True o False
+    '''
+
+    if 0 <= valor <= 100000:
+        return True
+    else:
+        return False
+
+def validar_input_alta_mod(texto):
+    '''
+    Valida que los inputs de Marca, Modelo, Categoria y Color, no sean cualquier  cosa.
+
+    Input:
+    - Texto a validar
+
+    Output:
+    - True o False
+    '''
+
+    patron = r"^[a-zA-Z0-9\s]{3,20}$"
+    if re.fullmatch(patron, texto.strip()):
+        return True
+    else:
+        limpiar_consola()
+        print(f'Ingresaste un valores que no estan permitidos')
+        print(f'Solo Letras y Numeros hasta 20 caracteres. Sin simbolos')
+        return False 
+        
+
+def alta_producto(lista_productos):
     '''
     Genera un producto (Diccionario) y lo agrega a la lista 'lista_productos'.
 
@@ -254,41 +292,53 @@ def alta_producto(lista_productos): #Stock valueError
 
     while campo_invalido:
         print('Alta de nuevo producto')
-        marca = input('Marca del producto:\n')
-        modelo= input('Modelo del producto:\n')
-        categoria = input('Categoria del producto:\n')
-        color= input('Color del producto:\n')
-        try:
-            precio = float(input('Precio del producto:\n'))
-            stock = int(input('Stock del producto:\n'))
-            disponible = True
+        marca = input('Marca del producto:\n').lower()
+        modelo= input('Modelo del producto:\n').lower()
+        categoria = input('Categoria del producto:\n').lower()
+        color= input('Color del producto:\n').lower()
+        if validar_input_alta_mod(marca) and validar_input_alta_mod(modelo) and validar_input_alta_mod(categoria) and validar_input_alta_mod(color):
+            try:
+                while campo_invalido:
+                    try:
+                        precio = float(input('Precio del producto:\n'))
+                        stock = int(input('Stock del producto:\n'))
 
-            campo_invalido = False
-            print(f'Producto {marca} dado de alta con exito!')
+                        if validar_stock_precio(precio) and validar_stock_precio(stock):
+                            campo_invalido = False
+                        else:
+                            print('Los valores ingresados superan los limites. Minimo: 0 | Maximo: 100.000')
+                            continue
+                    except ValueError:
+                        print('Los campos de Precio y Stock solo aceptan valores numericos.')
+                        continue
 
-            pid = generar_id(lista_productos, 'pid')
 
-            nuevo_producto = {
-                "pid": pid,
-                "marca": marca,
-                "modelo": modelo,
-                "categoria": categoria,
-                "color": color,
-                "stock": stock,
-                "precio": precio,
-                "disponible": disponible
-            }
-            lista_productos.append(nuevo_producto)
-            cargar_datos_json('DB/prods.json', lista_productos)
-            return lista_productos
-        except ValueError:
-            print('Los campos de Precio y Stock solo aceptan valores numericos.')
-        except Exception as err:
-            print(f'Ocurrio el siguiente error al intentar dar de alta el producto.\n{err}')
-            print('Se devuelve la lista de productos sin los cambios')
-            registrar_error(err)
-            campo_invalido = False
-            return lista_productos 
+                disponible = True
+                print(f'Producto {marca} dado de alta con exito!')
+
+                pid = generar_id(lista_productos, 'pid')
+
+                nuevo_producto = {
+                    "pid": pid,
+                    "marca": marca,
+                    "modelo": modelo,
+                    "categoria": categoria,
+                    "color": color,
+                    "stock": stock,
+                    "precio": precio,
+                    "disponible": disponible
+                }
+
+                lista_productos.append(nuevo_producto)
+                cargar_datos_json('DB/prods.json', lista_productos)
+                return lista_productos
+
+            except Exception as err:
+                print(f'Ocurrio el siguiente error al intentar dar de alta el producto.\n{err}')
+                print('Se devuelve la lista de productos sin los cambios')
+                registrar_error(err)
+                campo_invalido = False
+                return lista_productos 
 
 def eliminar_producto(pid, lista_productos):
     '''
@@ -382,45 +432,55 @@ def editar_producto(prod_seleccionado, lista_productos):
                 print("Opción inválida. Por favor, ingrese un número.")
                 continue # Vuelve al inicio del buble para pedir la opción de nuevo
 
-            if opcion == 1:
-                cambio = input('Ingrese la marca:\n').lower()
-                producto_final['marca'] = cambio
-            elif opcion == 2:
-                cambio = input('Ingrese el modelo:\n').lower()
-                producto_final['modelo'] = cambio
-            elif opcion == 3:
-                cambio = input('Ingrese la categoria:\n').lower()
-                producto_final['categoria'] = cambio
-            elif opcion == 4:
-                cambio = input('Ingrese el color:\n').lower()
-                producto_final['color'] = cambio
-            elif opcion == 5:
-                try:
-                    cambio = int(input('Ingrese el stock:\n'))
-                    while cambio < 0:
-                        print('Solo se aceptan numeros positivos o 0')
-                        cambio = int(input('Ingrese el stock:\n'))
-                    if cambio == 0:
-                        producto_final['disponible'] == False
+            campo_invalido = True
+            while campo_invalido:
+                if opcion == 1:
+                    cambio = input('Ingrese la marca: ').lower()
+                    if validar_input_alta_mod(cambio):
+                        producto_final['marca'] = cambio
+                        campo_invalido = False
+                elif opcion == 2:
+                    cambio = input('Ingrese el modelo: ').lower()
+                    if validar_input_alta_mod(cambio):
+                        producto_final['modelo'] = cambio
+                        campo_invalido = False
+                elif opcion == 3:
+                    cambio = input('Ingrese la categoria: ').lower()
+                    if validar_input_alta_mod(cambio):
+                        producto_final['categoria'] = cambio
+                        campo_invalido = False
+                elif opcion == 4:
+                    cambio = input('Ingrese el color: ').lower()
+                    if validar_input_alta_mod(cambio):
+                        producto_final['color'] = cambio
+                        campo_invalido = False
+                elif opcion == 5:
+                    try:
+                        cambio = int(input('Ingrese el stock: '))
+                        while cambio < 0:
+                            print('Solo se aceptan numeros positivos o 0')
+                            cambio = int(input('Ingrese el stock: '))
+                        if cambio == 0:
+                            producto_final['disponible'] == False
 
-                    producto_final['stock'] = cambio
-                except ValueError:
-                    print("Stock inválido. Ingrese un número entero.")
-            elif opcion == 6:
-                try:
-                    cambio = float(input('Ingrese el precio:\n')) # Precio puede ser decimal
-                    producto_final['precio'] = cambio
-                except ValueError:
-                    print("Precio inválido. Ingrese un número.")
-            elif opcion == 7: # Manejo de Disponibilidad
-                resp_disponible = input('¿Está disponible? (s/n):\n').lower()
-                producto_final['disponible'] = True if resp_disponible == 's' else False
-            elif opcion == 8:
-                seguir_editando = False
-                print('Edicion cancelada!')
-            else:
-                print('La opcion ingresada no es valida. Vuelva a intentar.')
-                continue # Vuelve a pedir la opción
+                        producto_final['stock'] = cambio
+                    except ValueError:
+                        print("Stock inválido. Ingrese un número entero.")
+                elif opcion == 6:
+                    try:
+                        cambio = float(input('Ingrese el precio:\n')) # Precio puede ser decimal
+                        producto_final['precio'] = cambio
+                    except ValueError:
+                        print("Precio inválido. Ingrese un número.")
+                elif opcion == 7: # Manejo de Disponibilidad
+                    resp_disponible = input('¿Está disponible? (S/N):\n').lower()
+                    producto_final['disponible'] = True if resp_disponible == 's' else False
+                elif opcion == 8:
+                    seguir_editando = False
+                    print('Edicion cancelada!')
+                else:
+                    print('La opcion ingresada no es valida. Vuelva a intentar.')
+                    continue # Vuelve a pedir la opción
 
             if seguir_editando: # Solo pregunta si seguir editando si no se canceló
                 print(f'\nAsí va quedando tu producto:')

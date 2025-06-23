@@ -125,7 +125,14 @@ def get_cant_ventas(fecha_inicio, fecha_fin, lista_ventas):
     '''
     cant_ventas = 0
     try:
-        cant_ventas = reduce(lambda acc, venta: acc + (1 if fecha_inicio <= venta['fecha'] <= fecha_fin else 0), lista_ventas, 0)
+        # Hacemos esto para comparar el mismo tipo y que no compare date con str
+        fecha_inicio_dt = datetime.strptime(fecha_inicio, '%d/%m/%Y').date()
+        fecha_fin_dt = datetime.strptime(fecha_fin, '%d/%m/%Y').date()
+
+        # Esto es mas practico con un for y sumar un acumulador pero esta hecho para la entrega
+        cant_ventas = reduce(lambda acc, venta: acc + (
+                1 if fecha_inicio_dt <= datetime.strptime(venta['fecha'], '%d/%m/%Y').date() <= fecha_fin_dt else 0
+            ), lista_ventas, 0)
 
         return cant_ventas
     except Exception as err:
@@ -147,7 +154,12 @@ def get_fact_total(fecha_inicio, fecha_fin, lista_ventas):
     '''
     facturado = 0
     try:
-        facturado = reduce(lambda suma, venta: suma + (venta['total'] if fecha_inicio <= venta['fecha'] <= fecha_fin else 0), lista_ventas, 0)
+        fecha_inicio_dt = datetime.strptime(fecha_inicio, '%d/%m/%Y').date()
+        fecha_fin_dt = datetime.strptime(fecha_fin, '%d/%m/%Y').date()
+        
+        facturado = reduce(lambda acc, venta: acc + (
+                venta['total'] if fecha_inicio_dt <= datetime.strptime(venta['fecha'], '%d/%m/%Y').date() <= fecha_fin_dt else 0
+            ), lista_ventas, 0)
 
         return facturado
     except Exception as err:

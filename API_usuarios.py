@@ -255,7 +255,7 @@ def form_nuevo_usuario(usuarios):
         input_email = input('ingrese su Email: ')
         while not validar_email(input_email, usuarios):
             print('El correo ya existe o no cumple con los requisitos (ej: micorreo@uade.edu.ar)')
-            input_email = int(input('Ingrese otro: '))
+            input_email = input('Ingrese otro: ')
         
         input_password = input('Ingrese una contraseña: ')
         input_validacion = input('Repita la contraseña: ')
