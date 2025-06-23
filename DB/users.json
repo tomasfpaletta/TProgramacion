@@ -4,7 +4,7 @@
         "nombre": "Nicolas",
         "apellido": "Lazaro",
         "email": "nlazaro@uade.edu.ar",
-        "password": "tito_Calderon1",
+        "password": "Tito_calderon1",
         "admin": false,
         "pregunta_seguridad": {
             "color_favorito": "azul"

@@ -1,6 +1,6 @@
 from funciones_generales import registrar_error, limpiar_consola
 from json_handler import importar_datos_json
-from API_productos import mostrar_productos, ordenar_por_precio, menu_busqueda_productos, menu_abm
+from API_productos import mostrar_productos, ordenar_por_precio, menu_busqueda_productos, menu_abm, mostrar_prod
 from API_usuarios import es_admin, menu_login, actualizar_password
 from API_comprador import menu_comprar_productos, seleccionar_producto
 from API_ventas import historial_compras_usuario, menu_ventas
@@ -92,7 +92,7 @@ def gen_panel_admin(productos):
                 mostrar_productos(productos)
             elif seleccion == 2:
                 limpiar_consola()
-                menu_abm(productos)
+                menu_abm()
             elif seleccion == 3:
                 limpiar_consola()
                 productos_sin_stock = list(filter(lambda prod: prod['stock'] == 0, productos))
@@ -101,15 +101,7 @@ def gen_panel_admin(productos):
                 try:
                     prod_sel = seleccionar_producto(productos)
                     if prod_sel:
-                        print('====================================')
-                        print(f"Marca: {prod_sel['marca'].capitalize()}")
-                        print(f"Modelo: {prod_sel['modelo'].capitalize()}")
-                        print(f"Categoría: {prod_sel['categoria'].capitalize()}")
-                        print(f"Color: {prod_sel['color'].capitalize()}")
-                        print(f"Stock: {prod_sel['stock']}")
-                        print(f"Precio: {prod_sel['precio']}")
-                        print(f"Disponible: {'Sí' if prod_sel['disponible'] else 'No'}") # Muestra estado de disponibilidad
-                        print('====================================')
+                        mostrar_prod(prod_sel)
                 except Exception:
                     print('No se encontro el producto.')
             elif seleccion == 5:
@@ -151,7 +143,7 @@ def gen_menu_cliente(usuario, usuarios, productos):
             print('└─ 8. Salir')
 
             seleccion = 0
-            while seleccion < 1 or seleccion > 7:
+            while seleccion < 1 or seleccion > 8:
                 try:
                     seleccion = int(input(f'--- Elija la seccion a la que quiere ingresar ---\n'))
                 except ValueError:
@@ -168,7 +160,7 @@ def gen_menu_cliente(usuario, usuarios, productos):
                 mostrar_productos(lista_prod_ordenada)
             elif seleccion == 4:
                 limpiar_consola()
-                menu_busqueda_productos()
+                menu_busqueda_productos(productos)
             elif seleccion == 5:
                 menu_comprar_productos(usuario['DNI'], productos)
             elif seleccion == 6:

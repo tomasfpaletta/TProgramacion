@@ -5,7 +5,7 @@
         "modelo": "s25 ultra",
         "categoria": "celular",
         "color": "negro",
-        "stock": 5,
+        "stock": 3,
         "precio": 1200,
         "disponible": true
     },
@@ -75,7 +75,7 @@
         "modelo": "latitude 5410",
         "categoria": "notebook",
         "color": "negro",
-        "stock": 9,
+        "stock": 7,
         "precio": 650,
         "disponible": true
     },
@@ -98,5 +98,15 @@
         "stock": 3,
         "precio": 1930.0,
         "disponible": true
+    },
+    {
+        "pid": 3659,
+        "marca": "Lenovo",
+        "modelo": "Yoga",
+        "categoria": "Notebook",
+        "color": "Rojo",
+        "stock": 0,
+        "precio": 1350.0,
+        "disponible": false
     }
 ]

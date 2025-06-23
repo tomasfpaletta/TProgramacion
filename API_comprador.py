@@ -1,36 +1,10 @@
 from datetime import datetime
 from funciones_generales import registrar_error, generar_id
 from json_handler import importar_datos_json, cargar_datos_json
-from API_productos import mostrar_productos, retornar_prod, restar_stock, sumar_stock
+from API_productos import mostrar_productos, restar_stock, sumar_stock, seleccionar_producto
 
 listado_productos = importar_datos_json('DB/prods.json')
 ventas = importar_datos_json('DB/ventas.json')
-
-def seleccionar_producto(productos):
-    '''
-    Permite al usuario seleccionar un producto ingresando su PID.
-    Se valida la existencia del producto en la lista.
-
-    Input:
-    - Productos (Lista de diccionarios)
-
-    Output:
-    - Producto (Diccionario)
-    '''
-    try:
-        pid = int(input("Ingrese el PID del producto: "))
-        prod = retornar_prod(pid, productos)
-        if not prod:
-            print("PID no encontrado.")
-            return {}
-        return prod[0] # Hacemos 'prod[0]' porque la funcion retornar_prod lo devuelve empaquetado, asi que seleccionamos el unico y primer indice.
-    except ValueError:
-        print(f'PID no encontrado -> ValueError al indicar PID del producto a agregar')
-        return {}
-    except Exception as err:
-        print(f'Se produjo el siguiente error al intentar seleccionar el producto en la funcion -> seleccionar_prod():\n{err}')
-        registrar_error(err)
-        return {}
 
 def pedir_cantidad(producto):
     '''

@@ -1,10 +1,8 @@
-import random
 from json_handler import importar_datos_json, cargar_datos_json
-from funciones_generales import generar_id, registrar_error, actualizar_lista, limpiar_consola
-from API_comprador import seleccionar_producto
-"""Estructura principal del programa"""
-listado_productos = importar_datos_json('DB/prods.json')
-listado_usuarios = importar_datos_json('DB/users.json')
+from funciones_generales import generar_id, registrar_error, limpiar_consola
+
+# listado_productos = importar_datos_json('DB/prods.json')
+# listado_usuarios = importar_datos_json('DB/users.json')
 
 def centrar_con_metodo(texto, ancho):
     '''
@@ -18,6 +16,25 @@ def centrar_con_metodo(texto, ancho):
     - Texto centrado como string.
     '''
     return texto.center(ancho)
+
+def mostrar_prod(producto):
+    '''
+    Muestra el producto de una manera mas legible y prolija
+
+    Input:
+    - Producto (Diccionario)
+
+    Output:
+    - Producto de forma mas legible
+    '''
+    print('-------------------------------------')
+    print(f"Marca: {producto['marca'].capitalize()}")
+    print(f"Modelo: {producto['modelo'].capitalize()}")
+    print(f"Categoría: {producto['categoria'].capitalize()}")
+    print(f"Color: {producto['color'].capitalize()}")
+    print(f"Stock: {producto['stock']}")
+    print(f"Precio: {producto['precio']}")
+    print(f"Disponible: {'Sí' if producto['disponible'] else 'No'}")
 
 def mostrar_productos(productos):
     '''
@@ -120,6 +137,32 @@ def retornar_prod(pid_buscado, productos):
     - Producto 'empaquetado' = [{producto}] o [] si no se encuentra.
     '''
     return [prod for prod in productos if prod['pid'] == pid_buscado]
+
+def seleccionar_producto(productos):
+    '''
+    Permite al usuario seleccionar un producto ingresando su PID.
+    Se valida la existencia del producto en la lista.
+
+    Input:
+    - Productos (Lista de diccionarios)
+
+    Output:
+    - Producto (Diccionario)
+    '''
+    try:
+        pid = int(input("Ingrese el PID del producto: "))
+        prod = retornar_prod(pid, productos)
+        if not prod:
+            print("PID no encontrado.")
+            return {}
+        return prod[0] # Hacemos 'prod[0]' porque la funcion retornar_prod lo devuelve empaquetado, asi que seleccionamos el unico y primer indice.
+    except ValueError:
+        print(f'PID no encontrado -> ValueError al indicar PID del producto a agregar')
+        return {}
+    except Exception as err:
+        print(f'Se produjo el siguiente error al intentar seleccionar el producto en la funcion -> seleccionar_prod():\n{err}')
+        registrar_error(err)
+        return {}
 
 def restar_stock(cantidad, pid, lista_prods):
     '''
@@ -317,7 +360,8 @@ def editar_producto(prod_seleccionado, lista_productos):
             continue # Vuelve a pedir la opción
 
         if seguir_editando: # Solo pregunta si seguir editando si no se canceló
-            print(f'\nAsí va quedando tu producto:\n {producto_final}')
+            print(f'\nAsí va quedando tu producto:')
+            mostrar_prod(producto_final)
             try:
                 respuesta = input('Desea seguir editando ? (S/N): ').lower()
             except ValueError:
@@ -435,7 +479,7 @@ def menu_abm():
             print(f'Error al intentar generar menu de ABM en menu_abm()\n{err}')
             registrar_error(err)
 
-def menu_busqueda_productos():
+def menu_busqueda_productos(productos):
     '''
     Muestra un menu para buscar productos por distintos campos (marca, modelo, etc).
 
@@ -446,11 +490,11 @@ def menu_busqueda_productos():
     - Muestra en consola los productos filtrados o mensaje de no encontrados.
     '''
     print("\n=== MENÚ DE BÚSQUEDA DE PRODUCTOS ===")
-    print("1. Buscar por marca")
-    print("2. Buscar por modelo")
-    print("3. Buscar por categoría")
-    print("4. Buscar por color")
-    print("5. Buscar por precio")
+    print("├─ 1. Buscar por marca")
+    print("├─ 2. Buscar por modelo")
+    print("├─ 3. Buscar por categoría")
+    print("├─ 4. Buscar por color")
+    print("└─ 5. Buscar por precio")
 
     opcion = input("Ingrese el número correspondiente a la búsqueda: ").strip()
 
@@ -464,9 +508,10 @@ def menu_busqueda_productos():
 
     if opcion in campos:
         valor = input(f"Ingrese el valor para buscar en {campos[opcion]}: ").strip()
-        resultados = filtrar_productos(valor, listado_productos, campos[opcion])
+        resultados = filtrar_productos(valor, productos, campos[opcion])
 
         if resultados:
+            limpiar_consola()
             print("\n--- Resultados encontrados ---")
             mostrar_productos(resultados)
         else:

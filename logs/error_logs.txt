@@ -16,3 +16,6 @@
 22/06/2025 21:11:01 TIPO: <class 'TypeError'> - ERROR: gen_panel_admin() missing 2 required positional arguments: 'productos' and 'usuarios'
 22/06/2025 21:11:25 TIPO: <class 'TypeError'> - ERROR: gen_panel_admin() missing 1 required positional argument: 'productos'
 22/06/2025 21:13:12 TIPO: <class 'TypeError'> - ERROR: gen_panel_admin() missing 1 required positional argument: 'productos'
+23/06/2025 00:23:28 TIPO: <class 'TypeError'> - ERROR: menu_abm() takes 0 positional arguments but 1 was given
+23/06/2025 00:23:40 TIPO: <class 'TypeError'> - ERROR: menu_abm() takes 0 positional arguments but 1 was given
+23/06/2025 00:23:41 TIPO: <class 'TypeError'> - ERROR: menu_abm() takes 0 positional arguments but 1 was given
