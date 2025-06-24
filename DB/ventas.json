@@ -151,5 +151,69 @@
                 "total_prod": 1300
             }
         ]
+    },
+    {
+        "n_venta": 7815,
+        "user": 40946880,
+        "fecha": "23/06/2025",
+        "total": 300.0,
+        "productos": [
+            {
+                "pid": 4569,
+                "marca": "Motorola",
+                "modelo": "Razr",
+                "color": "Plata",
+                "cantidad": 3,
+                "total_prod": 300.0
+            }
+        ]
+    },
+    {
+        "n_venta": 1979,
+        "user": 40946880,
+        "fecha": "23/06/2025",
+        "total": 300.0,
+        "productos": [
+            {
+                "pid": 4569,
+                "marca": "Motorola",
+                "modelo": "Razr",
+                "color": "Plata",
+                "cantidad": 1,
+                "total_prod": 100.0
+            },
+            {
+                "pid": 4569,
+                "marca": "Motorola",
+                "modelo": "Razr",
+                "color": "Plata",
+                "cantidad": 1,
+                "total_prod": 100.0
+            },
+            {
+                "pid": 4569,
+                "marca": "Motorola",
+                "modelo": "Razr",
+                "color": "Plata",
+                "cantidad": 1,
+                "total_prod": 100.0
+            }
+        ]
+    },
+    {
+        "n_venta": 4081,
+        "user": 40946880,
+        "fecha": "23/06/2025",
+        "total": 240.0,
+        "productos": [
+            {
+                "pid": 4569,
+                "marca": "Motorola",
+                "modelo": "Razr",
+                "color": "Plata",
+                "cantidad": 3,
+                "total_prod": 240.0
+            }
+        ]
     }
 ]

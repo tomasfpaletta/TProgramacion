@@ -189,6 +189,11 @@ def menu_comprar_productos(dni, listado_productos):
 
         if carrito: # Validamos que el carrito no este vacio.
             total = calcular_total(carrito)
+            if len(carrito) > 2 or carrito[0]['cantidad'] > 2:
+                    carrito = list(map(lambda prod: {**prod, 'total_prod': prod['total_prod'] * 0.8}, carrito))
+                    total = calcular_total(carrito)
+                    print(f"Se aplico un descuento del 20% por llevar mas de 2 productos")
+
             for prod in carrito:
                 marca_upper, modelo_upper = map(str.upper, [prod['marca'], prod['modelo']])
                 print(f"- PID: {prod['pid']} | {marca_upper} | {modelo_upper} x{prod['cantidad']} = U$D {prod['total_prod']:.2f}")

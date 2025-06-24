@@ -27,3 +27,5 @@
 23/06/2025 12:18:33 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'
 23/06/2025 12:25:30 TIPO: <class 'TypeError'> - ERROR: string indices must be integers, not 'str'
 23/06/2025 13:38:56 TIPO: <class 'ValueError'> - ERROR: invalid literal for int() with base 10: 'sadasdasd'
+23/06/2025 20:58:41 TIPO: <class 'TypeError'> - ERROR: map() must have at least two arguments.
+23/06/2025 21:11:55 TIPO: <class 'TypeError'> - ERROR: map() must have at least two arguments.

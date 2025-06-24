@@ -27,6 +27,7 @@ def gen_home():
             usuarios = importar_datos_json('DB/users.json')
             mostrar_logo()
             mostrar_productos(productos)
+            print(f'Comprando mas de 2 productos te llevas un 20% de descuento en cada producto')
 
             print('Para acceder mas opciones debera loguearse o registrarse')
             try:
@@ -136,7 +137,7 @@ def gen_menu_cliente(usuario):
         try:
             productos = importar_datos_json('DB/prods.json')
             usuarios = importar_datos_json('DB/users.json')
-
+            print(f'\nComprando mas de 2 productos te llevas un 20% de descuento en cada producto\n')
             print('Opciones disponibles:')
             print('├─ 1. Visualizar productos')
             print('├─ 2. Ordenar productos por precio de Mayor a Menor')
@@ -181,5 +182,5 @@ def gen_menu_cliente(usuario):
 
         except Exception as err:
             seguir_menu = False
-            print(f'Error al intentar generar el MENU ADMIN en gen_menu_admin()\n{err}')
+            print(f'Error al intentar generar el MENU DEL CLIENTE en gen_menu_cliente()\n{err}')
             registrar_error(err)
